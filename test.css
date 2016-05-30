@@ -1,8 +1,8 @@
 body{
-	transform: scale(1.35);
+	transform: scale(1.2);
     transform-origin: 50% 0%;
     background-color:#effefef;
-    font-family: Palatino, Trebuchet MS, Arial, Helvetica, Verdana;
+    font-family: Palatino, Garamond, Arial, Helvetica, Verdana;
     width:800px;
     margin-left:auto;
     margin-right:auto;
@@ -70,7 +70,7 @@ div#blurb{
     margin-bottom:auto;
     width:575px;
     height:150px;
-    font-family: Palatino, Arial, Helvetica, Verdana;
+    font-family: Palatino, Garamond, Arial, Helvetica, Verdana;
     font-weight:lighter;
     float:left;
 }
@@ -82,7 +82,7 @@ div#blurb1{
     margin-bottom:auto;
     width:800px;
     height:300px;
-    font-family: Palatino, Arial, Helvetica, Verdana;
+    font-family: Palatino, Garamond, Arial, Helvetica, Verdana;
     font-weight:lighter;
     float:left;
 }
@@ -94,6 +94,11 @@ div#blurb p{
 }
 
 div#blurb a{
+    color:inherit;
+    text-decoration:none;
+}
+
+div#blurb1 a{
     color:inherit;
     text-decoration:none;
 }
