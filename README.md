@@ -1,2 +1,0 @@
-# deeparnab.github.io
-Webpage.
