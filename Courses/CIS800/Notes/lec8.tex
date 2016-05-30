@@ -1,0 +1,485 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newlength{\lpbox}
+\setlength{\lpbox}{8.1cm}
+
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+\def\lp{{\tt lp}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+
+\title{Lecture 8: Cuts and Distances}
+\author{}
+\date{}
+\maketitle
+\def\x{{x^{\tt int}}}
+\def\E{{\mathbf E}}
+\def\Pr{{\mathbf{Pr}}}
+\noindent
+In this lecture, we will look at three cut problems and the algorithmic 
+techniques that have been developed to tackle them. 
+%This will introduce 
+%us to the beautiful problem of embedding one metric into another as 
+%``consistently'' as possible. Let us start with three examples of cut problems.
+In all the examples below, we are given an undirected graph $G=(V,E)$.
+Each edge $e\in E$ has cost $c(e)$.
+
+\begin{itemize}
+\item {\bf  Minimum $s,t$-cut Problem.} We are input a pair of nodes $s$ and $t$.
+The goal is to find the minimum cost set of edges $F$ such that in the graph 
+$(V,E\setminus F)$, $s$ and $t$ are disconnected. That is, $F$ is an $s,t$-cut.
+
+\item {\bf Multiway cut Problem.} We are input a collection of nodes 
+$\{s_1,\ldots,s_k\}$, and the goal is to find a minimum cost set of edges $F$
+such that in the graph $(V,E\setminus F)$ each $s_i$ lies in a different
+connected component.
+
+\item {\bf Multicut Problem.} We are input a collection of pairs $\{(s_1,t_1),\ldots,(s_k,t_k)\}$
+and the goal is to find a minimum cost set of edges $F$ such that 
+in the graph $(V,E\setminus F)$, each $s_i$ is disconnected from its pair $t_i$.
+Note that $s_i$ and $s_j$ might lie in the same component.
+
+\end{itemize}
+\noindent
+Note that the problems are in increasing order of generality.
+In the next lecture we'll encounter another cut problem, the sparsest 
+cut problem. 
+
+\subsection*{Cut induced distances.} Given the cut edges $F$, we can define 
+a distance function $d$ among all pairs of vertices as follows. 
+Set $d(e) = 1$ for all $e\in F$ and $d(e) = 0$ for all $e\notin F$. For any pair 
+$(u,v)$, $d(u,v)$ is the shortest path with these edge lengths. 
+
+All of the cut problems above can be cast as finding a suitable ``distance" function
+among the pairs of vertices in $V$. For instance, the multicut problem can be restated 
+as follows.
+%To be precise, let us add all edges of $(u,v)$ 
+%which are not in $E$, and let them have cost $0$. 
+
+\begin{align*}
+\min & \qquad \sum_{e\in E} c(e)d(e) &\qquad d(e) \in \{0,1\} \\
+\textrm{ such that } & \qquad \textrm{ distance induced by $d$ between $s_i$ and $t_i$ } \ge 1& \qquad \forall i=1,...,k
+\end{align*}
+
+One can move to a linear programming formulation by relaxing $d(e) \in [0,1]$, and having a constraint for 
+each $s_i,t_i$ path $p$. Or one can write the following compact LP using the fact that 
+$d$ forms a distance and hence satisfies triangle inequality. For completeness, let us add all edges
+$(u,v)$ not in $E$ with $c(u,v)$ set to $0$ for these edges. Then the LP is as follows
+
+\begin{align}
+\min & \qquad \sum_{e\in E} c(e)d(e) &\qquad d(e) \in [0,1] \label{lp:multicut}\\
+\textrm{ such that } & \qquad d(s_i,t_i) \ge 1 & \forall i=1...k \label{lp:multicut1} \\
+			& \qquad d(u,v) \le d(u,w) + d(w,v) & \forall u,v,w \in V
+\end{align}
+\noindent
+The discussion above says that 
+\begin{claim}
+For the multicut problem, $\opt \ge \lp$ for the LP \eqref{lp:multicut}.
+\end{claim}
+
+Let us see how the above can be used to give algorithms for the three problems 
+above. We start with the $s,t$-min cut problem. \\
+
+
+\noindent
+{\bf Minimum $s,t$ Cut.}\\
+\underline{Minimum $s,t$-cut Algorithm.}
+\begin{enumerate}
+\item Solve LP \eqref{lp:multicut} with just one constraint of the form \eqref{lp:multicut1}.
+\item Pick $r$ uniformly between $[0,1)$.
+\item Let $S := \{v: d(s,v) \le r\}$. Return the cut $F = \delta(S)$.
+\end{enumerate}
+\noindent
+Note that the solution returned is a valid $s,t$-cut of cost \alg, say.
+
+\begin{theorem}
+The expected cost of the mincut algorithm is at most \lp.
+\end{theorem}
+\begin{proof}
+Fix any edge $e = (u,v)$, let us calculate the probability $e\in F$.
+Without loss of generality, let $d(s,u) \le d(s,v)$. Then $e \in F$ iff 
+$d(s,u) \le r < d(s,v)$. That is,
+$$\Pr[e\in F] = \Pr[r \in \left[d(s,u),d(s,v)\right)] = d(s,v) - d(s,u) \le d(u,v)$$
+where the second equality follows from the fact that $r$ is chosen uniformly 
+at random between $[0,1)$, and the second inequality follows from triangle 
+inequality. Thus, \mbox{$\E[\alg] \le \sum_{(u,v)} c(u,v)d(u,v) = \lp$.}
+\end{proof}
+\noindent
+Of course, the expected value of the algorithm cannot be strictly less than \lp.
+In fact, this shows that any cut returned by the algorithm has value equal to \lp. \\
+
+\noindent
+{\bf Multiway Cut.} 
+%To start with, let me leave as an exercise a problem 
+%of finding a $(2 - \frac{2}{k})$ approximation to the multiway cut
+%problem given an exact algorithm for the minimum $s,t$ cut problem.
+%(Hint: decompose the optimum solution of the multiway cut problem
+%into a collection of suitable minimum $s_i,t_i$-cuts.)
+
+The algorithm for multiway cut is slightly different. Instead of 
+randomly sampling from $[0,1)$, we will sample from $[0,1/2)$.\\
+
+\noindent
+\underline{Minimum Multiway cut Algorithm.}
+\begin{enumerate}
+\item Solve LP \eqref{lp:multicut} with just constraints of the form \eqref{lp:multicut1} for every $(s_i,s_j)$ pair.
+\item Pick $r$ uniformly between $[0,1/2)$.
+\item Let $S_i := \{v: d(s_i,v) \le r\}$. Return the cut $F = \bigcup_i^k \delta(S_i)$.
+\end{enumerate}
+\noindent
+It should be clear the algorithm returns a valid multiway cut. This is because no $S_i$ will contain an $s_j$
+since the distance $d(s_i,s_j) \ge 1$.
+Once again, fix an edge $(u,v)$ and let us calculate the probability it is in the cut $F$.
+Here is an observation which will be useful.
+
+\begin{claim}\label{claim:mwaycut}
+For any vertex $u$, there is at most one $s_u$ such that $d(s_u,u) <1/2$.
+%Furthermore, if for a pair of vertices $u,v$, there exist $s_u$ and $s_v$ such that
+%$d(s_u,u) < 1/2$ and $d(s_v,v) < 1/2$, then we have $d(s_u,v) > 1/2$ and $d(s_v,u) > 1/2$.
+\end{claim}
+\begin{proof}
+All of this follow from triangle inequality. If there are two $s_u$ and $s_{u'}$ with $d(s_u,u) < 1/2$ and $d(s_{u'},u) < 1/2$,
+then $d(s_u,s_{u'}) < 1$ which is a contradiction.
+% Similarly, if $d(s_v,v) < 1/2$ and $d(s_u,v) < 1/2$, then $d(s_u,s_v) < 1$.
+\end{proof}
+
+\begin{lemma}
+In the above multiway cut algorithm, for any edge $(u,v)$, $\Pr[(u,v) \in F] \le 2d(u,v)$.
+\end{lemma}
+\begin{proof}
+$(u,v)$ is cut when 1) $u \in S_u$ and $v\notin S_u$ for some $S_u$, or 2) $v\in S_v$ and $u\notin S_v$ for some $S_v$. However, since $r < 1/2$, Claim \ref{claim:mwaycut} implies there is an unique $S_u$, if any, for which 1) is true and there is an
+unique $S_v$, if any, for which 2) is true. 
+Furthermore, for 1) to occur, we must have $r\in [d(s_u,u),1/2)$ and for 2) to occur we must have $r\in [d(s_v,v),1/2)$.
+Thus, the probability that at least one of them occur is at most 
+\begin{equation}\label{eq:equv}
+\Pr[(u,v)\in F] \le 2\cdot (1/2 - d(s_u,u)) + 2\cdot (1/2 - d(s_v,v)) = 2\left(1 - d(s_u,u) - d(s_v,v)\right)
+\end{equation}
+Now, triangle inequality gives us $1 \le d(s_u,s_v) \le d(s_u,u) + d(u,v) + d(v,s_v)$. Putting this in \eqref{eq:equv},
+we get the lemma.
+\end{proof}
+\noindent
+The above lemma implies a $2$-approximation. In fact, we can get a $2(1-1/k)$ approximation by taking the union of the cheapest 
+$(k-1)$ cuts rather than $k$ of them.\\
+%I leave as an exercise a problem 
+%of finding a $(2 - \frac{2}{k})$ approximation to the multiway cut
+%problem given an exact algorithm for the minimum $s,t$ cut problem.
+%(Hint: decompose the optimum solution of the multiway cut problem
+%into a collection of suitable minimum $s_i,t_i$-cuts.)
+\def\Ev{{\mathcal E}}
+
+
+\noindent 
+{\bf Multicut.}
+We will look at two algorithms for the multicut problem. The first will be in the spirit as we saw above
+using a random radius. The other will be a deterministic ``region growing'' algorithm.
+Let us start with the randomized idea. What should our algorithm be? 
+Inspired by the mincut algorithm, let's say we run $k$ rounds of it. That is, pick a radius $r\in [0,1/2)$ 
+and go over the pairs in some order. Each time let $S_i = \{u:d(s_i,u) \le r_i\}$ and add $\delta(S_i)$ to $F$.
+We remove the edges $(u,v)$ when $u$ and $v$ both lie in some $S_j$ for $j< i$. 
+We can do this because both $s_i$ and $t_i$ cannot lie in a set $S_j$ since $r < 1/2$.
+$F$ be the final subset of edges
+\medskip
+
+\noindent
+Fix an edge $e = (u,v)$; what is the probability it is in $F$? 
+When we go in the order defining $S_i$, three things can happen to this edge. Either 
+$u,v$ both lie in $S_i$, exactly one of these lie in $S_i$, or none of these two lie in $S_i$. 
+We say $(u,v)$ is {\em taken care of} by $i$ if one of the first two occur. If the second occurs, 
+we say $(u,v)$ is cut by $i$. Note that if $(u,v)$ is taken care of by any $i$, $(u,v)\notin F$: this will be crucial. 
+So, $(u,v)$ is cut by our algorithm, if there exists $i$ such that $i$ cuts $(u,v)$, and none of the $j< i$ take care of $(u,v)$. 
+\medskip
+
+\noindent
+To be precise, define $\Ev_i(u,v)$ to be the event that $d(s_i,u) \le r$ and $d(s_i,v) > r$, 
+and let $\Ev'_i(u,v)$ be the event that $r < \min(d(s_i,u),d(s_i,v))$.
+From our discussion in the previous paragraph, we get 
+\begin{equation}\label{eq:probuv}
+\Pr[(u,v) \in F] = \Pr\left[\exists i: ~\Ev_i(u,v) \wedge \Ev'_{i-1}(u,v) \wedge \cdots \Ev'_{1}(u,v)\right]
+\end{equation}
+\noindent
+For a fixed $i$, we have 
+$$ \Pr\left[\Ev_i(u,v) \wedge \Ev'_{i-1}(u,v) \wedge \cdots \Ev'_{1}(u,v) \right] = \Pr\left[r\in[d(s_i,u),d(s_i,v)] ~\wedge~ r < d(s_j,u), r < d(s_j,v), ~\forall j<i \right]$$
+
+\noindent
+Consider the following pathological case: $d(s_i,u) = 1 - (i/k)$ and $d(s_i, v) = 1 - ((i-1)/k)$. In this case, 
+the latter probability in the above expression simply becomes $\Pr[r\in[d(s_i,u),d(s_i,v)]$ for all $i$.
+Union bound then gives the $\Pr[(u,v)\in F] \le k\cdot d(u,v)$ -- which would imply a $k$-approximation
+and nothing better.
+(In fact, the probability in \eqref{eq:probuv} becomes $1$, that is the edge $(u,v)$ is cut with certainty). 
+\medskip
+
+The above example is pathological because of the order: if we had chosen a different order, say the order $\{k,k-1,\ldots,1\}$, 
+then with probability $1$, $k$ takes care of $(u,v)$ and with probability $1/k$ it cuts it. This motivates the following algorithm
+which we call the CKR algorithm after Calinescu, Karloff, and Rabani (the inventors). \\
+
+\noindent
+\underline{Minimum multicut algorithm (CKR)}
+\begin{enumerate}
+\item Solve LP \eqref{lp:multicut}.
+\item Pick $r$ uniformly between $[0,1/2)$. Let $\sigma$ be a random permutation of $\{1,2,\ldots,k\}$. Initialize $F\to \emptyset$
+\item Let $S_i := \{u: d(s_i,u) \le r\}$. Let $E[S_i] := \{(u,v): u,v\in S_i\}$. 
+\item In the order of $\sigma$, add $\delta\left(S_{\sigma(i)}\right)\setminus \bigcup_{j<i} E[S_{\sigma(j)}]$ to $F$.
+\end{enumerate}
+\noindent
+
+\begin{claim}
+$F$ separates all $s_i,t_i$ pairs.
+\end{claim}
+\begin{proof}
+Note that when $\delta\left(S_{\sigma(i)}\right)\setminus \bigcup_{j<i} E[S_{\sigma(j)}]$
+is added to $F$, $s_{\sigma(i)}$ disconnects from all vertices outside $S_{\sigma(i)}$,
+except maybe those in $S_{\sigma(j)}: j<i$ which contain $s_{\sigma(i)}$. 
+(Those which don't contain $s_{\sigma(i)}$ are disconnected by induction.)
+However, in that case, they don't contain $t_{\sigma(i)}$. In any case, $s_{\sigma(i)}$ is disconnected from 
+$t_{\sigma(i)}$.
+%
+%Given $s_{\sigma(i)}$, let $j$ be the minimum such that $s_{\sigma(i)} \in S_{\sigma(j)}$.
+%We claim that in $(V,E\setminus F)$, $s_{\sigma(i)}$ can connect to no vertex outside $S_{\sigma(j)}$.
+%
+%
+%
+%Note that both $s_i$ and $t_i$ can't lie in any $S_j$ since $r<1/2$ (otherwise $d(s_i,t_i) < 1$.)
+
+
+\end{proof}
+
+\begin{theorem}
+The expected cost of the multicut returned by the above algorithm is at most $O(\log k)\lp$.
+\end{theorem}
+\begin{proof}
+Fix an edge $(u,v)$. The proof of the theorem follows if we prove $\Pr[(u,v)\in F] = O(\log k)d(u,v)$.
+Note that the probability is now both over our choice of $r$ {\em and} the random permutation of 
+the terminals. Recall,  $\Ev_i(u,v)$ is the event that $d(s_i,u) \le r$ and $d(s_i,v) > r$, 
+and $\Ev'_i(u,v)$ is event that $r < \min(d(s_i,u),d(s_i,v))$.
+As in the discussion above, we have
+
+\begin{equation}\label{eq:probpermuv}
+\Pr[(u,v) \in F] = \Pr_{\sigma,r} \left[\exists i: ~\Ev_{\sigma(i)}(u,v)  \bigwedge_{j<i} \Ev'_{\sigma(j)}(u,v)\right]
+\end{equation}
+
+Fix an $i$ between $1$ and $k$. Note that $\bigwedge_{j<i}  \Ev'_{\sigma(j)}(u,v)$ occurs
+only if $r < d(s_{\sigma(j)},u)$ for all $j<i$. But $\Ev_{\sigma(i)}(u,v)$ occurs only if $r\ge d(s_{\sigma(i)},u)$.
+So, we can upper bound the probability in the RHS above as 
+$$ \Pr_{\sigma,r} \left[\Ev_{\sigma(i)}(u,v)  \bigwedge_{j:<i} \Ev'_{\sigma(j)}(u,v)\right]
+\le \Pr_{\sigma,r}\left[r \in [d(s_{\sigma(i)},u),d(s_{\sigma(i)},v)) ~\bigwedge_{j<i} \{d(s_{\sigma(i)},u) < d(s_{\sigma(j)},u)\} \right]
+$$
+
+
+Note that the two events in the second expression are independent: the first depends only on $r$, the second only 
+on $\sigma$, they were chosen independently. So, we get
+
+$$\Pr[(u,v)\in F] \le \sum_{i=1}^k \left(\Pr_{r} \left[d(s_{\sigma(i)},u) \le r < d(s_{\sigma(i)},v)\right]\cdot \Pr_{\sigma}\left[\bigwedge_{j<i} \{d(s_{\sigma(i)},u) < d(s_{\sigma(j)},u)\} \right]\right)$$
+
+We know $\Pr_{r} \left[d(s_{\sigma(i)},u) \le r < d(s_{\sigma(i)},v)\right] \le 2d(u,v)$.
+Let $N_i(u) := \{j: d(s_j,u) < d(s_i,u)\}$ denote the terminals whose distance to $u$ is smaller than that of $s_i$'s.
+Let $n_i = |N_i|$. Note that the $n_i$'s are a permutation of $0,1,\ldots,(k-1)$. The probability 
+$ \Pr_{\sigma}\left[\bigwedge_{j: \sigma(j)<\sigma(i)} \{d(s_{\sigma(i)},u) < d(s_{\sigma(j)},u)\} \right]$ is then $1/(n_{\sigma(i)} + 1)$; it happens only if 
+$\sigma(i)$ lies first among the terminals $N_{\sigma(i)}(u) \cup \{\sigma(i)\}$ in the ordering $\sigma$. So, we get,
+
+$$\Pr[(u,v)\in F] \le \sum_{i=1}^k 2d(u,v)/(n_{\sigma(i)}+1) = 2H_k\cdot d(u,v)$$
+\end{proof}
+
+\noindent
+We now describe another algorithm for the multicut problem. This algorithm, which we'll call the GVY algorithm, is the first algorithm for the problem due to Garg, Vazirani and Yannakakis. This uses a technique called region growing which is a
+useful technique and has applications in other partitioning problems.
+\medskip
+
+\def\Vol{{\tt Vol}}
+\noindent
+We start with a couple of definition. Given a solution to \eqref{lp:multicut}, and a parameter $r\in [0,1/2)$, let 
+$S_i(r) := \{u: d(s_i,u) \le r\}$. Recall $\delta S_i(r) := \{(u,v): u\in S_i(r), v\notin S_i(r)\}$ and 
+$E[S_i(r)] = \{(u,v):u,v \in S_i(r)\}$. 
+Define
+
+\begin{equation}\label{eq:voldefn}
+\Vol_i(r) := \frac{\lp}{k} ~ + \sum_{(u,v)\in E[S_i(r)]} c(u,v)d(u,v) ~+ \sum_{(u,v)\in \delta S_i(r)} c(u,v)\cdot\left(r - d(s_i,u)\right)
+\end{equation}
+This denotes the total ``lp-mass'' in a ball of radius $r$ around $s_i$.
+\begin{lemma}\label{lem:region}
+(Region growing lemma)
+For every $i$, there exists a $r_i \in [0,1/2)$ such that 
+$$ \sum_{(u,v)\in \delta S_i(r),v\notin S_i(r)} c(u,v) \le 2\ln (2k) \cdot\Vol_i(r_i) $$
+\end{lemma}
+\noindent
+The GVY algorithm returns the set $F := \bigcup_{i=1}^k \delta S_i(r_i)$. The following shows 
+another $O(\log k)$-approximation for multicut.
+\begin{lemma}
+$c(F) \le 4\ln (2k)\cdot \lp$
+\end{lemma}
+\begin{proof}
+$c(F) \le \sum_{i=1}^k c(\delta S_i(r_i)) \le (2\ln (2k)) \sum_{i=1}^k \Vol_i(r_i).$ Substituting the definition of 
+$\Vol_i(r_i)$, we get
+$$c(F) \le 2\ln (2k)\left(\lp + \sum_{(u,v)\in \cup_{i=1}^k E[S_i(r_i)]}c(u,v)d(u,v) ~+~ \sum_{i=1}^k\sum_{(u,v)\in \delta S_i(r_i)} c(u,v)(r_i - d(s_i,u))\right)$$
+Let $F_1$ be the edges belonging to exactly one $\delta S_i(r_i)$. $F_2$ be the edges belonging to two of these.
+For the first type of edges, we have the coefficient of $c(u,v)$ to be $(r_i - d(s_i,u)) \le d(s_i,v) - d(s_i,u) \le d(u,v)$.
+For the second type of edges, we have the coefficient of $c(u,v)$ to be 
+$(r_i - d(s_i,u)) + (r_j - d(s_j,v)) \le 1 - d(s_i,u) - d(s_j,v) \le d(u,v)$. In all, we get
+$c(F) \le 2\ln (2k)\cdot (\lp + \lp) = 4\ln (2k)\cdot \lp$.
+\end{proof}
+
+\begin{proofof}{Region growing lemma}
+The crucial observation is that 
+$$\frac{d \Vol_i(r)}{dr} = c(\delta S_i(r))$$
+If the claim is false, then we would get $d\Vol_i(r)/dr > 2\ln (2k)\cdot \Vol_i(r)$.
+So,
+$$\int_{\Vol(0)}^{\Vol(1/2)}\frac{d\Vol(r)}{\Vol(r)} > 2\ln (2k) \int_{0}^{1/2} dr$$
+\noindent
+Integrating, we get 
+$\ln\left(\frac{\Vol(1/2)}{\Vol(0)}\right) > \ln (2k)$ implying 
+$\Vol(1/2) > \frac{\lp}{k}\cdot e^{\ln (2k)} = 2\lp$.
+This is a contradiction since the total lp value cannot exceed 2\lp.
+\end{proofof}
+
+\def\R{{\mathbb R}}
+%\subsection*{The Sparsest Cut Problem and Metric Embeddings}
+%In the sparsest cut problem the input is an undirected graph $G=(V,E)$. Each edge has a 
+%quantity $c(e)$ which we now think of as the capacity of the cut. There also exists demand
+%pairs $\{(s_1,t_1), \ldots, (s_k,t_k)\}$, and pair $i$ has a demand $D_i$.
+%Given a subset of vertices $S\subseteq V$, we let $D(S) := \sum_{i:|(s_i,t_i)\cap S|=1} D_i$, and
+%the {\em sparsity} of $S$ is defined as 
+%$$\Phi(S) := \frac{c(\delta S)}{D(S)}$$
+%The sparsest cut problem is to find the cut of minimum sparsity, and $$\Phi^* := \min_{S\subseteq V} \frac{c(\delta S)}{D(S)}$$
+%\medskip
+%
+%%An interesting special case is when $D(u,v) = 1$ for all pairs $(u,v)$. This is called
+%%the {\em uniform} sparsest cut problem. This is
+%
+%Given a set $S\subseteq V$, we associate the 
+%distance $d_S(u,v) := 1$ if exactly one of $u$ and $v$ are in $S$, and $0$ otherwise. 
+%Such a distance function is called an elementary cut metric.
+%It is straightforward to see that $$\Phi^* = \min_{d: \textrm{elementary cut metric}} \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D(s_i,t_i)d(s_i,t_i)}$$
+%
+%\noindent
+%The cone of all cut metrics is defined as
+%$$CUT := \{d: \exists \lambda_S: ~~ d=\sum_{S\subseteq V} \lambda_S d_S\}$$
+%
+%\begin{claim}
+%\begin{equation}\label{eq:phicut}
+%\Phi^* = \min_{d \in CUT} \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D(s_i,t_i)d(s_i,t_i)}
+%\end{equation}
+%\end{claim}
+%\begin{proof}
+%Since we are minimizing over a larger space, we have $\Phi^* \ge RHS$.
+%Let $d$ be the minimizer of the RHS. Since, $d = \sum_S \lambda_Sd_S$, we get
+%\begin{align*}
+%RHS & \quad = \quad  \frac{\sum_{(u,v)\in E} c(u,v)\sum_{S\subseteq V} \lambda_Sd_S(u,v)}{\sum_{i=1}^k D(s_i,t_i)\sum_{S\subseteq V} \lambda_Sd_S(s_i,t_i)} \\
+%\\
+%& \quad = \quad \frac{\sum_{S\subseteq V} \lambda_S\sum_{(u,v)\in E} c(u,v)d_S(u,v) }{\sum_{S\subseteq V} \lambda_S\sum_{i=1}^k D(s_i,t_i)d_S(s_i,t_i) } \\
+%\\
+%& \quad = \quad \frac{\sum_{S\subseteq V}\lambda_Sc(\delta S)}{\sum_{S\subseteq V}\lambda_SD(S)} \\
+%\\
+%& \quad \ge \quad \min_{S\subseteq V:\lambda_S> 0}\frac{c(\delta S)}{D(S)} \ge \Phi^*
+%\end{align*}
+%where the last but one inequality used the elementary fact that for positive reals $a_1,\ldots,a_t,b_1,\ldots,b_t$, we have $(\sum_{i=1}^t  a_i)/(\sum_{i=1}^t b_i) \ge \min_{i=1}^t (a_i/b_i).$
+%\end{proof}
+%
+%\noindent
+%To go ahead, we define the notion of metric embedding. Given two metric spaces $(V,d)$ and $(V',d')$, we call a mapping
+%$\phi:V\to V'$ an embedding if it is one-to-one. The mapping has {\em dilation} at most $\alpha \ge 1$ if for any pair of vertices $u,v$ in $V$, we have $$d(u,v) \le \alpha\cdot d'(\phi(u),\phi(v))$$
+%The mapping has contraction at most $\beta \ge 1$, if all any pair of vertices $u,v$, we have 
+%$$d'(\phi(u),\phi(v))/\beta \le d(u,v)$$
+%The distortion of the mapping is the quantity $\rho = \alpha\beta$. The mapping is isometric if the distortion is $1$.
+%\medskip
+%
+% A natural metric space is points in $\R^h$ equipped with the $\ell_1$-norm for some $h$. 
+%Given two points $u$ and $v$ in $\R^h$, the $\ell_1$ distance between them is 
+%defined as $$||u - v||_1 := \sum_{i=1}^h |u(i) - v(i)|$$
+%It turns out that any metric in $CUT$ is isometrically embeddable to some $\ell_1$ metric and vice-versa.
+%
+%\begin{claim}\label{claim:cutl1}
+%For any $(V,d)$ with $d\in CUT$, there is a mapping $\phi:V\to \R^h$ such that $||\phi(u) - \phi(v)||_1 = d(u,v)$ for all pairs.
+%Conversely, given a mapping $\phi:V\to R^h$, there exists $d\in CUT$ such that 
+%$d(u,v) = ||\phi(u) - \phi(v)||_1$ for all pairs $u$ and $v$. The second mapping is polytime computable and has $\lambda_S>0$
+%for at most $nh$ sets.
+%\end{claim}
+%\begin{proof}
+%If $d = \sum_S\lambda_Sd_S$, define a mapping on $h$ coordinates where $h = |\{S:\lambda_S > 0\}|$, as follows.
+%$\phi(u)(S) := \lambda_S\cdot{\bf 1}_{u\in S}$. Note that $||\phi(u) - \phi(v)||_1 = d(u,v)$ for any pair $u$ and $v$.
+%
+%For the converse, we have $h$ sets for each coordinate. Fix a coordinate $i$ and order the vertices as 
+%$\phi(u_1)(i) \le \phi(u_2)(i) \le \cdots $. The sets with positive $S$ are precisely $\{u_1,\ldots,u_t\}$ for $t=1..h$.
+%$\lambda_S = \phi(u_t)(i) - \phi(u_{t-1})(i)$ for $S= \{u_1,\ldots,u_t\}$ with $\phi(u_0)(i)$ defined as $0$.
+%Check that $d(u,v) = ||\phi(u) - \phi(v)||_1$.
+%\end{proof}
+%
+%\noindent
+%Coming back to sparsest cut. Suppose instead of minimizing the expression in \eqref{eq:phicut} over $d\in CUT$,
+%we minimized over some larger domain ${\mathcal D}$, and suppose we could do so in polynomial time.
+%Furthermore, we proved that for any metric $d\in \mathcal{D}$, there
+%is a mapping to a metric $d'$ in $CUT$ with distortion $\rho$. That is, 
+%for any metric $d\in \mathcal{D}$, there is a mapping $\phi:V\to V$ such that $d'(u,v)/\beta \le d(u,v) \le \alpha d'(u,v)$
+%and $\alpha\beta = \rho$. Then there is a $\rho$-approximation to sparsest cut.
+%
+%\begin{claim}
+%Suppose there is a class of metric functions $\mathcal{D}$, for which the expression in \eqref{eq:phicut} can be minimized in polynomial time, and there is a polynomial time mapping of $\mathcal{D}$ into $CUT$ of distortion at most $\rho$. 
+%Furthermore for any $d'$ in the range of the mapping, we can write it as a combination of polynomially many elementary cut metrics. Then we have a $\rho$-approximation for the sparsest cut problem.
+%\end{claim}
+%\begin{proof}
+%Let $d$ be $\arg \min_{d\in \mathcal{D}} \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D(s_i,t_i)d(s_i,t_i)}$.
+%Use the mapping to obtain the metric $d'\in CUT$ with $d'(u,v)/\beta \le d(u,v) \le \alpha d'(u,v)$. Let $d' = \sum_S\lambda_Sd_S$. By our assumption, there are only polynomially many $S$ such that $\lambda_S>0$.
+%Now note that 
+%
+%\begin{align*}
+%\Phi^* \ge \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D(s_i,t_i)d(s_i,t_i)} \ge \frac{1}{\alpha\beta} \frac{\sum_{(u,v)\in E} c(u,v)d'(u,v)}{\sum_{i=1}^k D(s_i,t_i)d'(s_i,t_i)} \ge \frac{1}{\alpha\beta} \min_{S:\lambda_S>0} \Phi(S)
+%\end{align*}
+%Thus, we get an $\alpha\beta = \rho$ approximation.
+%\end{proof}
+%\noindent
+%If $\mathcal{D}$ is the set of {\em all} metrics, then we can indeed find the minimum by linear programming. 
+%The following is a theorem of Bourgain we will use (and maybe even prove it in the next class).
+%
+%\begin{theorem}
+%Given any metric space $(V,d)$, there is a mapping $\phi:V\to \R^{O(\log^2 n)}$ such that 
+%with high probability, we have that for any pair of vertices $u$ and $v$, $||\phi(u) - \phi(v)||_1 \le d(u,v) \le O(\log n)||\phi(u) - \phi(v)||_1$.
+%\end{theorem}
+%\noindent
+%The $O(\log n)$ approximation for sparsest cut follows from the above theorem and Claim \ref{claim:cutl1}.
+%
+%
+
+\end{document}

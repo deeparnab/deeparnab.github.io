@@ -1,0 +1,100 @@
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2007.5.18)  7 MAY 2009 09:47
+entering extended mode
+\write18 enabled.
+ %&-line parsing enabled.
+**models.tex
+(./models.tex
+LaTeX2e <2005/12/01>
+Babel <v3.8h> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, arabic, basque, bulgarian, coptic, welsh, czech, slovak, german, ng
+erman, danish, esperanto, spanish, catalan, galician, estonian, farsi, finnish,
+ french, greek, monogreek, ancientgreek, croatian, hungarian, interlingua, ibyc
+us, indonesian, icelandic, italian, latin, mongolian, dutch, norsk, polish, por
+tuguese, pinyin, romanian, russian, slovenian, uppersorbian, serbian, swedish, 
+turkish, ukenglish, ukrainian, loaded.
+(/usr/local/texlive/2007/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
+(/usr/local/texlive/2007/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2007/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2004/08/06 v2.20
+\thm@style=\toks14
+\thm@bodyfont=\toks15
+\thm@headfont=\toks16
+\thm@notefont=\toks17
+\thm@headpunct=\toks18
+\thm@preskip=\skip43
+\thm@postskip=\skip44
+\thm@headsep=\skip45
+\dth@everypar=\toks19
+) (./models.aux)
+\openout1 = `models.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 18.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 18.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 18.
+
+LaTeX Warning: No \author given.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 21.
+
+Overfull \hbox (38.24399pt too wide) in paragraph at lines 43--58
+[] 
+ []
+
+[1
+
+{/usr/local/texlive/2007/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+(./models.aux) ) 
+Here is how much of TeX's memory you used:
+ 328 strings out of 94073
+ 3615 string characters out of 1162984
+ 53804 words of memory out of 1500000
+ 3685 multiletter control sequences out of 10000+50000
+ 7898 words of font info for 28 fonts, out of 1200000 for 2000
+ 645 hyphenation exceptions out of 8191
+ 21i,15n,19p,141b,193s stack positions out of 5000i,500n,6000p,200000b,5000s
+</usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmbx
+12.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmex10.pfb></
+usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmmi10.pfb></usr/local
+/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cmmi12.pfb></usr/local/texlive/
+2007/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></usr/local/texlive/2007/texmf
+-dist/fonts/type1/bluesky/cm/cmr10.pfb></usr/local/texlive/2007/texmf-dist/font
+s/type1/bluesky/cm/cmr17.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bl
+uesky/cm/cmr8.pfb></usr/local/texlive/2007/texmf-dist/fonts/type1/bluesky/cm/cm
+sy10.pfb>
+Output written on models.pdf (1 page, 47114 bytes).
+PDF statistics:
+ 42 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 131072)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

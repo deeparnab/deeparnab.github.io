@@ -1,0 +1,361 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+
+\title{Lecture 2: Local Search}
+\author{}
+\date{}
+\maketitle
+\def\S{\bar{S}}
+\def\loc{{\tt Loc-Opt }}
+\def\true{{\tt true}}
+\def\false{{\tt false}}
+
+
+\section{Max-Cut}
+Notation: $(A,B)$ is used to denote the set of edges with one endpoint in $A$ and the other in $B$.
+
+\vspace{2ex}\noindent
+\begin{boxedminipage}{\algobox}
+Procedure {\sc LocalSearch-MC}
+\begin{algorithmic}[1]
+  \STATE $(S,\S)$ will be the cut returned. Initialize $S$ to any arbitrary set of vertices. \\
+   Initialize \loc to  \false.\\
+  \WHILE{\loc is \false}
+  	\STATE Set \loc to \true. \\
+  	\STATE If there exists vertex $v\in S$ (or $v\in \S$) such that $w(S-v,\S+v) > w(S,\S)$ (respectively, $w(S+v,\S-v) > w(S,\S)$), assign $S = S-v$ (respectively, $S = S+v$). \\
+	            \loc is set to \false.\\
+  \ENDWHILE
+\end{algorithmic}
+\end{boxedminipage}
+\vspace{1ex}
+
+The procedure above terminates since the weight of the cut increases in each iteration. 
+Let $(S,\S)$ be the locally-optimal cut returned by the algorithm.
+$\alg = \sum_{v\in S} w(v,\S) = \sum_{v\in \S} w(v,S)$.
+We know
+\begin{align*}
+\forall v\in S: ~~  w(v,S)  \le  w(v,\S); ~~~~~~~~~~~~
+\forall v\in \S: ~~  w(v,\S)  \le w(v,S) 
+\end{align*}
+Thus, $4\alg \ge \sum_{v\in S} (w(v,S) + w(v,\S)) + \sum_{v\in \S} (w(v,S) + w(v,\S)) = 2w(E)$,
+giving us $\alg \ge w(E)/2 \ge \opt/2$.  \\
+%
+%The above algorithm terminates in $O(|E|w_{max})$ iterations, where $w_{max}$ is the largest weight. 
+%This is not polynomial in the size of the input. One can take a $(1+\eps)$ hit in the approximation ratio 
+%to make the algorithm run in polytime. This is done by moving a vertex from $S$ to $\S$ (or vice-versa) 
+%iff $w(S-v,\S+v) > (1+\frac{\eps}{n})w(S,\S)$. The above analysis will give a $\frac{1}{2(1+\eps)}$-approximation, and the number of iterations will now be $O(\log_{(1+\frac{\eps}{n})}(|E|w_{max}))$. Such a trick works 
+%for (almost) all local search algorithms; henceforth we will only give the analysis for the local optimum 
+%and leave the polytime implementation details as an exercise.
+
+\noindent
+{\bf Directed Graphs. }
+In directed graphs, we use the notation $(A,B)$ to denote the arcs with tail in $A$ and head in $B$.
+The local search algorithm for finding the maximum cut in a digraph is similar, except in the end we return the
+cut $(S,\S)$ or $(\S,S)$, whichever is better. 
+
+Suppose the algorithm terminates with the partition $(S,\S)$. 
+Note that $\alg \ge w(S,\S) = \sum_{v\in S}w(v,\S) = \sum_{v\in\S}w(S,v)$.
+Local optimality gives
+\begin{align*}
+\forall v\in S: ~~  w(S\setminus v,v)  \le  w(v,\S); ~~~~~~~~~~~~
+\forall v\in \S: ~~  w(v,\S\setminus v)  \le w(S,v) 
+\end{align*}
+%Thus, adding the previous two inequalities over all vertices in $S$ and $\S$, 
+%we get $2\alg \ge w(E[S]) + w(E[\S])$, where $E[S]$ denotes the arcs with both head and tail in $S$.
+%Using the fact that $\alg \ge w(\S,S)$, we get $4\alg \ge w(E[S]) + w(E[\S]) + w(S,\S) + w(\S,S) = m$.
+%Thus, $\alg \ge \opt/4$. 
+
+
+\def\O{\bar{O}}
+\indent
+In the homework, you are asked to prove that the weight of the cut returned by the algorithm is at least $w(E)/4$; thus it is a $1/4$-approximation. You are also asked to come up with an example for which the weight of the cut returned is exactly $w(E)/4$. Does this imply we can't analyze the algorithm better? No.
+This is because maybe $\opt$ is much less than $m$ in these cases. Let us analyze the performance of our algorithm with respect to $\opt$.
+
+ Let $(O,\O)$ be the optimal dicut. We can write $\opt$ as follows
+
+\begin{equation}\label{eq:opt}
+\opt = \sum_{v\in \O} w(O,v) = \sum_{v\in \O\cap S} w(O\cap S,v)+\sum_{v\in\O\cap S}w(O\cap \S,v) +\sum_{v\in \O\cap \S}w(O\cap S,v) +\sum_{v\in \O\cap \S}w(O\cap \S,v)
+\end{equation}
+\noindent
+It'll be useful to draw the rectangle divided in four quadrants picture - I am too lazy to do it in the notes.
+Now we use the local optimality conditions above for the first and the fourth term in \eqref{eq:opt} to give
+\begin{align}
+\sum_{v\in \O\cap S} w(O\cap S,v) \le \sum_{v\in \O\cap S} w(v, \S) = w(\O\cap S,\S) \le w(S,\S) \label{eq:1} \\
+\sum_{v\in \O\cap \S}w(O\cap \S,v) = \sum_{v\in O\cap \S} w(v,\O\cap\S) \le \sum_{v\in O\cap \S} w(S,v) = w(S,O\cap \S)\label{eq:4}
+\end{align}
+The second and third term in \eqref{eq:opt} are bounded as
+\begin{align}
+\sum_{v\in\O\cap S}w(O\cap \S,v) \le \sum_{v\in S} w(\S, v) = w(\S,S) \label{eq:2} \\
+\sum_{v\in \O\cap \S}w(O\cap S,v)  \le \sum_{v\in \O\cap \S} w(S,v) = w(S,\O\cap \S)\label{eq:3}
+\end{align}
+Putting all together, gives 
+$$\opt \le w(S,\S) + w(\S,S) + w(S, \O\cap \S) + w(S,O\cap \S) = 2w(S,\S) + w(\S,S) \le 3\alg.$$
+
+\section{Metric Facility Location and $k$-Median}
+
+\vspace{2ex}\noindent
+\begin{boxedminipage}{\algobox}
+Procedure {\sc LocalSearch-UFL}
+\begin{algorithmic}[1]
+  \STATE $X$ is the set of facilities opened initialized to an arbitrary facility. Clients always connect to the 
+              closest facility in $X$. Initialize \loc to  \false.\\
+  \WHILE{\loc is \false}
+  	\STATE Set \loc to \true. \\
+  	\STATE {\em (Add):} If adding a facility $i \in F\setminus X$ decreases the total cost, $X=X\cup i$, 						  and	 \loc is set to \false.\\
+	\STATE {\em (Delete):} If deleting a facility $i \in X$ decreases the total cost, $X=X-i$, and 
+						     \loc is set to \false.\\
+         \STATE {\em (Swap):} If swapping a facility $i \in X$ with $i'\in F\setminus X$, decreases the total cost,  					  $X=X - i + i'$, and \loc is set to \false.
+\ENDWHILE
+\end{algorithmic}
+\end{boxedminipage}
+\vspace{1ex}
+
+Let $X$ be the set of facilities opened at the end of the above algorithm. We use notation as in the previous class. $\sigma(j)$ will denote the facility in $X$ client $j$ is connected to. $\Gamma(i)$ denotes the set of clients connected to facility $i$. $X^*$ will denote the set of facilities opened in the optimal solution. $\sigma^*$ and $\Gamma^*$ are defined respectively. $c_j = c(\sigma(j),j)$ and $c^*_j = c(\sigma^*(j),j)$.
+$F_{\alg} = \sum_{i\in X}f_i$, $C_{\alg} = \sum_{j\in C} c_j$. Similarly $F^*$ and $C^*$ are defined. \\
+
+\noindent
+{\bf Bounding $C_{\alg}$.}
+We know that adding any facility $i\in X^*\setminus X$ doesn't decrease cost. Note that if we add such an $i$,
+we could've moved all clients in $\Gamma^*(i)$ to $i$. Since this doesn't decrease cost,
+$$\forall i\in X^*\setminus X; ~~~~ \sum_{j\in \Gamma^*(i)}c_j \le f_i + \sum_{j\in \Gamma^*(i)} c^*_j$$
+Note that the above is true for $i\in X^*\cap X$ since $j$ goes to the closest facility in $X$. 
+So, adding over all $i\in X^*$ we get,
+$\sum_{i\in X^*} \sum_{j\in \Gamma^*(i)} c_j \le \sum_{i\in X^*} f_i +\sum_{j\in \Gamma^*(i)} c^*_j$, that is,
+$$C_{\alg} \le F^* + C^*$$ 
+
+\noindent
+{\bf Bounding $F_{\alg}$.} Fix an $i\in X$. How much can the connection cost of clients increase if $i$ is deleted? All clients in $\Gamma(i)$ will move to their second-nearest facility in $X$. But what handle do we have on the distance between $j$ and the second-nearest facility?
+
+Well we know the cost to connect $j$ and $\sigma^*(j)$. So, if $\sigma^*(j)$ is in $X$, let's move $j$ to that. 
+What if $\sigma^*(j)$ isn't there? Well move it to the facility in $X$ closest to $\sigma^*(j)$. This 
+motivates the following definition. 
+
+\def\near{{\tt nearest}}
+\def\bad{{\tt bad}}
+\def\Far{{\tt Far}}
+\def\friend{{\tt friend}}
+
+Given $i^*\in X^*$, let $\near(i^*)$ denote the facility $i$ in $X$ with minimum $c(i,i^*)$. 
+Let's get back to our facility $i$. Let us look at clients $j\in \Gamma(i)$ such that $\near(\sigma^*(j)) \neq i$.
+Call these clients $\Far(i)$. These clients we can argue about. 
+If $i$ is deleted, then clients in $\Far(i)$ can be assigned to 
+$\near(\sigma^*(j))$, and their new connection cost becomes 
+\begin{align*}
+c(\near(\sigma^*(j)), j) & \qquad \le & c(\sigma^*(j),j) + c(\sigma^*(j),\near(\sigma^*(j))) \\
+&\qquad \le &  c^*_j+ c(\sigma^*(j), \sigma(j)) ~~ \le ~~ c^*_j + c(\sigma^*(j),j) + c(j,\sigma(j)) = c_j + 2c^*_j
+\end{align*}
+The second inequality follows from the definition of $\near()$, and all others from metricity.
+So, for all these clients, the connection cost increases by at most $2c^*_j$.  
+
+What about the other clients in $\Gamma(i)$? These clients $j$ have $\near(\sigma^*(j)) = i$. 
+In fact, let all these $\sigma^*(j)$'s be called the set $X^*_i$. Formally,
+\begin{equation}\label{eq:Xidefn}
+X^*_i := \{i^* \in X^*: i^* = \sigma^*(j) \mbox{ for some } j\in \Gamma(i), ~\mbox{ and } \near(i^*) = i\}.
+\end{equation}
+\noindent
+A simple but crucial observation is that $X^*_i$'s are disjoint for different $i\in X$ (since $\near(i^*) = i$ for
+$i^*\in X^*_i$). Let $\friend(i)$ be the facility in $X^*_i$ closest to $i$ and consider swapping $i$ and $\friend(i)$.
+All clients in $\Far(i)$ go and connect to $\near(\sigma^*(j))$. All clients in $\Gamma(i)\setminus \Far(i)$
+connect to $\friend(i)$. Since this swap can't increase cost, we have
+
+\begin{align}
+f_i + \sum_{j\in \Gamma(i)}c_j \le f_{\friend(i)} + \sum_{j\in \Far(i)}\left(c_j + 2c^*_j\right) + \sum_{j\in \Gamma(i)\setminus\Far(i)} c(\friend(i),j)
+\end{align}
+
+Now, $c(\friend(i),j) \le c(i,j) + c(i,\friend(i)) \le c(i,j) + c(i,\sigma^*(j)) \le c_j + c(i,j) + c(\sigma^*(j),j) = 2c_j + c^*_j$.
+Thus, 
+$$ f_i +  \sum_{j\in \Gamma(i)}c_j \le f_{\friend(i)} + \sum_{j\in \Far(i)}\left(c_j + 2c^*_j\right) + \sum_{j\in \Gamma(i)\setminus\Far(i)} \left(2c_j + c^*_j \right)$$
+This implies, $f_i \le f_{\friend(i)} + \sum_{j\in \Gamma(i)} (2c^*_j + c_j)$ (weak!). Adding over all $i\in X$, and using the fact that $X^*_i$'s are disjoint, gives us
+$$F_{\alg} = \sum_{i\in X}f_i \le \sum_{\friend(i) \in X^*_i} f_{i^*} + 2C^* + C_{\alg} \le 2F^* + 3C^* $$
+where we use the bound on $C_{\alg}$.  
+
+$$\alg = F_{\alg} + C_{\alg} \le 3F^* + 4C^*$$
+\noindent
+The above local search algorithm is a $4$-approximation.  
+
+%\noindent
+%{\bf Balancing facility and connection costs.} Note that we actually show $F_{\alg} \le 2F^* + 3C^*$, 
+%and $C_{\alg} \le F^* + C^*$ -- we can exploit this asymmetry to get a better factor. Suppose we scale the facility costs by a factor $\rho > 1$ and run the above algorithm. Let $X_\rho$ be the set of facilities opened,
+%and let $\alg(\rho)$ be the cost of this solution decomposed as $F_{\alg(\rho)} + C_{\alg(\rho)}$. 
+%The above analysis shows that $\rho\cdot F_{\alg(\rho)} \le 2\rho\cdot F^*+ 3C^*$ and 
+%$C_{\alg(\rho)} \le \rho\cdot F^* + C^*$.  Thus, $\alg(\rho) = F_{\alg(\rho)} + C_{\alg(\rho)} \le (2+\rho)F^* + (\frac{3}{\rho} + 1)C^*$. The minimum ratio is obtained when $2 + \rho = \frac{3}{\rho} + 1$, which is 
+%when $\rho = \frac{\sqrt{13} -1}{2}$ giving an approximation ratio of around $3.303...$.
+%Actually, the augmentation trick discussed in Lecture 1 gives a slightly better factor. \\
+%
+
+
+\subsection*{$k$-Median}
+(Some more details of what I was talking about in the last 25 minutes in class)
+
+\vspace{2ex}\noindent
+\begin{boxedminipage}{\algobox}
+Procedure {\sc LocalSearch-$k$Med}
+\begin{algorithmic}[1]
+  \STATE $X$ is the set of facilities opened initialized to any set of $k$ arbitrary facility. 
+   	      Clients always connect to the closest facility in $X$. Initialize \loc to  \false.\\
+  \WHILE{\loc is \false}
+  	\STATE Set \loc to \true. \\
+         \STATE {\em (Swap):} If swapping a facility $i \in X$ with $i'\in F\setminus X$, decreases the total cost,  					  $X=X - i + i'$, and \loc is set to \false.
+\ENDWHILE
+\end{algorithmic}
+\end{boxedminipage}
+\vspace{1ex}
+
+\def\i{i^*}
+\noindent
+We use notation as in the case of UFL. Note that there is no $F_{\alg}$ and $F^*$. However, we cannot
+bound $C_{\alg}$ as we did in the UFL case since we cannot add facilities.
+
+Consider a facility $i\in X$, and define $X^*_i$ and $\friend(i)\in X^*_i$ as in \eqref{eq:Xidefn}. 
+From the previous analysis, we can guess that we would want to analyze the case of 
+swapping $i$ with $\friend(i)$. However, a little thought shows that this doesn't work if 
+$|X^*_i| > 1$. In particular, we cannot argue about the connection costs for $j$ with
+$\near(\sigma^*(j)) = i$ but $\sigma^*(j)\neq \friend(i)$. The trick is {\em not} to ``swap-out"
+such facilities at all.
+
+More definitions. Let $X_0 := \{i\in X: |X^*_i| = 0\}$, 
+$X_1 := \{i\in X: |X^*_i| = 1\}$, and $X_{2} := \{i\in X: |X^*_i| \ge 2\}$. 
+(Note that if there are no facilities in $X_2$, we are in the {\em lucky world}, as we
+talked about in class).
+Since $|X| = |X^*| =k$, and since $X^*_i$'s are disjoint for different $i\in X$, 
+we have that $|X_0| \ge |X_2|$. This lets us define the following swap pairs.
+We will perform a swap of the facilities in the swap pairs, and since they cannot help,
+we will be bounding connection costs.
+We use the following definition: given a set $R\subseteq X^*\times X$, the degree
+of $\i\in X^*$ is $deg(\i) := |\{i:(\i,i)\in R\}|$. Similarly degree of $i\in X$ is defined.
+
+\begin{claim}\label{claim:mapping}
+There exists a set $R \subseteq X^* \times (X_0\cup X_1)$ such that
+for all $\i\in X^*$, $deg(\i)=1$,
+for all $i\in X_1$, $deg(i) = 1$, for all $i\in X_0$, $deg(i)\le 2$.
+\end{claim}
+\begin{proof}
+For all $i\in X_1$, add $(\friend(i),i)$ to $R$. Now arbitrarily map the remaining $k - |X_1|$ facilities
+of $X^*$ with facilities in $X_0$. Since $k - |X_1| = |X_0| +|X_2| \le 2|X_0|$, we can always 
+find one which maps $i\in X$ with at most $2$ facilities in $X^*$.
+\end{proof}
+The above claim says that each $i^*\in X^*$ is swapped in once, and each facility in $X_0$ are swapped
+out at most twice. 
+
+Now let us look at the swaps defined by $R$: for $(i^*,i)\in R$, add $i^*$ in and delete $i$.
+For each $j\in \Gamma^*(i^*)$, we re-assign it to $i^*$. If $i\in X_0$, we assign each $j\in \Gamma(i)\setminus \Gamma^*(\i)$ to $\near(\sigma^*(j))$. If $i\in X_1$, we assign each $j\in \Far(i)$ to 
+ $\near(\sigma^*(j))$, and we know for each $j\in \Gamma(i)\setminus\Far(i)$, we have $\sigma^*(j) = \friend(i) = i^*$. That is, $\Far(i) = \Gamma(i)\setminus\Gamma^*(\i)$. Since swaps don't decrease cost, we get the following: \\
+
+\noindent
+If $i\in X_0 \cup X_1$
+\begin{align*}
+\sum_{j\in \Gamma^*(i^*)} c_j +\sum_{j\in \Gamma(i)\setminus\Gamma^*(i^*)} c_j &\qquad \le & \sum_{j\in \Gamma^*(i^*)} c^*_j + \sum_{j\in \Gamma(i)\setminus\Gamma^*(i^*)} (2c^*_j + c_j) 
+\end{align*}
+implying, $$\sum_{j\in \Gamma^*(i^*)} (c_j - c^*_j)  \le  \sum_{j\in \Gamma(i)} 2c^*_j. $$
+%
+%\noindent
+%if $i\in X_1$
+%\begin{align*}
+%\sum_{j\in \Gamma^*(i^*)} c_j +\sum_{j\in \Gamma(i)\setminus\Gamma^*(i^*)} c_j &\qquad \le & \sum_{j\in \Gamma^*(i^*)} c^*_j + \sum_{j\in \Gamma(i)\setminus\Gamma^*(i^*)}(2c^*_j + c_j) 
+%\end{align*}
+Thus, $$\sum_{(\i,i)\in R}~\sum_{j\in \Gamma^*(i^*)} (c_j - c^*_j) \le \sum_{(\i,i)\in R}~ \sum_{j\in \Gamma(i)} 2c^*_j$$
+The LHS is precisely $\sum_{i^*\in X^*} deg(\i)\cdot \left(\sum_{j\in \Gamma^*(i^*)} (c_j-c^*_j)\right) = C_{\alg} - C^*$. The RHS is at precisely
+$\sum_{i\in X_0\cup X_1} deg(i)\cdot \left( \sum_{j\in \Gamma(i)} 2c^*_j\right)$. which is at most $4C^*$. 
+This implies a $5$-approximation. 
+
+
+\subsubsection*{$p$ swaps: the state of the art for $k$-Median.}
+
+How can we do better than $5$? Well, this brings us to the idea of swapping more than one facility at a time (this was brought up in the class). Suppose I can swap $p$ facilities in-and-out at a time ($p$ is a constant).
+Well, instead of defining swap pairs, we will have swap sets. That is, each entry of $R$ would be 
+$(A^*,A)$ with $|A^*| = |A| \le p$. We still define $deg(i^*) = |\{(A^*,A)\in R: i^*\in A^*\}|$, and similarly, 
+$deg(i)$. 
+
+Let $X_t := \{i\in X: |X^*_i| = t\}$. 
+Note that $|X_0| = \sum_{t\ge 1} (t-1)|X_t|$ since $\sum_{t\ge 0}|X_t| = \sum_{t\ge 0}t|X_t| = k$. 
+For each $t\ge 1$, and for each $i\in X_t$, assgin $(t-1)$ arbitrary distinct facilities of $X_0$ to $i$.
+The above equality tells us that this can be done. We describe the swap sets now. 
+
+For $1\le t\le p$, and for $i\in X_t$, form the swap set $A^*_i = X^*_i$ and $A_i$ being $i$ and the $(t-1)$ facilities of $X_0$ assigned to it. 
+Add $p$ copies of $(A^*_i,A_i)$ to $R$.
+
+For $t> p$, for $i\in X_t$ we the sets $A_i$ will {\em not} contain $i$. Thus, facilities in $X_{p+1}$ or larger are never swapped out. Instead, consider the $t$ facilities in $X^*_i$ and pick $t$ subsets of size exactly $p$ such that each $i^* \in X^*_i$ appears in exactly $p$ subsets. This can be done in many ways. Similarly, consider the $(t-1)$ facilities of $X_0$ assigned to $i$ and for $t$ subsets of size exactly $p$ such that each facility
+appears in at most $(p+1)$. Pair these up arbitrarily and add it to $R$.
+
+This completes the description of $R$. It should be clear that $deg(\i) = p$ for all $\i\in X^*$, $deg(i) \le p+1$ for all $i\in X_0\cup \cdots \cup X_p$ and $deg(i)= 0$ for al $i\in X_{p+1} \cup \cdots$. The following should also be clear from the analysis of the $5$ factor and the sets that we add.
+
+\begin{claim}
+For any $(A^*_i,A_i)\in R$, 
+$$\sum_{\i\in A^*_i} \sum_{j\in \Gamma^*(\i)} (c_j - c^*_j) \le \sum_{i'\in A_i}\sum_{j\in \Gamma(i')} 2c^*_j$$
+\end{claim}
+\begin{proof}
+Consider $(A^*_i,A_i)$ for $i\in X_1\cup\cdots\cup X_p$ first. 
+Firstly, for all $\i\in A^*_i$, assign clients in $\Gamma^*(\i)$ to $\i$. Consider a facility $i'$ deleted in $A_i$.
+Let $\Gamma'(i')$ be the set of clients in $\Gamma(i)$ which haven't been assigned to a client in 
+$\Gamma^*(\i)$ for some $\i\in A^*_i$. Note that by our choice of $A_i$, all these clients $j$ can be 
+assigned to $\near(\sigma^*(j))$. Thus, we get the following inequality
+$$ 
+\sum_{\i\in A^*_i}\sum_{j\in \Gamma^*(\i)} c_j ~ + ~ \sum_{i'\in A_i}~~~ \sum_{j\in \Gamma'(i')} c_j  ~ \le ~ \sum_{\i\in A^*_i}\sum_{j\in \Gamma^*(\i)} c^*_j ~+ ~ \sum_{i'\in A_i}~~~ \sum_{j\in \Gamma'(i')} (c_j + 2c^*_j) 
+$$
+Rearranging, we get the claim. For $(A^*_i,A_i)$ for $i\in X_t$, $t>p$, note that we swap out facilities
+only in $X_0$. So the above inequality holds for those as well.
+\end{proof}
+
+\begin{theorem}
+The $p$-swap local search algorithm for $k$-median is a $(3+\frac{2}{p})$-approximation.
+\end{theorem}
+\begin{proof}
+Add the inequalities given in the above claim for all swap sets in $R$. We get in the LHS
+$$ 
+\sum_{(A^*_i,A_i)\in R}\sum_{\i\in A^*_i} \sum_{j\in \Gamma^*(\i)} (c_j - c^*_j) = 
+\sum_{\i\in X^*}deg(\i)\left(\sum_{j\in \Gamma^*(\i)} (c_j - c^*_j) \right) = p(C_{\alg} - C^*)
+$$
+since $deg(\i) = p$ for all $\i\in X^*$. The RHS in the sum is 
+$$
+\sum_{(A^*_i,A_i)\in R} \sum_{i'\in A_i}\sum_{j\in \Gamma(i')} 2c^*_j = \sum_{i\in X}deg(i)\sum_{j\in \Gamma(i)} 2c^*_j \le 2(p+1)\sum_{i\in X}\sum_{j\in \Gamma(i)} c^*_j = 2(p+1)C^*.
+$$
+since $deg(i)\le p+1$ for all $i\in X$. Equating the two, 
+$pC_{alg} \le (3p + 2)C^*$.
+\end{proof}
+\end{document}

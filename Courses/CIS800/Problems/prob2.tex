@@ -1,0 +1,168 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+\def\lp{{\tt lp}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+\title{{\bf Problems in Approximation Algorithms} \\ 
+{\normalsize CIS800}}
+\date{Due: November 11th, 2010}
+\maketitle
+\begin{exercise}
+\begin{itemize}
+\item[(a)]
+Recall the LP relaxation for the set cover problem done in class.
+We showed that the integrality gap of the LP is at most $f$, where 
+$f$ is the maximum frequency of an element. For all $f$, 
+construct an instance of set cover where the frequencies are bounded by $f$
+and $\opt = f\cdot \lp$.
+\item[(b)] Construct an example of a set cover with $n$ elements such that 
+$\opt = \Omega(\log n)\cdot \lp$. \\{\bf Hint:} Consider a set system with $k$ sets 
+and $k\choose{k/2}$ elements with each element in $k/2$ sets.
+\end{itemize}
+\end{exercise}
+\vspace{2ex}
+\begin{exercise}
+Consider the knapsack problem: we are given a knapsack of size $B$ and $n$ single copy items 
+with item $j$ having profit $p_j$ and weight $w_j$. Assume $w_j \le B$ for all $j$.
+The goal is to pick a subset of items which fits into the knapsack and gives maximum profit. 
+The LP relaxation is as follows:
+$$\max \{\sum_{j=1}^n p_jx_j: ~~ \sum_{j=1}^n w_jx_j \le B; ~~ 0\le x_j \le 1, ~\forall j\in [n] \}$$
+Let $x$ be a basic feasible solution of the above LP.
+\begin{enumerate}
+\item[(a)] Let $F := \{j: 0 < x_j < 1\}$. What can you say about $|F|$?
+\item[(b)] Can you use the above to get a $1/2$-approximation for the knapsack problem?
+\item[(c)] What is the integrality gap of the above LP?
+\item[(d)] Can you get a better approximation if we have the guarantee that $p_j \le \eps\cdot \opt$ for all items $j$? Can you use this to get a $(1-\eps)$ approximation in time $n^{O\left(1/\eps\right)}$? \\
+\noindent
+{\bf Hint:} There cannot be more than $1/\eps$ items having profit $p_j > \eps\cdot\opt$ in the final solution.
+\end{enumerate}
+\end{exercise}
+\vspace{2ex}
+\begin{exercise}
+Let's investigate LP relaxations for the max-cut problem. 
+We'll think of a cut as a $\{0,1\}$ assignment on the vertices, and 
+an edge is in the cut if its endpoints are assigned different values. 
+\begin{itemize}
+\item[(a)]
+(Undirected Graphs.) Let's have a variable $x_{uv}$ for each edge $(u,v)$ and a 
+variable $y_u$ for each vertex $u\in V$. Consider the following linear program
+\begin{align}
+\lp_U := ~~~~~~~~~ \max & \qquad \sum_{(u,v)\in E} w_{uv}x_{uv} & \qquad 0 \le x,y \le 1 \label{lp:maxcutund} \\
+\textrm{ subject to} & \qquad x_{uv} \le y_u + y_v & \qquad \forall (u,v)\in E \notag \\
+			     & \qquad x_{uv} \le 2 - (y_u + y_v) & \qquad \forall (u,v)\in E \notag 	
+\end{align}
+\begin{itemize}
+\item Prove that \eqref{lp:maxcutund} is a valid LP relaxation for the max-cut problem.
+\item Design an algorithm which returns a cut of weight at least $\lp_U/2$.
+\item Show that the $2$ above cannot be replaced by any smaller constant; that is the integrality gap of the LP is arbitrarily close to $1/2$.
+\end{itemize}
+
+\item[(b)] 
+(Directed Graphs.) As before, we have a variable $x_{uv}$ for every directed edge $(u,v)$ and $y_u$ for
+every vertex. Consider the following linear program
+\begin{align}
+\lp_D := ~~~~~~~~~ \max & \qquad \sum_{(u,v)\in E} w_{uv}x_{uv} & \qquad 0 \le x,y \le 1 \label{lp:maxcutd} \\
+\textrm{ subject to} & \qquad x_{uv} \le y_v & \qquad \forall (u,v)\in E \notag \\
+			     & \qquad x_{uv} \le 1 - y_u  & \qquad \forall (u,v)\in E \notag 	
+\end{align}
+\begin{itemize}
+\item Prove that \eqref{lp:maxcutd} is a valid LP relaxation for the max-cut problem in directed graphs.
+\item What's the best upper and lower bounds you can prove on the integrality gap of this LP? 
+%(Recall if they match you are done. So keep on trying till they do.)
+\end{itemize}
+\end{itemize}
+ {\bf Hint:} You might want to recall that we already have local search algorithms which return cuts
+ of weight $w(E)/2$ and $w(E)/4$ for the two cases respectively.
+\end{exercise}
+
+\iffalse
+Solve LP. Let $A := \{v: y_v \le 1/3\}, B := \{v: y_v \ge 2/3\}$ and $C := \{v: 1/3 < y_v < 2/3 \}$.
+Consider an arc $(u,v)$ with both endpoints in $A$: since $y_v \le 1/3$ we have $x_{uv} \le 1/3$.
+Similarly an arc $(u,v)$ contained in $B$ has $x_{uv} \le 1/3$ since $y_u \ge 2/3$. An arc 
+$(u,v)$ in $C$ has $x_{uv} < 1/3$ since 
+\fi
+
+\vspace{2ex}
+\begin{exercise}
+Consider the following problem called maximum budgeted allocation (MBA).
+There are $m$ items and $n$ agents. Each agent $i$ bids $b_{ij}$ on item $j$,
+and has a budget $B_i$. On getting a subset $S$ of items, agent $i$ pays 
+$\min\left(B_i,\sum_{j\in S}b_{ij}\right)$. The problems is to find an allocation of items
+to agents which generates the maximum revenue. 
+
+Cast this problem as that of maximizing a submodular function over a matroid constraint
+and argue there exists a randomized $(1-1/e)$ approximation algorithm for the problem.
+Check whether the two oracles can be simulated in polynomial time.
+1. {\em Value oracle}: given set $S$, return $f(S)$. 2. {\em Independence Oracle}:
+given set $S$, return in $S\in \mathcal{I}$ or not. \\
+\noindent
+{\bf Hint:} Think partition matroids to capture that an item can go to at most one agent.
+
+\end{exercise}
+
+
+\vspace{1ex}
+\begin{exercise}
+Recall the definition of a  weakly supermodular function $r$.
+For any two subsets $A,B\subseteq V$, at least one of the two holds
+\begin{enumerate}
+\item $r(A \cup B) + r(A \cap B) \ge r(A) + r(B)$
+\item $r(A \setminus B) + r(B \setminus A) \ge r(A) + r(B)$.
+\end{enumerate}
+\noindent
+Given an edge $e$, define the residual function $r'(S)$ as follows: $r'(S) = r(S)$ if $e\notin \delta(S)$; 
+otherwise $r'(S) = r(S) - 1$. Prove that $r'$ is also weakly supermodular.
+\end{exercise}
+
+\end{document}

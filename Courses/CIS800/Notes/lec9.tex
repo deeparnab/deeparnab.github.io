@@ -1,0 +1,279 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newlength{\lpbox}
+\setlength{\lpbox}{8.1cm}
+
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+\def\lp{{\tt lp}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+
+\title{Lecture 9: Sparsest Cut and Metric Embeddings}
+\author{}
+\date{}
+\maketitle
+\def\x{{x^{\tt int}}}
+\def\E{{\mathbf E}}
+\def\Pr{{\mathbf{Pr}}}
+\noindent
+
+\def\R{{\mathbb R}}
+\def\sep{{\tt sep}}
+%\subsection*{The Sparsest Cut Problem and Metric Embeddings}
+In the sparsest cut problem the input is an undirected graph $G=(V,E)$. Each edge has a 
+quantity $c(e)$ which we now think of as the capacity of the cut. There also exists demand
+pairs $\{(s_1,t_1), \ldots, (s_k,t_k)\}$, and pair $i$ has a demand $D_i$.
+Given a subset of vertices $S\subseteq V$, let 
+$\sep(S) := \{i: |(s_i,t_i)\cap S| = 1\}$, and let $D(S) := \sum_{i\in S} D_i$, and
+the {\em sparsity} of $S$ is defined as 
+$$\Phi(S) := \frac{c(\delta(S))}{D(\sep(S))}$$
+The sparsest cut problem is to find the cut of minimum sparsity, and $$\Phi^* := \min_{S\subseteq V} \frac{c(\delta(S))}{D(\sep(S))}$$
+\medskip
+
+%An interesting special case is when $D(u,v) = 1$ for all pairs $(u,v)$. This is called
+%the {\em uniform} sparsest cut problem. This is
+
+Given a set $S\subseteq V$, we associate the 
+distance $d_S(u,v) := 1$ if exactly one of $u$ and $v$ are in $S$, and $0$ otherwise. 
+Such a distance function is called an elementary cut metric on $V$.
+It is straightforward to see that 
+\begin{equation}\label{eq:sparsitydefn}
+\Phi^* = \min_{d: \textrm{elementary cut metric}} \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D_id(s_i,t_i)}
+\end{equation}
+\noindent
+
+To get a lower bound on the sparsity, we minimize over {\em general metrics} instead of elementary cut metrics.
+This, as we saw last time, can be done in polynomial time via the following LP.
+
+\begin{align}
+\min & \qquad \sum_{(u,v)} c(u,v)d(u,v) & d(u,v)\in [0,1] \label{lp:sparsestcut}\\
+				 & \qquad d(u,v) \le d(u,w) + d(w,v) & \forall (u,v,w) \in V\times V\times V \\
+			      	& \qquad \sum_{i=1}^k D_i d(s_i,t_i) \ge 1 \label{eq:sparsest2}
+\end{align}
+
+We first show how to use the multicut algorithm done last time to obtain an approximation for the sparsest cut problem. 
+Subsequently, we will see how the theory of metric embeddings will help give a better approximation.
+
+\subsection*{Sparsest Cut from Multicut}
+Let $D := \sum_{i=1}^k D_i$.
+Solve \eqref{lp:sparsestcut} to get distances $d(\cdot,\cdot)$. 
+\begin{claim}
+We can find a set of demand pairs $S\subseteq [k]$ such that  $$d(s_i,t_i) \ge \frac{1}{H(D)\sum_{i\in S} D_i}$$ for all $i\in S$, where $H(\ell)$ is the harmonic number $1 + 1/2 + \cdots + 1/\ell$. 
+\end{claim}
+\begin{proof}
+Rename the demand pairs such that $d(s_1,t_1) \ge \cdots \ge d(s_k,t_k)$. Let $S_i$ be the set $\{1,2,\ldots,i\}$.
+We show that one of these $S_i$'s will satisfy the conditions of the claim. Suppose not.
+That is, $d(s_i,t_i) < \frac{1}{H(D)D(S_i)}$. Note that $D_i := D(S_i) - D(S_{i-1})$ (with $D(\emptyset) := 0$). 
+So, we get
+$$\sum_{i=1}^k D_id(s_i,t_i) < \frac{1}{H(D)}\sum_{i=1}^k\frac{D(S_i) - D(S_{i-1})}{D(S_i)} \le \frac{1}{H(D)}\left(1 + \frac{1}{2} + \cdots + \frac{1}{D}\right) = 1$$
+which contradicts \eqref{eq:sparsest2}.
+\end{proof}
+\noindent
+Let $S$ be the set with $d(s_i,t_i) \ge \frac{1}{H(D)D(S)}$. We now define $d'(u,v) := D(S)H(D)\cdot d(u,v)$ for all $u,v$.
+Note that $d'$ remains a distance (satisfies triangle inequality) and $d'(s_i,t_i) \ge 1$ for all $i\in S$; that is, $d'$ is a feasible
+solution to the multicut LP when the terminals are the set $S$. This gives us the existence of a set of edges $F\subseteq E$ such that each pair $s_i$ is separated from $t_i$ and $c(F) = O(\ln |S|)\cdot \sum_{u,v} c(u,v)d'(u,v)$. 
+
+Suppose $F$ separates the graph into pieces $X_1,X_2,\ldots,X_r$. We claim that one of the $X_i$'s will have low sparsity.
+Note that $F = \bigcup_i \delta X_i$, and each edge of $F$ is in at most two $\delta X_i$'s. 
+So, $$\sum_{i=1}^r c(\delta X_i) \le 2c(F)$$ 
+\noindent Furthermore, $\bigcup_i \sep(X_i)$ contains all demand pairs in $S$, and each demand pair $(s_i,t_i)$ lies in exactly two $\sep(X_j)$'s. So,
+$$\sum_{i=1}^r D(\sep(X_i)) = 2D(S)$$
+Therefore,
+
+$$\min_{i=1}^r \frac{c(\delta(X_i))}{D(\sep(X_i))} \le \frac{\sum_{i=1}^r c(\delta(X_i))}{\sum_{i=1}^r D(\sep(X_i))} \le \frac{2c(F)}{2D(S)} = \frac{O(\ln k)D(S)H(D)\lp}{D(S)} = O(\log k\log D)\lp$$
+giving us a $O(\log k\log D)$-approximation.
+
+
+\subsection*{Sparsest Cut from Metric Embeddings}
+Let's recall the definition of sparsity
+\begin{equation}\label{eq:sparsitydefn}
+\Phi^* = \min_{d: \textrm{elementary cut metric}} \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D_id(s_i,t_i)}
+\end{equation}
+
+A metric $d$ on $V$ is called a cut metric if it is a linear combination of elementary cut metrics. 
+The set of all such metrics is the cone of all elementary cut metrics on $V$.
+$$CUT := \{d: \exists \lambda_S: ~~ d=\sum_{S\subseteq V} \lambda_S d_S\}$$
+\noindent
+The following claim shows that in the sparsity definition we could minimize over all cut metrics
+instead of elementary cut metrics.
+
+
+\begin{claim}
+\begin{equation}\label{eq:phicut}
+\Phi^* = \min_{d \in CUT} \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D_id(s_i,t_i)}
+\end{equation}
+\end{claim}
+\begin{proof}
+Since we are minimizing over a larger space, we have $\Phi^* \ge RHS$.
+Let $d$ be the minimizer of the RHS. Since, $d = \sum_S \lambda_Sd_S$, we get
+\begin{align*}
+RHS & \quad = \quad  \frac{\sum_{(u,v)\in E} c(u,v)\sum_{S\subseteq V} \lambda_Sd_S(u,v)}{\sum_{i=1}^k D_i\sum_{S\subseteq V} \lambda_Sd_S(s_i,t_i)} \\
+\\
+& \quad = \quad \frac{\sum_{S\subseteq V} \lambda_S\sum_{(u,v)\in E} c(u,v)d_S(u,v) }{\sum_{S\subseteq V} \lambda_S\sum_{i=1}^k D_id_S(s_i,t_i) } \\
+\\
+& \quad = \quad \frac{\sum_{S\subseteq V}\lambda_Sc(\delta(S))}{\sum_{S\subseteq V}\lambda_SD(S)} \\
+\\
+& \quad \ge \quad \min_{S\subseteq V:\lambda_S> 0}\frac{c(\delta(S))}{D(S)} \ge \Phi^*
+\end{align*}
+where the last but one inequality used the elementary fact that for positive reals $a_1,\ldots,a_t,b_1,\ldots,b_t$, we have $(\sum_{i=1}^t  a_i)/(\sum_{i=1}^t b_i) \ge \min_{i=1}^t (a_i/b_i).$
+\end{proof}
+
+\noindent
+\def\L{{\mathcal L}}
+A metric $d$ on $V$ is called an $\L_1$ metric if there is a mapping $\phi:V\to \R^h$ for some $h$ such that 
+$d(u,v)$ is the $\ell_1$ distance between $\phi(u)$ and $\phi(v)$, that is, 
+$$d(u,v) = ||\phi(u) - \phi(v)||_1 = \sum_{i=1}^h |\phi(u)(i) - \phi(v)(i)|$$
+
+\begin{lemma}\label{lem:cutl1}
+For any $(V,d)$ with $d\in CUT$, there is a mapping $\phi:V\to \R^h$ such that $||\phi(u) - \phi(v)||_1 = d(u,v)$ for all pairs
+for some $h > 0$.
+Conversely, given a mapping $\phi:V\to R^h$, there exists $d\in CUT$ such that 
+$d(u,v) = ||\phi(u) - \phi(v)||_1$ for all pairs $u$ and $v$. The second mapping is polytime computable and has $\lambda_S>0$
+for at most $nh$ sets.
+\end{lemma}
+\begin{proof}
+If $d = \sum_S\lambda_Sd_S$, define a mapping on $h$ coordinates where $h = |\{S:\lambda_S > 0\}|$, as follows.
+$\phi(u)(S) := \lambda_S\cdot{\bf 1}_{u\in S}$. Note that $||\phi(u) - \phi(v)||_1 = d(u,v)$ for any pair $u$ and $v$.
+
+For the converse, we have $h$ sets for each coordinate. Fix a coordinate $i$ and order the vertices as 
+$\phi(u_1)(i) \le \phi(u_2)(i) \le \cdots $. The sets with positive $S$ are precisely $\{u_1,\ldots,u_t\}$ for $t=1..h$.
+$\lambda_S = \phi(u_t)(i) - \phi(u_{t-1})(i)$ for $S= \{u_1,\ldots,u_t\}$ with $\phi(u_0)(i)$ defined as $0$.
+Check that $d(u,v) = ||\phi(u) - \phi(v)||_1$.
+\end{proof}
+
+Thus, we get 
+$$\Phi^* := \min_{d\in \L_1} \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D_id(s_i,t_i)}$$
+
+\noindent
+To go ahead, we define the notion of metric embedding. Given two metric spaces $(V,d)$ and $(V',d')$, we call a mapping
+$\phi:V\to V'$ an embedding if it is one-to-one. The mapping has {\em dilation} at most $\alpha \ge 1$ and contraction at most $\beta > 1$ if for any pair of vertices $u,v$ in $V$, we have 
+
+$$\frac{d(u,v)}{\alpha} \le d'(\phi(u),\phi(v)) \le \beta\cdot d(u,v)$$
+%The mapping has contraction at most $\beta \ge 1$, if all any pair of vertices $u,v$, we have 
+%$$\frac{d'(\phi(u),\phi(v))}{\beta} \le d(u,v)$$
+The distortion of the mapping is the quantity $\rho = \alpha\beta$.%The mapping is isometric if the distortion is $1$.
+\medskip
+%
+% A natural metric space is points in $\R^h$ equipped with the $\ell_1$-norm for some $h$. 
+%Given two points $u$ and $v$ in $\R^h$, the $\ell_1$ distance between them is 
+%defined as $$||u - v||_1 := \sum_{i=1}^h |u(i) - v(i)|$$
+%It turns out that any metric in $CUT$ is isometrically embeddable to some $\ell_1$ metric and vice-versa.
+%
+
+
+\noindent
+The following strong theorem of Bourgain shows that {\em metric} can be embedded into $\L_1$ with 
+$O(\log n)$ distortion. We will prove this in the next class.
+\begin{theorem}\label{thm:bourgain}
+Given any metric space $(V,d)$, there is a mapping $\phi:V\to \R^{O(\log^2 n)}$ such that 
+with high probability, we have that for any pair of vertices $u$ and $v$, $\frac{d(u,v)}{O(\log n)} \le ||\phi(u) - \phi(v)||_1 \le  d(u,v)$.
+\end{theorem}
+%
+%For our case, a stronger statement follows from the proof of Bourgain's theorem.
+%\begin{theorem}
+%Given any metric space $(V,d)$ w
+%\end{theorem}
+\noindent
+Now we are ready to get a $O(\log n)$ approximation for the sparsest cut problem. 
+First solve \eqref{lp:sparsestcut} cut to get a ``general'' metric $d$ on the vertices with 
+$\sum_{i=1}^k D_id(s_i,t_i) \ge 1$ and $\sum_{(u,v)}c(u,v)d(u,v)\le \lp$.
+Use Bourgain's theorem  to get the mapping $\phi:V\to \R^{O(\log^2 n)}$ with the property in the theorem.
+Then, use Lemma \ref{lem:cutl1} to get cut-metric $d'$ with $d'(u,v) = ||\phi(u)-\phi(v)||_1$;
+also obtain the decomposition into elementary cut-metrics. 
+So, we have for any pair $u,v$, $d(u,v) \le O(\log n)d'(u,v)$ and $d'(u,v) \le d(u,v)$.
+Choose the set $S$ with $\lambda_S > 0$
+of minimum $\Phi(S)$.
+
+$$\Phi(S) \le \frac{\sum_{(u,v)} c(u,v)d'(u,v)}{\sum_{i} D_i d'(s_i,t_i)} \le O(\log n) \frac{\sum_{(u,v)} c(u,v)d(u,v)}{\sum_{i} D_i d'(s_i,t_i)} \le O(\log n)\lp $$
+where the numerator used $d'(u,v) \le d(u,v)$, and the denominator used $d(u,v) \le O(\log n)d'(u,v)$.
+
+In fact, Bourgain's proof can be modified to show the following
+
+\begin{theorem}\label{thm:bourgain}
+Given any metric space $(V,d)$ and a set $S\subseteq V$ of size at most $k$, 
+there is a mapping $\phi:V\to \R^{O(\log^2 k)}$ such that 
+with high probability, we have that for any pair of vertices $u$ and $v$, $ ||\phi(u) - \phi(v)||_1 \le  d(u,v)$
+and for any pair $u,v \in S$, $d(u,v)\le O(\log k) ||\phi(u) - \phi(v)||_1$.
+\end{theorem}
+
+%
+%Now, suppose instead of minimizing the expression in \eqref{eq:phicut} over $d\in \L_1$,
+%we minimized over some larger domain ${\mathcal D}$, and suppose we could do so in polynomial time.
+%Furthermore, we proved that for any metric $d\in \mathcal{D}$, there
+%is a mapping to a metric $d'$ in $\L_1$ with distortion $\rho$. That is, 
+%for any metric $d\in \mathcal{D}$, there is a mapping $\phi:V\to V$ such that $d'(u,v)/\beta \le d(u,v) \le \alpha d'(u,v)$
+%and $\alpha\beta = \rho$. Then there is a $\rho$-approximation to sparsest cut.
+%
+%\begin{claim}
+%Suppose there is a class of metric functions $\mathcal{D}$, for which the expression in \eqref{eq:phicut} can be minimized in polynomial time, and there is a polynomial time mapping of $\mathcal{D}$ into $\L_1$ of distortion at most $\rho$. 
+%%Furthermore for any $d'$ in the range of the mapping, we can write it as a combination of polynomially many elementary cut metrics. 
+%Then we have a $\rho$-approximation for the sparsest cut problem.
+%\end{claim}
+%\begin{proof}
+%Let $d$ be $\arg \min_{d\in \mathcal{D}} \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D_id(s_i,t_i)}$.
+%Use the mapping to obtain the metric $d'\in CUT$ with $d'(u,v)/\beta \le d(u,v) \le \alpha d'(u,v)$. Let $d' = \sum_S\lambda_Sd_S$. By our assumption, there are only polynomially many $S$ such that $\lambda_S>0$.
+%Now note that 
+%
+%\begin{align*}
+%\Phi^* \ge \frac{\sum_{(u,v)\in E} c(u,v)d(u,v)}{\sum_{i=1}^k D_id(s_i,t_i)} \ge \frac{1}{\alpha\beta} \frac{\sum_{(u,v)\in E} c(u,v)d'(u,v)}{\sum_{i=1}^k D_id'(s_i,t_i)} \ge \frac{1}{\alpha\beta} \min_{S:\lambda_S>0} \Phi(S)
+%\end{align*}
+%Thus, we get an $\alpha\beta = \rho$ approximation.
+%\end{proof}
+%\noindent
+%If $\mathcal{D}$ is the set of {\em all} metrics, then we can indeed find the minimum by linear programming. 
+%The following is a theorem of Bourgain we will use (and maybe even prove it in the next class).
+%
+%\begin{theorem}
+%Given any metric space $(V,d)$, there is a mapping $\phi:V\to \R^{O(\log^2 n)}$ such that 
+%with high probability, we have that for any pair of vertices $u$ and $v$, $||\phi(u) - \phi(v)||_1 \le d(u,v) \le O(\log n)||\phi(u) - \phi(v)||_1$.
+%\end{theorem}
+%\noindent
+%%The $O(\log n)$ approximation for sparsest cut follows from the above theorem and Claim \ref{claim:cutl1}.
+%
+
+\end{document}

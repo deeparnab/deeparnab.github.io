@@ -1,0 +1,118 @@
+\documentclass[10pt]{article}
+\usepackage{hw}
+\usepackage{amsthm}
+
+\LectureNumber{3}
+\LectureDate{June 18th, 2009}
+\LectureTitle{}
+
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{fancybox}
+\usepackage{psfig}
+
+
+\newcommand{\ddate}[1]{\noindent {\marginpar{ \bf #1}} \newline \indent}
+
+\def\ni{\noindent}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.0in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{9in}
+
+\begin{document}
+\MakeScribeTop
+\begin{enumerate}
+\item {\bf (6)} \\
+Run the dynamic programming algorithm done in class for $(1||\sum w_jU_j)$ for the following data.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Jobs &   1 & 2 & 3 & 4 & 5 \\ \hline
+$p_j$ &  2 & 3 & 1 & 2 & 2\\
+$d_j$ &  2 & 4 & 3  & 6 & 5\\
+$w_j$ & 3 & 4.5 & 1 & 2 & 3\\
+\hline
+\end{tabular}
+\end{center}
+
+
+\item {\bf (6)}\\
+In class, we saw a dynamic program to solve $(1||\sum w_jU_j)$ problem in time $O(n\sum_j p_j)$. Give a dynamic programming algorithm to solve the problem in time $O(n \sum_j w_j)$. {\em (Hint: Construct a table with entries indexed by items and weight with $T[i,W]$ indicating a feasible subset of weight exactly $W$ having minimum total processing time.)}
+
+%\item 
+%The above algorithm gives a $O(n^2)$ algorithm for $(1||\sum U_j)$ when all the weights are $1$. Consider the following algorithm for 
+%$(1||\sum U_j)$.
+
+%\begin{enumerate}
+%\item[i] Sort the jobs in increasing order of due dates: $\{1,2,\ldots,n\}$.
+%\item[ii] Initialize $J_0 = \emptyset$, and $T=0$.
+%\item[iii] For $j=1,\ldots,n$
+%\begin{itemize}
+%	\item If $(T+p_j \le d_j)$, $J_j = J_{j-1} \cup \{j\}$, $T=T+p_j$.
+%	\item Else, let $j_{max}$ be the job in $J_{j-1}$ with the largest processing time.\\
+%	         $J_j = J_{j-1} \cup \{j\} \setminus \{j_{max}\}$, $T = T + p_j - p_{j_{max}}$.
+%\end{itemize}
+%\item[iv] Schedule the jobs in $J_n$ in EDD order.
+%\end{enumerate}
+
+%\begin{enumerate}
+%\item {\bf (1)} What is the asymptotic running time of the above algorithm? 
+%\item {\bf (2)} Run the above algorithm on the following data
+%\begin{center}
+%\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+%\hline
+%Jobs & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+%\hline
+%$p_j$ &  3 & 1 & 2 & 1 & 1 & 3 & 2 & 3 & 1 & 4\\
+%$d_j$ & 3 & 3 & 3 & 4 & 4 & 5 & 6 & 8 & 8 & 10\\
+%\hline
+%\end{tabular}
+%\end{center}
+%Is this solution optimal? Is there another schedule having the same number of late jobs? If not, prove not. If there is, demonstrate one.
+%\item {\bf (3)} Prove that the above algorithm returns an optimal schedule. {\em (Hint: show that $J_k$ for any $k$, is a maximum cardinality feasible
+%set among the jobs $\{1,\ldots,k\}$.}
+%\end{enumerate}
+\item {\bf (2+2+2)}
+For each of the statements, write true or false giving reasons.
+\begin{itemize}
+\item If $X\le_P Y$ and $Y\le_P Z$, then $X\le_P Z$. 
+\item If $X \le_P Y$ and $Y$ is NP-hard then $X$ is NP-hard.
+\item Let $X$ be a problem in the class NP. If $P\neq NP$, then $X$ cannot be solved in polynomial time.
+\end{itemize}
+
+\item {\bf (3+3)}
+\begin{enumerate}
+\item The $HPP$ (Hamiltonian path problem) is the following: given a graph $G$ is there a simple path which contains every vertex of $G$. 
+Recall that $HCP$ (Hamiltonian cycle problem) was given a graph $G$, if there is a cycle containing each vertex of $G$.
+Show that $HCP \le_P HPP$. ({\em Hint: Think what happens in the $HPP$ problem if there is one vertex of degree $1$. What happens if there are two vertices of degree $1$.})
+\item In class we saw that $HCP \le_P TSP$ which showed that $TSP$ was NP-hard. Show that it is NP-hard to obtain a tour of total length at most $\beta C^*$ for any $\beta > 0$, where $C^*$ is the length of the optimal tour.
+\end{enumerate}
+
+\item 
+\begin{enumerate}
+\item {\bf (3)} \\
+Show that the problem $(1|r_j|L_{max})$ is NP-hard
+by reducing it to the partition problem done in class. 
+{\em (Hint: Given an instance of the partition problem, construct an instance of jobs with release dates such that if there is a partition no job is late, if there is no partition, at least one job is late)}
+\item {\bf (3)} \\
+The above only shows that $(1|r_j|L_{max})$ is weakly NP-hard since partition is only a weakly NP-hard problem. Show that $(1|r_j|L_{max})$ is strongly NP-hard by reducing it to {\sc Bin Packing} which is a strongly NP-hard problem. \\
+\\
+{\sc Bin Packing:} Given $k$ items with sizes $(a_1,\ldots, a_k)$ and $t$ bins each of capacity $B$, can one partition the items into the $t$ 
+bins such that the total size of the items in any bin is at most $B$. \\
+\\
+\ni
+{\em (Hint: Given an instance of {\sc Bin Packing} construct an instance with $k + (t-1)$ jobs, where the first $k$ jobs correspond to the sizes and the last $(t-1)$ jobs ``partition'' the jobs into bins.)}
+\end{enumerate}
+
+
+
+\end{enumerate}
+
+
+
+
+\end{document}

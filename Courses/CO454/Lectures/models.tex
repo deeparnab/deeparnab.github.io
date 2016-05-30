@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+%\usepackage{scribe}
+\usepackage{amsthm}
+
+%\LectureNumber{}
+%\LectureDate{}
+%\LectureTitle{Framework and Notation}
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.0in}
+\setlength{\topmargin}{-1.5in}
+\setlength{\textheight}{10in}
+
+\title{Scheduling Framework and Notation}
+\date{}
+\begin{document}
+%\MakeScribeTop
+\maketitle
+\subsection*{Notation}
+
+\begin{tabular}{ll}
+  $n$ & number of jobs \\
+  $m$ & number of machines \\
+  $p_{ij}$ & processing time of job $j$ on machine $i$ \\
+  $C_j$ & completion time of job $j$ \\
+  $w_j$ & weight/importance/priority of job $j$ \\
+  $r_j$ & release time/first availability of job $j$ \\
+  $d_j$ & due date of job $j$ \\
+  $L_j = C_j-d_j$ & lateness of job $j$ \\
+  $T_j = \max(L_j,0)$ & tardiness of job $j$ \\
+  $ U_j = \left\{ \begin{array}{ll} 
+        1 & \mbox{if $C_j > d_j$} \\
+        0 & \mbox{otherwise}
+      \end{array}\right.$
+    & lateness indicator of job $j$ \\
+    $(\alpha ~|~ \beta ~|~ \gamma)$ & a scheduling problem with machine
+    environment $\alpha$, \\ &constraints and characteristics $\beta$, and
+    objective $\gamma$
+\end{tabular}
+
+\subsection*{Machine Environments $\alpha$}
+
+\begin{tabular}{ll}
+  $1$ & one machine \\
+  $P$ or $Pm$ & identical parallel machines \\
+  $Q$ or $Qm$ & parallel machines with different speeds: machine
+  $i$ has speed $v_i$;\\ & job $j$ takes time $p_j/v_i$ on machine $i$
+  \\
+  $R$ or $Rm$ & unrelated parallel machines: machine $i$ processes job
+  $j$ at speed $v_{ij}$\\
+  $F$ or $Fm$ & flow shop: $m$ machines in series; \\ & each job is
+  processed on each machine in order\\
+  $J$ or $Jm$ & job shop: each job is processed on a
+  job-dependent sequence of machines\\
+  $O$ or $Om$ & open shop: processing order of machines for each job is
+  determined by the scheduler
+\end{tabular}
+
+\subsection*{Constraints and Characteristics $\beta$}
+
+\begin{tabular}{ll}
+  $r_j$ & non-trivial release times \\
+  $s_{jk}(i)$ & set-up times of a machine $i$ between jobs $j$ and $k$.\\
+  $pmtn$ & preemptions are allowed: a job may be removed from a
+  machine mid process \\
+  $prec$ & jobs have precedence constraints \\
+ \end{tabular}
+
+\subsection*{Objectives $\gamma$}
+
+\begin{tabular}{ll}
+  $\sum C_j$ & sum of completion times \\
+  $\sum w_j C_j$ & weighted sum of completion times \\
+  $\sum T_j$ & sum of tardiness \\
+  $\sum w_j T_j$ & weighted sum of tardiness \\
+  $C_{\max{}} = \max_j\{C_j\}$ & makespan/schedule length \\
+  $L_{\max{}} = \max_j\{L_j\}$ & maximum lateness\\
+  $\sum U_j$ & number of late jobs \\
+  $\sum w_j U_j$ & weighted number of late jobs
+\end{tabular}
+
+\end{document}

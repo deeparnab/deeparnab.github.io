@@ -1,0 +1,308 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newlength{\lpbox}
+\setlength{\lpbox}{8cm}
+
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+
+\title{Lecture 6:  The Dual LP and Approximation Algorithms}
+\author{}
+\date{}
+\maketitle
+\noindent
+Every linear program has a {\em dual} linear program. For this discussion, let's consider the following minimization LP. $A$ is an $n\times m$ matrix.
+\begin{align}
+\min & \qquad c \cdot x & \label{eq:primal} \\
+\mbox{subject to} 	&\qquad Ax \ge b & \notag \\
+				&\qquad x\ge 0 & \notag
+\end{align}
+Then the dual to the above program is the following. In the following, $A'$ is the transpose of $A$.
+\begin{align}
+\max & \qquad b \cdot y & \label{eq:dual} \\
+\mbox{subject to} &\qquad A'y \le c & \notag \\
+			   & \qquad y \ge 0 & \notag  
+\end{align}
+\def\x{{x^*}}
+\def\y{{y^*}}
+\noindent
+The original program is called the {\em primal} linear program. 
+In the dual, there is a variable $y_i$ corresponding to every (non-trivial) constraint in the primal. Furthermore, every variable in the primal leads to a constraint in the dual. The following fact is called {\em weak duality}.
+
+\begin{fact}[Weak Duality]\label{fact:weakdual}
+Let $(x,y)$ be two feasible solutions to \eqref{eq:primal} and \eqref{eq:dual}, respectively. Then
+$b\cdot y \le c\cdot x$.
+\end{fact}
+\begin{proof}
+The proof is the following where the inequalities follow from feasibility
+
+$b\cdot y ~ = ~ \sum_{i=1}^n y_ib_i   ~ \le  ~ \sum_{i=1}^ny_i\sum_{j=1}^m A_{ij}x_j 
+						    ~ =  ~    \sum_{j=1}^m x_j\sum_{i=1}^n A_{ij}y_i 
+						   ~  \le  ~	   \sum_{j=1}^m x_jc_j  ~ =  ~c\cdot x
+						    $
+\end{proof}
+
+Thus, {\em any} feasible solution to the dual LP implies a lower bound on the primal optimum, which
+in turn is a lower bound on the optimum. The following theorem, called {\em strong duality}, tells us that the best such possible lower bound is in fact the value of the primal LP. That is, the dual optimum equals the primal optimum. This fact is  one of the most important theorems of linear optimization. We'll not cover the proof in this course, but it's not difficult and is given in the linear programming reference mentioned in the course webpage. 
+
+\begin{theorem}
+The optimum value of \eqref{eq:primal} equals the optimum value of \eqref{eq:dual}.
+\end{theorem}
+
+The following corollary is going to be useful.
+Let $(x^*,y^*)$ be {\em any} pair of optimal solutions to the primal and the dual. The following are the complementary slackness conditions.
+
+\begin{fact}
+(1) $\x\cdot(A'\y - c) = 0$; that is, for all $1\le j\le m$, either $\x_j = 0$ or $A_j\cdot \y = c_j$.\\
+(2) $\y\cdot(A\x - b) = 0$; that is, for all $1\le i \le n$, either $\y_i = 0$ or $a_i\cdot \x = b_i$.
+\end{fact}
+\begin{proof}
+Follows from proof of Fact \ref{fact:weakdual}. Since there's equality between $b\cdot y^*$ and $c\cdot\x$, 
+all the inequalities are equality, which translates to the fact above. 
+\end{proof}
+
+\noindent
+For the design of approximation algorithms, the following ``relaxed" complementary slackness will be useful.
+\begin{fact}\label{fact:relaxedcs}
+Let $x$ and $y$ be feasible solutions to \eqref{eq:primal} and \eqref{eq:dual} satisfying the following two conditions: \\
+(1) For all $1\le j\le m$, either $x_j =0$ or $A_j\cdot y \ge c_j/\alpha$, and (2) For all $1\le i \le n$, either $y_i = 0$ or $a_i\cdot x \le \beta b_i$. 
+Then, $c\cdot x \le (\alpha\beta)b\cdot y$.
+\end{fact}
+\begin{proof}(Exercise)\end{proof}
+
+\subsection*{Complementary Slackness}
+Complementary slackness tells us that when primal LP sets some variable to non-zero, then it's for some ``good reason''. Consider the set cover LP and it's dual:
+
+\begin{figure}[h]
+  \begin{minipage}{\lpbox} \begin{align}
+      \min &\qquad  \sum_{j=1}^m c(S_j)x_j: \quad& x_j \ge 0 \label{lp:sc} \\
+      & \qquad \sum_{j: i \in S_j} x_j \ge 1, \quad& \forall
+       i \in U \notag 
+    \end{align} \end{minipage}
+  \hfill \vline \hfill
+  \begin{minipage}{\lpbox} \begin{align}
+      \max & \qquad \sum_{i\in U} y_i: \quad& y \ge 0 \label{dual:sc} \\
+      & \qquad \sum_{i \in S_j} y_i \le c(S_j), \quad&\forall j=1...m  \notag
+    \end{align}\end{minipage}
+\end{figure}
+
+Complementary slackness tells us that $x_j > 0$ implies $\sum_{i\in S_j} y_i = c(S_j)$. Consider the following set cover algorithm: pick a set $S_j$ if $x_j > 0$. Not if $x_j \ge 1/f$ or anything, just if $x_j > 0$. 
+\begin{claim}
+The above algorithm returns an $f$-approximate solution.
+\end{claim}
+\begin{proof}
+The cost of our solution is equal to, by complementary slackness, $\sum_{S_j \textrm{ picked }} \sum_{i\in S_j} y_i$ which is at most $f\cdot \sum_{i\in U} y_i \le f \cdot LP$.
+\end{proof}
+
+Let's take another example which will be useful next week. Recall the facility location LP \eqref{lp:ufl}. Consider its dual \eqref{dual:ufl}. Consider the facility-client pairs $(i,j)$ with $x_{ij} > 0$. Recall we 
+filtered this solution to get $\bar{x}$ where we had $\bar{x}_{ij} > 0$ implying $c(i,j) \le \rho C_j$. Complementary slackness already gives us the following property:
+
+\begin{claim}
+If $x_{ij} > 0$, then $c(i,j) \le \alpha_j$.
+\end{claim}
+
+So we don't need the filtering step at all in some sense. Order the clients in order of increasing $\alpha_j$'s, and do the clustering step. This itself gives a $4$ approximation, and I leave the details as an exercise.
+
+
+
+
+%\subsection*{Dual Fitting}
+%The dual fitting technique is often used to analyze algorithms rather than obtaining the algorithms themselves.
+%To illustrate, let's consider the primal-dual pair of LP relaxation for set cover above. Recall the ``charging'' technique used for arguing that the greedy algorithm is a $O(\ln k)$ approximation, $k$ being the size of the largest set. Can you see how those charges form a dual solution which when scaled by $\ln k$ gives a feasible solution?
+
+\subsection*{Primal-Dual Algorithms}
+The primal-dual schema is the following for minimization problems. The algorithm starts with a feasible dual solution (normally the all zero solution suffices). It then raises duals variables till some dual constraint gets tight. Complementary slackness implies the corresponding primal variable can be made positive -- and the algorithm sets that primal variable to $1$ (if the domain is $\{0,1\}$). Thus, the dual constraints show us which primal variables to ``pick''. The process continues till the dual variables can't be increased no more at which point this stage of the algorithm terminates. The dual value obtained so far is a lower bound on the optimum solution.
+The non-trivial part is to prove that the primal variables picked are bounded within a factor from this dual value. 
+This part often differs from problem to problem although there are often underlying similarities. 
+%One common trick is to show that the primal constraints corresponding to the positive dual variables, although not tight, are not ``too far'' from tightness. 
+
+\subsubsection*{The Facility Location Problem}
+\noindent
+{\bf LP relaxation.} 
+\begin{align}
+\min & \qquad \sum_{i\in F}f_iy_i + \sum_{i\in F,j\in C} c(i,j)x_{ij} & \qquad (x_{ij},y_i \ge 0) \label{lp:ufl} \\
+ & \qquad \sum_{i\in F} x_{ij} \ge 1 & \qquad \forall j\in C \label{eq:client} \\
+			     & \qquad y_i \ge x_{ij} & \qquad \forall i\in F,~\forall j\in C \label{eq:fac-client}	 
+\end{align}
+\noindent
+{\bf Dual.}
+\begin{align}
+\max & \qquad \sum_{j\in C}\alpha_j  & \qquad (\alpha_j, \beta_{ij} \ge 0) \label{dual:ufl}\\
+ & \qquad \sum_{j\in C} \beta_{ij} \le f_i & \qquad \forall i\in F \label{eq:fac-cost} \\
+			     & \qquad \alpha_j -\beta_{ij} \le c(i,j) & \qquad \forall i\in F,~\forall j\in C \label{eq:client-cost}\end{align}
+			     
+As is the PD schema, we will like to find an algorithm which solves the UFL problem along with (in fact guided by) finding a (hopefully feasible) solution  $\alpha, \beta$ to \eqref{dual:ufl}, and then analyzing the cost of the solution by comparing it with the dual solution. Intuitively, we would like to open facility $i$ if and only if 
+$f_i = \sum_j \beta_{ij}$, and connect client $j$ to facility $i$ iff $\alpha_j = c(i,j) + \beta_{ij}$. 
+Furthermore, we would like $\beta_{ij} > 0$ to imply $j$ connects to $i$. As we'll see, this is what we cannot
+ascertain for all clients but only for a subset. We argue about the connection cost of remaining clients 
+using metricity of the cost function. \\
+
+\noindent
+Initialize $\alpha_j$'s and $\beta_{ij}$'s to $0$. We will maintain a set of active clients $A$ initialized to $C$.
+These clients are ones who haven't been assigned an open facility and we will increase $\alpha_j$ only of active clients. A facility is {\em tentatively open} iff $\sum_j \beta_{ij} = f_i$.
+%We say a client $j$ is {\em tentatively assigned} facility $i$ if $\beta_{ij} > 0$; a client could be tentatively assigned to many facilities.
+We call a pair $(i,j)$ {\em tight} if $\alpha_j = c(i,j) + \beta_{ij}$. 
+%We assign client $j$ the tentatively open facility $i$ as soon as $(i,j)$ is tight and we remove $j$ from $A$.
+
+The algorithm raises the $\alpha_j$ for every active client $j\in A$. It also raises $\beta_{ij}$ for every tight pair where $j\in A$. This is done till one of the following happens
+\begin{enumerate}
+\item A pair $(i,j)$ becomes tight.  If $i$ is tentatively open, remove $j$ from the set of active clients $A$.
+
+\item A new facility $i$ becomes tentatively open. All clients $j$ with $(i,j)$ being a tight pair are removed from $A$.
+\end{enumerate}
+
+Let $X$ be the set of facilities tentatively opened by the above algorithm. Note that each client $j$ 
+is part of a tight pair $(i,j)$ with  $i \in X$. %Note that $c(i,j) =  \alpha_j - \beta_{ij}$.
+Construct the graph $G(X,E)$ where there is an edge $(i,i')\in E$ iff there is a client $j$  with $\beta_{ij} > 0$ and $\beta_{i'j} > 0$. Let $X'$ be a {\em maximal} independent set in the graph. $X'$ is the final set of facilities opened by the algorithm. Clients connect to the closest facility in $X'$.
+
+To argue about the connection cost we consider the following possible sub-optimal assignment. 
+For each facility $i\in X$, let $\Gamma(i) := \{j: (i,j) \textrm{ is tight } \}$. For any set $T\subseteq X$,  $\Gamma(T) = \bigcup_{i\in T} \Gamma(i)$. If $j\in \Gamma(X')$, then let $\sigma(j) = i$ such that $(i,j)$ is tight and $\beta_{ij} > 0$. If $\beta_{ij} = 0$ for all $i\in X'$, then assign any one arbitrarily.
+For clients $j\notin \Gamma(X')$, let $i\in X\setminus X'$ be a facility with $(i,j)$ tight. Since $i$ is not in $X'$,
+there must exist facility $i'\in X'$ and $j'\in \Gamma(i')$ such that $\beta_{ij'} > 0$ and $\beta_{i'j'} > 0$.
+Assign client $j$ to $i'$.
+%
+%Clients who were originally assigned some facility in $X'$ remain assigned to that facility. For each client $j$ assigned to a facility $i\in X\setminus X'$ do the following. 
+%Observe that there is a facility $i'\in X'$ with $(i',i)\in E$. That is, there is a client $j'$ with $\beta_{ij'} > 0$ 
+%and $\beta_{i'j'} > 0$. Assign $j$ to $i'$. Let $\sigma$ be the final allocation.
+
+\begin{theorem}
+$ \sum_{j\in C} c(j,\sigma(j)) + 3\sum_{i\in X'} f_i \le 3\sum_{j\in C}\alpha_j$
+\end{theorem}
+\begin{proof}
+Since we open facilities when $\beta$'s pay for the $f_i$'s we get
+$$\sum_{i\in X'} f_i = \sum_{i\in X'} \sum_{j\in \Gamma(i)} \beta_{ij} ,$$
+and since $X'$ is an independent set, we get that for all $i\in X'$, $\beta_{ij} > 0$ for at most one client $j$.
+Furthermore, $i = \sigma(j)$ for such a client.
+So, 
+\begin{equation}\label{eq:X'}
+\sum_{i\in X'} f_i = \sum_{j\in \Gamma(X')} \beta_{\sigma(j),j} = \sum_{j\in \Gamma(X')}  (\alpha_j - c(j,\sigma(j))
+\end{equation}
+
+\noindent
+Let's now consider a client $j$ who was assigned a facility $i$ in $X\setminus X'$. It is now assigned client $i'\in X'$, and there is a client $j'$ as  in the description of the algorithm. By triangle inequality,
+$c(j,i') \le c(j,i) + c(i,j') + c(j',i') $. Since $\beta_{i'j'} > 0$ and $\beta_{ij'}>0$, we know that $c(i,j') < \alpha_{j'}$
+and $c(i',j') < \alpha_{j'}$. $c(i,j) \le \alpha_j$ because $j$ was assigned $i$. So, 
+
+$$c(i',j) \le \alpha_j + 2\alpha_{j'}$$
+\noindent
+What do we know about $\alpha_j$ and $\alpha_{j'}$? $\alpha_{j}$ stopped growing when $j$ was assigned $i$. This happened {\em after} $i$ was declared tentatively open. Since $\beta_{ij'} > 0$, $(i,j')$ was tight when 
+$i$ was declared open; thus, $\alpha_{j'}$ stopped growing {\em before} or {\em at the time} $i$ was opened.
+In any case, $\alpha_{j'}$ couldn't have grown any longer than $\alpha_j$ implying $\alpha_{j'} \le \alpha_j$. Putting this in the above inequality and summing over all $j$ not in $\Gamma(X')$, we get
+
+\begin{equation}\label{eq:notX'}
+\sum_{j\in C\setminus\Gamma(X')} c(j,\sigma(j)) \le 3\sum_{j\in C\setminus \Gamma(X')} \alpha_j
+\end{equation}
+Adding  \eqref{eq:X'} (after multiplying by $3$ on both sides) and \eqref{eq:notX'} gives us the theorem.
+\end{proof}
+
+Since $\alpha,\beta$ was a feasible dual, we get a $3$ approximation. In fact, we get something stronger than a $3$ approximation as the facilities are paid in one-is-to-one ratio. This fact will be extremely essential in 
+the following procedure to obtain an algorithm for the $k$-median problem via the Lagrangean relaxation
+technique.
+
+\subsection*{Lagrangean Relaxations}
+\def\L{{\mathcal L}}
+The following is an LP for the $k$-median problem.
+\begin{align}
+LP := ~~~~~~~~~~~~~ \min & \qquad \sum_{i\in F,j\in C} c(i,j)x_{ij} & \qquad (x_{ij},y_i \ge 0) \label{lp:kmed} \\
+\mbox{ subject to } & \qquad \sum_{i\in F} x_{ij} \ge 1 & \qquad \forall j\in C \label{eq:client} \\
+			     & \qquad y_i \ge x_{ij} & \qquad \forall i\in F,~\forall j\in C \label{eq:fac-client}	 \\
+			     & \qquad \sum_{i\in F} y_i \le k \label{eq:k-fac}
+\end{align}
+The Lagrangean relaxation to the above LP is the following function
+$$\L(\lambda) :=~ \min\{ \sum_{i\in F,j\in C} c(i,j)x_{ij} + \lambda(\sum_{i\in F} y_i - k):~~ \eqref{eq:client}, \eqref{eq:fac-client}\}$$
+
+For any $\lambda \ge 0$, note that $\L(\lambda) \le LP$. This is because for any feasible solution $(x,y)$ 
+to \eqref{lp:kmed} leads to a solution of $\L(\lambda)$ of smaller value. In other words, $$\max_{\lambda} \L(\lambda) \le LP$$
+
+\noindent
+Let's fix $\lambda$ and consider $\L(\lambda)$. Observe this is a facility location LP (with a $k\lambda$ subtracted from the objective) now with each facility having cost $\lambda$. Using the approximation algorithm developed in the previous section, we can obtain a solution $\alg(\lambda)$ which opens facilities $k_\lambda$ and obtains a facility opening cost 
+of $\lambda\cdot k_\lambda$ and connection cost of $C_{\alg}(\lambda)$. We have 
+
+$$C_{\alg}(\lambda) + 3\lambda\cdot k_\lambda \le 3\left(\L(\lambda) + k\lambda\right)$$
+\noindent
+So, the connection cost of this solution is 
+
+$$C_{\alg}(\lambda) \le 3\left(\L(\lambda) + \lambda\cdot (k - k_\lambda) \right) \le 3LP + 3\lambda\cdot(k-k_\lambda)$$
+
+Suppose we could find a $\lambda$ such that $k_{\lambda} = k$. Then the above algorithm run for that $\lambda$ implies a $3$ approximation. If $\lambda = 0$, then obviously $k_\lambda = |F|$. If $\lambda$ is very high (larger than $nc_{max}$ where $n$ is the number of clients and $c_{max}$ the largest connection cost), then $k_\lambda$ is$1$. So, by doing a binary search, we can reach in $O\left(\log(nc_{max}/\eps)\right)$ steps, 
+a $\lambda$ and $\eps > 0$ such that $k_1 := k_{\lambda - \eps} > k$ and $k_2 := k_{\lambda + \eps} < k$. Let $C_1$ and $C_2$ denote $C_{\alg}(\lambda - \eps)$ and $C_{\alg}(\lambda + \eps)$ respectively. Then we get
+\def\near{{\tt near}}
+$$C_1 \le 3LP + 3(\lambda - \eps)(k - k_1); ~~~~~~ C_2 \le 3LP + 3(\lambda + \eps)(k - k_2)$$
+\noindent
+Let $\rho := \frac{k - k_2}{k_1 - k_2} < 1$. Using the fact that $k\le n$, we get the following.
+\begin{observation}
+$\rho\cdot C_1 + (1-\rho)C_2 \le 3(1+2n^2\eps)LP$.
+\end{observation}
+\noindent
+Let $\eps$ be small enough that we can ignore $2n^2\eps$ and for the rest of the discussion we ignore this error term. Let $X_1$ and $X_2$ be the set of facilities opened by the algorithm when run with $\lambda - \eps$ and $\lambda + \eps$. We now describe how to combine these two solutions to obtain a $6$-approximation for the $k$-median problem.
+
+Firstly note that the solution which opens $k_2 < k$ facilities is a feasible solution. So, if $\rho \le 1/2$, then this solution itself if a $6$-approximation. So we assume $\rho > 1/2$. We now choose $k$ facilities from $X_1$ and argue this is a $6$-approximation. For a facility $i\in X_2$, let $\near(i)$ be the facility in $X_1$ closest to it. Open all the facilities $\{\near(i):i\in X_2\}$. This opens at most $r \le k_2$ facilities from $X_1$. 
+Choose a {\em random} subset of $(k - r)$ facilities among the remaining $(k_1 - r)$ facilities and opens them. This is the set of $k$ facilities opened. Every client connects to the nearest open facility. 
+Let $C_{\alg}$ be the connection cost 
+
+\begin{lemma}
+$E[C_{\alg}] \le 6 LP$.
+\end{lemma}
+\begin{proof}
+We construct a solution whose expected cost is at most $6LP$.
+Consider a client $j$ and let $\sigma_1(j)\in X_1$ and $\sigma_2(j)\in X_2$ be the facilities it were connected to in the two solutions. Let $c_1(j)$ be $c(j,\sigma_1(j))$ and $c_2(j)$ be similarly defined.
+In the new solution, we connect $j$ to $\sigma_1(j)$ if it is open, or to $\near(\sigma_2(j))$ if not. The probability that $\sigma_1(j)$ is opened is at least 
+$$p := \frac{k - r}{k_1 - r} \ge \frac{k - k_2}{k_1 - k_2} = \rho$$
+The cost of connecting $j$ to $\near(\sigma_2(j))$ is at most 
+$$c(j,\sigma_2(j)) + c(\sigma_2(j),\near(\sigma_2(j)) ~\le ~ c_2(j) + c(\sigma_2(j),\sigma_1(j)) 
+~\le ~ 2c_2(j) + c_1(j)$$
+Thus, the expected cost of connecting $j$ is 
+$$pc_1(j) + (1-p)(2c_2(j) + c_1(j)) = c_1(j) + 2(1-p)c_2(j) < 2[pc_1(j) + (1-p)c_2(j)]$$
+where we use $p \ge \rho > 1/2$.
+So, the expected connection cost of our solution is at most $2(pC_1 + (1-p)C_2) \le 2(\rho C_1 + (1-\rho)C_2)$
+since $p\ge \rho$ and $C_1 \le C_2$.
+\end{proof}
+
+
+\end{document}

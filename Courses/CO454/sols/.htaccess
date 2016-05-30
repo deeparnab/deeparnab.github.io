@@ -1,0 +1,6 @@
+Authtype Basic
+AuthName "CO 454"
+AuthUserFile /u3/deepc/.htpasswd
+AuthGroupFile /u3/deepc/.htgroup
+
+require group co454

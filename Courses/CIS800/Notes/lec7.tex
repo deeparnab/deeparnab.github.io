@@ -1,0 +1,450 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newlength{\lpbox}
+\setlength{\lpbox}{8.1cm}
+
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+\def\lp{{\tt lp}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+
+\title{Lecture 7:  Approximation via Randomized Rounding }
+\author{}
+\date{}
+\maketitle
+\def\x{{x^{\tt int}}}
+\def\E{{\mathbf E}}
+\def\Pr{{\mathbf{Pr}}}
+
+\noindent
+Often LPs return a fractional solution where the solution $x$, which is supposed to be in $\{0,1\}^n$,
+is in $[0,1]^n$ instead. There is a generic way of obtaining an $\{0,1\}^n$ vector from a $x \in [0,1]^n$ one: 
+let the $i$th variable be $1$ with probability $x_i$, $0$ with probability $(1-x_i)$. The resulting random vector $\x$ has the desirable property that for any $i, \E[\x_i] = x_i$. In particular, if $x$ minimized a certain {\em linear}
+function $c\cdot x$, then by linearity of expectation, the expected cost of the random $\{0,1\}^n$ vector is also equal to $c\cdot x$. Of course, often the resulting $\x$ won't satisfy the {\em constraints}, and therein lies the non-triviality.
+
+We will need some facts in probability theory, mostly in the concentration of random variables around their means. I will collect these facts down in the appendix; the proofs of which can be found in texts on randomized algorithms or the web.  \\
+
+\noindent
+{\bf The Set Cover Problem.}
+Recall the LP relaxation for the set cover problem.
+\begin{align}
+\min 				& \qquad \sum_{j=1}^m c(S_j)x_j	& \label{lp:setcover} \\
+\textrm{ subject to}	& \qquad \sum_{j: i\in S_j} x_j \ge 1	& \forall i \in U \label{setcover:c1} \\
+				& \qquad x_j \in [0,1] 			& \forall j = 1 ... m \label{setcover:c2}	
+\end{align} 
+
+\noindent
+Let $x$ be a solution to the LP.
+Consider the experiment where we randomly select set $S_j$ with probability $x_j$, {\em independently}
+of each other. Let $X_j$ be the indicator random variable which is $1$ if we picked $S_j$ and $0$ otherwise.
+The random variable $\sum_{j=1}^m c(S_j)X_j$ indicates the cost of the sets picked, 
+and thus the expected cost of our solution is precisely $\sum_{j=1}^m c(S_j)\E[X_j]$ which is the LP solution. Are all elements covered? Fix an element $i$. 
+The following claim shows that each element is covered with at least a constant probability.
+
+\begin{claim}
+The probability that an element $i$ is covered is at least $(1-1/e)$.
+\end{claim}
+\begin{proof}
+Element $i$ is covered iff a set containing $i$ is picked. The probability that $i$ is not covered, thus, is at most
+$$\prod_{j:i\in S_j} (1 - x_j)$$ due to independence. But this is at most $$\prod_{j:i\in S_j} e^{-x_j} = e^{- \sum_{j:i\in S_j} x_j} \le \frac{1}{e}$$
+where the inequality follows from \eqref{setcover:c1}.
+\end{proof}
+
+So our randomized algorithm returns a collection of sets whose expected cost is the LP cost, and covers each element with probability at least $(1-1/e)$. Suppose we repeated this $2\ln n$ times and returned the union of the sets picked in each round. The expected cost of our solution is going to be $2\ln n$ times the LP solution.
+What's the probability that an element $i$ is not covered in any of the rounds? Since the rounds are independent, this probability is at most $(\frac{1}{e})^{2\ln n} = 1/n^2$. By the union bound (Fact \ref{fact:unionbound}), the probability that there exists some element $i$ which is not covered is at most $n\cdot\frac{1}{n^2} = 1/n$. Thus, we get the following theorem.
+
+\begin{theorem}
+The algorithm described above returns a set cover with probability at least $(1 - \frac{1}{n})$ whose expected cost is $2\ln n$ times the LP solution.
+\end{theorem}
+
+Randomized approximation algorithms often look like the theorem above. They ``succeed'' with high probability and return a solution whose expected cost is at most (or at least) a factor of the optimum solution. 
+By taking a slight hit at the approximation factor, the guarantee on the expected cost can often be converted to a guarantee on the cost with high probability.  For instance, Markov's inequality (Fact \ref{fact:markov}) 
+tells us that the probability that the cost of the sets picked exceeds $4\ln n$ times the optimum is at most $1/2$. Thus, the algorithm returns a set cover of cost $4\ln n$ times the optimum with probability at least $\frac{1}{2} - \frac{1}{n} \ge 1/3$. If we repeat this algorithm $t$ times, then with probability $1 - \frac{1}{3^t}$ (really, really high probability if $t$ is some polynomial in $n$) we will encounter such a set cover. \\
+
+\noindent
+Suppose we look at the set multicover problem where each element $i$ needs to be covered at least $b_i$ times for some positive integer $b_i$? The above analysis needs to be modified a bit; in particular, the probability that an element $i$ is not covered in any iteration goes down from $1/e$ to $1/e^{b_i}$, although, it now needs to be covered $b_i$ times. This is true, and I'll leave this calculation checking as an exercise. I now show a slightly different (but similar in spirit) randomized algorithm.
+It runs in a single round by sampling sets with higher probabilities.
+
+\def\x{\hat{x}}
+Let $\x_j = \min(1,6\ln n\cdot x_j)$. Sample each set $S_j$ independently with probability $\x_j$. That's it. 
+The expected cost now is $\sum_j c(S_j)\x_j \le 6\ln n\cdot\lp$. To argue that we cover each element
+sufficient number of times, we use the Chernoff bound (Fact \ref{fact:chernoff}). Let $X_j$ be the indicator 
+random variable of the event whether $S_j$ is picked or not. For an element $i$, define $Z_i = \sum_{j:i\in S_j} X_j$.
+If $Z_i \ge b_i$, then $i$ is covered, otherwise not. The following claim, using a union bound, gives that with probability 
+$(1-1/n)$, the sets picked form a set cover.
+
+\begin{claim}
+$\Pr[Z_i < b_i] \le \frac{1}{n^2}$.
+\end{claim}
+\begin{proof}
+By re-ordering suppose $i\in S_j$ for $1\le j\le k$. We may assume $\x_j < 1$ for all such $j$; since
+all others (say $\ell$ of them) are picked with probability $1$,  we can move to the residual problem where the 
+element $i$ needs to be covered $b_i - \ell$ times. 
+%Note that $\x_j$ could be $1$ for some $j$: suppose this is 
+%so for $1\le j\le \ell$. Note that if $\ell \ge b_i$, then $Z_i \ge b_i$ with probability $1$. Define $Z'_i := \sum_{\ell < j \le k} X_j$.
+%$\Pr[Z_i < b_i] = \Pr[Z'_i < b_i - \ell]$.
+Now, $\E[Z_i] = \sum_{j=1}^k\x_j = 6\ln n\cdot b_i$. Thus, Fact \ref{fact:chernoff} gives us (with $\delta = 1 - \frac{1}{6\ln n} \ge 5/6$)
+$$\Pr[Z_i < b_i] \le \exp(- 6\ln n\cdot\frac{25}{72}) \le \frac{1}{n^2} $$
+
+
+\end{proof}
+
+
+
+
+
+\subsection*{Facility Location Problem}
+Let's recall the LP relaxation for the facility location problem and it's dual. 
+\begin{figure}[h]
+  \begin{minipage}{\lpbox} \begin{align}
+   \min & \qquad \sum_{i\in F}f_iy_i + \sum_{i\in F,j\in C} c(i,j)x_{ij}   \label{lp:ufl} \\
+ & \quad \sum_{i\in F} x_{ij} = 1, ~~~~~~ \forall j\in C \label{eq:client} \\
+			     & \quad y_i \ge x_{ij}, ~~~~~\forall i\in F,~\forall j\in C \label{eq:fac-client}	 \\
+			     & \quad x,y \ge 0 \notag 
+    \end{align} 
+  \end{minipage}
+  \hfill \vline \hfill
+  \begin{minipage}{\lpbox} \begin{align}
+  \max & \qquad \sum_{j\in C}\alpha_j  \label{dual:ufl}\\
+ & \quad \sum_{j\in C} \beta_{ij} \le f_i, ~~~\forall i\in F \label{eq:fac-cost} \\
+			     & \quad \alpha_j -\beta_{ij} \le c(i,j), ~~~\forall i\in F,~\forall j\in C \label{eq:client-cost}  \\
+			     &\quad \beta \ge 0 \notag
+			       \end{align}\end{minipage}
+\end{figure}
+\noindent
+Let $(x,y)$ and $(\alpha,\beta)$ be a pair of optimal primal-dual solutions. Recall the following claim from last class
+
+\begin{claim}\label{claim:cs}
+If $x_{ij} > 0$, then $c(i,j) \le \alpha_j$.
+\end{claim}
+
+Before we describe the algorithm, we are going to make a structural assumption about $(x,y)$.
+I will leave it as an exercise to prove that the assumption is without loss of generality. \\
+
+\noindent
+{\bf Assumption:} If $x_{ij} > 0$, then $y_i = x_{ij}$. \\
+
+
+\noindent
+{\bf Algorithm.} 
+(In class, we looked at the clustering algorithm which ordered clients in increasing order of $\alpha_j$, and gave us a 
+$(2+2/e)$ approximation. Below we give a refined argument which attains a $(1+2/e)$-approximation.) \\
+
+\noindent
+The algorithm proceeds as follows. Let $C^*_j := \sum_i c_{ij}x_{ij}$. Order the clients in increasing order of $(\alpha_j + C^*_j)$. Let $U$ denote the set of unassigned clients initialized to $C$. Let $j$ be the first client in $U$ in the order. Form the cluster $N_2(j)$ consisting of $j$, all facilities $\{i: x_{ij} > 0\}$, and all clients 
+$\{j'\in U: x_{ij'} > 0 \textrm{ for some } i\in N_2(j)\}$. $j$ is called the cluster center of $N_2(j)$.
+Remove all clients of $N_2(j)$ from $U$ and repeat till $U$ is empty. At the end of this step all clients are assigned some cluster $N_2(j)$, for some client $j$. 
+
+Note that in any cluster $N_2(j)$, $\sum_{i\in N_2(j)} y_i = \sum_{i\in N_2(j)}x_{ij} = 1$. 
+In each such cluster, open exactly one facility with probability $y_i$ - this is valid since $\sum_i y_i = 1$.
+Let $X$ be the set of facilities opened. The clients are assigned their nearest facility. 
+
+\begin{claim}
+The expected facility opening cost is precisely $\sum_{i\in F} f_iy_i$.
+\end{claim}
+\begin{proof}
+The probability a facility $i$ is in $X$ is precisely $y_i$. 
+\end{proof}
+
+\noindent
+Let us now calculate the expected connection cost for a client $j$. 
+Note that a cluster center $j$ pays expected connection cost $\sum_{i\in N_2(j)} c(i,j)x_{ij} = C^*_j$.
+Let's take a non-center client $j \in N_2(j')$. Let 
+$\Gamma(j) := \{i:x_{ij}>0\}$, and let $\{j_1,\ldots,j_r\}$ be the centers 
+such that $N_2(j_\ell) \cap \Gamma(j)$ is non-empty. For $\ell = 1,\ldots,r$,
+let $p_\ell := \sum_{i\in N_2(j_\ell)} x_{ij}$ be the probability a facility in $N_2(j_\ell)\cap \Gamma(j)$
+is opened. Note that $\sum_\ell p_\ell = 1$, and that these $r$ events are independent.
+
+Let $C^*_j(\ell)$ be the expected  cost of connecting to a client in $N_2(j_\ell)\cap\Gamma(j)$ 
+conditioned on the event that such a facility is open. Thus,
+$$C^*_j(\ell) := \sum_{i\in N_2(j_\ell)} c(i,j)\cdot \frac{x_{ij}}{p_\ell}$$
+Let's order $j_1,\ldots,j_\ell$ so that
+$C^*_j(1) \le \cdots \le C^*_j(\ell)$. Lastly, let's define $C^*_j(\infty)$ to be the expected cost of connecting 
+$j$ conditioned on the event that no client in $\Gamma(j)$ is opened. We'll bound this shortly.
+Now we are ready to bound the expected connection cost of client $j$.
+
+\begin{claim}
+The expected connection cost of client $j$ is at most
+$$p_1C^*_j(1) + (1 - p_1)p_2C^*_j(2) + \cdots+ (1-p_1)(1-p_2)\cdots (1-p_{r-1})p_rC^*_j(r) + C^*_j(\infty)\prod_{\ell=1}^r(1-p_\ell) $$
+\end{claim}
+\begin{proof}
+We are conditioning on mutually exclusive events: event $\ell$ is when no facility in $N_2(j_{\ell'})\cap \Gamma(j)$ has been opened for $\ell' < \ell$, and a facility in $N_2(j_\ell)\cap \Gamma(j)$ has been opened; and
+the last event when no facility in $\Gamma(j)$ has been opened.
+\end{proof}
+
+\begin{claim}
+$C^*_j(\infty) \le C^*_j + 2\alpha_j$.
+\end{claim}
+\begin{proof}
+If no facility in $\Gamma(j)$ is opened, then connect $j$ to the facility $i'$ opened
+in $N_2(j')$: recall $j\in N_2(j')$ and thus there exists $i\in N_2(j')$ with $x_{ij} > 0$. 
+The connection cost to $i'$ is $ c(i',j) \le c(i,j) + c(i,j') + c(i',j') \le 2\alpha_j  + c(i',j')$,
+where we have used Claim \ref{claim:cs} and the fact that $\alpha_{j'} \le \alpha_j$.
+Taking expectations, we get
+$$C^*_j(\infty) \le 2\alpha_j + \sum_{i\in N_2(j)}c(i',j')x_{i'j'}.$$
+\end{proof}
+
+\noindent
+Putting it all together, we get the total connection cost of $j$ is at most
+\begin{equation}\label{eq:connj}
+\sum_{\ell = 1}^r \left[p_\ell (1 - p_{\ell - 1})\cdots (1-p_1)C^*_j(\ell)\right] ~+~ (C^*_j + 2\alpha_j)\prod_{\ell=1}^r(1-p_\ell)
+\end{equation}
+
+Since $\sum_{\ell=1}^r p_\ell = 1$, we have the product $\prod_{\ell=1}^r(1-p_\ell) \le 1/e$.
+As a first approximation, note that $(1-p_\ell) \le1$ and $\sum_{\ell=1}^r p_\ell C^*_j(\ell) = C^*_j$. This gives us total expected facility + connection cost of at most 
+$$\sum_{i\in F} f_iy_i + \sum_{j\in C} C^*_j + \frac{1}{e} \sum_{j\in C}(C^*_j + 2\alpha_j) \le \opt(1+3/e)$$
+giving a $2.104...$-approximation.
+
+One can analyze better.
+Now we state the following  inequality:
+
+\begin{lemma}
+Let $A_1 \le A_2 \cdots \le A_r$, and let $\sum_{i=1}^r p_i = 1$.
+Then, 
+$$p_1A_1 + p_2(1-p_1)A_2 + \cdots + p_r(1-p_1)(1-p_2)\cdots(1-p_{r-1})A_r \le \left(\sum_{i=1}^r p_iA_i\right)\cdot\left(1 - \prod_{i=1}^r(1-p_i)\right)$$
+\end{lemma}
+\begin{proof}
+Define $q_i := \frac{p_i(1-p_1)\ldots(1-p_{i-1})}{1 - \prod_{i=1}^r(1-p_i)}$. We need to prove that 
+$\sum_{i=1}^r q_iA_i \le \sum_{i=1}^r p_iA_i$. Note that $\sum_{i=1}^r q_i = 1 = \sum_{i=1}^r p_i$.
+Furthermore, there exists a $1 < k < r$ such that $q_i \ge p_i$ for all $i\le k$ and $q_i \le p_i$ for all $i>k$;
+it's the largest $i$ for which $\prod_{\ell=1}^i (1-p_\ell)$ exceeds $1 -  \prod_{i=1}^r(1-p_i)$.
+Let $\delta_i = q_i - p_i$. Thus, $\delta_i \ge 0$ for $i\le k$, $\delta_i \le 0$ for $i>k$ and $\sum_i \delta_i = 0$.
+$$\sum_{i=1}^r(q_i - p_i)A_i = \sum_{i=1}^r \delta_iA_i \le A_k\left(\sum_{i=1}^k \delta_i\right) + A_{k+1}\left(\sum_{i=(k+1)}^r\delta_i\right) =  \left(\sum_{i=1}^k \delta_i\right)(A_k - A_{k+1}) \le 0$$ 
+
+
+\end{proof}
+%\begin{remark}
+%Think of the following experiment. I give you $n$ options with option $i$ costing you $A_i$ if it 
+%occurs. You need one option and consider them in increasing order of cost each time seeing if
+%it occurs or not. If an option occurs, you take it and pay its cost and end the process. If none of the
+%option occurs, you repeat the game till one of them does occur. The fact above states that the expected
+%cost you incur conditioned on getting the option is at most the expected cost if one sampled
+%
+%\end{remark}
+%
+\noindent
+Given the above fact, we can get a stronger approximation factor. Let $q := \prod_{\ell=1}^r(1-p_\ell)$. Then, the expected connection cost is at most 
+$$(1- q)C^*_j + qC^*_j(\infty) \le C^*_j + 2\alpha_j/e$$
+Putting it together gives a $(1+2/e)$-approximation.
+\iffalse
+\subsection*{Minimizing Congestion in a Directed Network}
+The problem setting is the following. We are given a directed graph $G=(V,E)$ with each edge $e$ having unit capacity. There are source-sink pairs $\{(s_1,t_1),\ldots,(s_k,t_k)\}$.% with pair $i$ having a demand $d_i$. 
+The goal is find paths $p_1,\ldots,p_k$ between these source-sink pairs so as to minimize the maximum congestion on an edge - the congestion of an edge is the number of paths using that edge. Let $m$ denote the number of edges in $G$.
+
+To write an LP relaxation, let us denote $P_i$ to be the set of $(s_i,t_i)$ paths. Instead of choosing a single path from $s_i$ to $t_i$, the LP relaxation chooses a unit flow from $s_i$ to $t_i$ so as to minimize the max congestion. 
+
+\begin{align}
+\min &\qquad \lambda &\qquad f \ge 0 \label{lp:mincong} \\ 
+\textrm{ subject to } 	& \qquad \sum_{p\in P_i} f_p = 1 & \qquad \forall i=1...k \label{eq:cong} \\
+				& \qquad \sum_{i=1}^k\sum_{p\in P_i: e\in p} f_p \le \lambda & \qquad \forall e\in E
+\end{align}
+\noindent
+{\bf Solving the LP.}
+The above LP has exponentially many variables: one for each path. There are two ways one can get around this. One is to write a different LP which has flow variables on each {\em edge} rather than paths with conservation constraints at each vertex. The other is to use the ellipsoid algorithm as follows. Write the dual of the above LP; the dual will have polynomially many variables and exponentially many constraints.
+
+\begin{align}
+\max &\qquad \sum_{i=1}^k y_i &\qquad z\ge 0 \label{dual:mincong} \\ 
+\textrm{ subject to } 	& \qquad y_i - \sum_{e\in p}z_e	 \le 0 & \qquad \forall i, \forall p\in P_i \label{eq:pathconstraints}\\
+				& \qquad  \sum_{e\in E} z_e \le 1 & 
+\end{align}
+
+Given a solution $(z,y)$ to \eqref{dual:mincong}, we can check for feasibility using a shortest path algorithm. 
+Therefore, we can solve the dual using the ellipsoid method. The ellipsoid method not only will give us the optimal dual solution, but it will also exhibit a polynomial sized collection of paths (constraints) which if we use to replace \eqref{eq:pathconstraints}, the optimum doesn't change. We use precisely these path variables in the primal and solve the primal LP with polynomially many variables and constraints. \\
+
+\noindent
+{\bf Randomized Rounding.} The algorithm is as follows. For each $i=1...k$, sample a path $p_i\in P_i$ with 
+probability $f_p$ independently. This will be our solution. The next lemma shows this is a $O(\frac{\log m}{\log 
+\log m})$ approximation.
+
+\begin{theorem}
+With high probability, the maximum congestion on any edge is at most $\lambda\cdot O(\log m/\log\log m)$.
+\end{theorem}
+\begin{proof}
+For every edge $e$, let $X_i(e)$ be the indicator variable which is $1$ if $p_i$ contains $e$ and $0$ otherwise. The congestion $X(e)$ on edge $e$ is $\sum_{i=1}^k X_i(e)$. 
+$\E[X_i(e)] = \Pr[X_i(e) = 1] = \sum_{p\in P_i:e\in p} f_p$. Thus, \eqref{eq:cong} implies that the expected congestion on any edge is at most $1$. Chernoff bound (Fact \ref{fact:chernoff}) then gives us
+
+$$\Pr[X(e) > (1 + \delta)] \le \left( \frac{e^\delta}{(1+\delta)^{(1+\delta)}}\right)$$
+
+Substituting $(1+\delta) = 4\log m/\log\log m$, we get that the probability the congestion on a particular edge $e$ is larger than $4\log m/\log\log m$ is at most  (for large enough $m$)
+
+$$\left(\frac{\log\log m}{\log m}\right)^{\frac{4\log m}{\log\log m}} \le \left(\frac{1}{\sqrt{\log m}}\right)^{\frac{4\log m}{\log\log m}} =  \left(2^{-\frac{\log \log m}{2}}\right)^{\frac{4\log m}{\log\log m}} = \frac{1}{m^2}$$
+ 
+ Union bound gives that the probability some edge has large congestion is at most $1/m$.
+ 
+\end{proof}
+\fi
+\subsection*{The Group Steiner Tree Problem (on a tree)}
+In this problem, the input is a rooted tree $T$ on $n$ vertices. There are $k$ disjoint groups $g_1,\ldots,g_k$, 
+where each group is a subset of leaves. Each edge of the tree has a cost, and the goal is to find the cheapest rooted sub-tree which contains a vertex from each group. \\
+
+\noindent
+{\bf LP Relaxation.}
+\begin{align}
+\min & \qquad \sum_{e\in E(T)} c_ex_e & \qquad x \ge 0 \label{lp:gst} \\
+\textrm{ subject to} 	& \qquad x(\delta(S)) \ge 1 & \qquad \forall S\subseteq V: g_i\subseteq S \textrm{ for some } i, r\notin S
+\end{align}
+
+\noindent
+{\bf Algorithm.} Let the root be $r$. Given a non-root vertex $v$ in the tree, let $e_v$ denote the edge connecting $v$ to its parent. We'll abuse notation and let $x_v$ denote $x_{e_v}$.
+We call an edge $f$ an ancestor of edge $e$ if the path from $r$ 
+to the end points of $e$ contains $f$. $f$ is the parent of $e$ if its an ancestor and shares an end point with $e$. \\
+
+\noindent
+{\em Preprocessing $x$.} 
+We process the solution $x$ as follows.
+Firstly, remove all vertices $v$ with $x_v \le 1/2g$. For any group $g_i$, we still have $\sum_{v\in g_i} x_v \ge 1/2$. Secondly, increase $x_e$ for every edge to the nearest power of $(1/2)$. Note that the new LP cost 
+at most doubles. Thirdly, for an edge $e$ with parent $f$, if $x_e = x_f$, then merge the two edges into a single edge with the same $x_e$ value. This doesn't change the feasibility of the solution.  
+Note that the height of the tree now is at most $2\log g$: any path from root to a vertex $v$ has strictly decreasing $x_e$ in powers of $1/2$ ranging from at most $1$ to at least $1/2g$. 
+Finally, decrease all the $x_{e_v}$'s such that for any group $g_i$, $\sum_{v\in g_i} x_v = 1$.
+Since these are leaf edges and groups are disjoint, this can be done without changing the feasibility of the solution.
+%Finally, interpret (the new) $x_e$ as a capacity on edge $e$ which, for any group $g_i$,  sustains a flow of $x_v$ to all $v\in g_i$ simultaneously, with total flow at least a $1/2$. 
+
+Independently, sample all edges $e$ incident on the root with probability $x_e$. For every other edge,
+$e$ with parent $f$, sample $e$ independently with probability $\frac{x_e}{x_f}$.  The resulting graph can have many components - throw away all except the component containing the root.
+The above step is repeated $(16\ln n\cdot \log g)$ times independently and the final solution is the union of all edges picked; $g$ is the maximum size of a group. 
+% \\
+%\noindent
+%{\bf Analysis.}
+\def\E{{\mathcal E}}
+\begin{theorem}
+The above algorithm has an expected cost of $O(\log n\log g)\cdot \opt$
+and is a feasible group Steiner tree with high probability.
+\end{theorem}
+\begin{proof}
+In each iteration the probability that an edge $e$ is sampled is exactly $x_e$. 
+This is because, let the path from root to $e$ be $e_p,e_{p-1},\ldots,e_1,e$.
+The probability $e$ survives this iteration is at most 
+$$\frac{x_e}{x_{e_1}}\frac{x_{e_1}}{x_{e_2}}\cdots \frac{x_{e_{p-1}}}{x_{e_p}}\cdot x_{e_p} = x_e$$
+By linearity of expectation, the expected cost of the edges in any iteration is $\opt$,
+and the first claim in the theorem follows.
+
+Fix a group $g_i$ and a iteration. We claim that the probability that the sub-tree sampled contains a vertex from $g$ is at least $\frac{1}{8\log g}$. This will prove the second claim of the theorem since the probability group $g_i$ is not covered in $16\ln n\log g$ iterations is at most $\left(1 - \frac{1}{8\log g}\right)^{16\ln n\log g} \le \frac{1}{n^2}$. Union bound over all groups (there are $n$ many at most) ends the argument. 
+
+
+For a vertex $u\in g_i$, let $\E_u$ be the event that $u$ is contained in the subtree. We are trying to lower bound the event $\Pr[\bigcup_{u\in g_i} \E_u]$. Let's calculate $\Pr[\E_u]$. $u$ is contained in the tree if and only if all the edges on the path from $u$ to $r$ are sampled. This probability is $x_u$.
+Furthermore, the constraint in the LP gives us $\sum_{u\in g_i} x_{u} = 1$. So, we have $$\mu := \sum_{u\in g_i} \Pr[\E_u] = 1.$$ (Thus, if all the $\E_u$'s were independent in a group $g_i$, then in fact the probability that none of the vertices are contained in the tree would have been at most $1/e$.) Let $u \sim v$ if the events $\E_u$ and $\E_v$ are not independent. Define $\Delta := \sum_{u\sim v} \Pr[\E_u \wedge \E_v]$.
+
+\begin{claim}
+$\Delta \le 2\log g$
+\end{claim}
+\begin{proof}
+For $u$ and $v$ in the tree, let $w$ be the least common ancestor. 
+Note that conditioned on the event $\E_w$, the event $\E_u$ and $\E_v$ are independent.
+Thus the probability $$\Pr[\E_u \wedge \E_v] = \Pr[\E_u \wedge \E_v| \E_w]\cdot \Pr[\E_w] = \Pr[\E_u|\E_w]\cdot \Pr[\E_v|\E_w] \cdot \Pr[E_w] = \frac{x_ux_v}{x_w}$$
+
+Now for any interior node $w$, let $T_w$ be the sub-tree rooted at $w$.
+Note that $x_w \ge \sum_{u\in g_i\cap T_w} x_u$. This is because of the feasibility of the LP constraint with 
+$S$ containing all vertices in $T_w$ and all vertices in $g_i\setminus T_w$: $$1 \le x(\delta(S)) = x_w + \sum_{u\in g_i\setminus T_w}x_u = x_w + 1 - \sum_{u\in g_i\cap T_w} x_u$$
+\noindent
+Let $A_u$ denote the set of ancestors of $u$ in the tree. Since the height of the tree is at most $2\log g$, 
+$|A_u| \le 2\log g$.
+Thus, 
+$$\Delta = \sum_{u\sim v} \frac{x_ux_v}{x_w} \le \sum_{u\in g_i} \sum_{w\in A_u} \sum_{v\in g_i\cap T_w} \frac{x_ux_v}{x_w}  \le \sum_{u\in g_i} x_u \sum_{w\in A_u} \frac{1}{x_w} \sum_{v\in g_i\cap T_w} x_v \le \sum_{u\in g_i} x_u |A_u| \le 2\log g$$
+\end{proof}
+
+\noindent
+Now by Janson's inequality (Fact \ref{fact:janson}), we get that
+
+$$\Pr[\bigwedge_{u\in g_i} \bar{\E_u}] \le \exp\left( - \frac{\mu^2}{\mu + \Delta} \right) \le \exp\left(-\frac{1}{4\log g}\right) \le 1 - \frac{1}{8\log g}$$
+
+\noindent
+since $e^{-x} \le 1 - x + \frac{x^2}{2} \le 1 - x/2$ when $0 \le x\le 1$. So we get that in any iteration and any group $g_i$, the probability we pick a vertex from the group is at least $\frac{1}{8\log g}$. This completes the proof.
+\end{proof}
+ 
+ 
+\newpage
+\def\E{{\bf E}}
+\appendix
+\subsection*{Some Probabilistic Facts.}
+\begin{fact}[Linearity of Expectation]
+Let $X_1,\ldots,X_n$ be random variables and let $X := \sum_{i=1}^n X_i$. Then, 
+$\E[X] = \sum_{i=1}^n \E[X_i]$.
+\end{fact}
+\vspace{2ex}
+\def\Ev{{\mathcal E}}
+\begin{fact}[The Union Bound]\label{fact:unionbound}
+Given $n$ events $\Ev_1,\ldots,\Ev_n$, the probability that one of them occurs is at most
+the sum of their probabilities.
+$$\Pr[\Ev_1 \vee \Ev_2 \vee \cdots \vee \Ev_n] \le \sum_{i=1}^n \Pr[\Ev_i]$$
+\end{fact}
+\vspace{2ex}
+\begin{fact}[Markov's Inequality]\label{fact:markov}
+Let $X$ be a {\em non-negative} random variable. Then
+$$\Pr[ X \ge t\E[X] ~] \le \frac{1}{t}$$
+\end{fact}
+\vspace{2ex}
+\begin{fact}[Chernoff Bound]\label{fact:chernoff}
+$X_1,\cdots,X_n$ be $n$ {\em independent} $\{0,1\}$ random variables with $\Pr[X_i = 1] = p_i$.
+Let $X := \sum_{i=1}^n X_i$ and  let $\mu = \sum_{i=1}^n p_i = \E[X]$. Then
+
+$$\Pr[X > (1 + \delta)\mu] \le \left( \frac{e^\delta}{(1+\delta)^{(1+\delta)}}\right)^\mu$$
+
+$$\Pr[X < (1 - \delta)\mu] \le \left( \frac{e^{- \delta}}{(1 - \delta)^{(1 - \delta)}}\right)^\mu $$
+\noindent
+Useful versions of the above:
+\begin{itemize}
+\item For any $\delta > 0$,
+$$\Pr[ X > (1+\delta)\mu] \le \exp( - \mu\delta^2/3 )$$ 
+$$\Pr[ X < (1 - \delta)\mu] \le \exp( - \mu\delta^2/2 )$$
+\item For $t > 0$,
+$$ \Pr[|X - \mu| > t] \le 2\exp(-2t^2/n)$$
+\item For $t > 4\mu$, 
+$$\Pr[X > t] \le 2^{-t}$$
+\end{itemize}
+\end{fact}
+\vspace{2ex}
+\def\E{\mathcal E}
+\begin{fact}[Janson's Inequality]\label{fact:janson}
+Let $X\subset U$ obtained by sampling element $i\in U$ with probability $p_i$ independently.
+$A_1,\ldots,A_t$ be subsets of $U$ and let $\E_i$ be the event that $A_i\subseteq X$.
+Then, if $\mu = \sum_{i=1}^t \Pr[\E_i]$ and $\Delta = \sum_{i,j: A_i\cap A_j\neq \emptyset} \Pr[\E_i\wedge \E_j]$, then
+$$\Pr[\bigwedge_{i=1}^t \bar{\E_i}] \le \exp\left( -\frac{\mu^2}{\mu + \Delta}\right).$$ 
+
+\end{fact}
+
+\end{document}

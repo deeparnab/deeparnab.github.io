@@ -1,0 +1,367 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\lp{{\tt lp}}
+\def\supp{{\tt supp}}
+\def\rank{{\tt rank}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+
+\title{Lecture 3: Linear Programming Relaxations and Rounding}
+\author{}
+\date{}
+\maketitle
+\section{Approximation Algorithms and Linear Relaxations}
+For the time being, suppose we have a minimization problem.
+Many times, the problem at hand can be cast as an integer linear program: minimizing
+a linear function over integer points in a polyhedron.
+Although this by itself doesn't benefit us, one can remove the integrality constraints on 
+variables to get a lower bound on the optimum value of the
+problem. Linear programs can be solved in polynomial time to give what is called 
+a ``fractional solution". This solution is then ``rounded" to a 
+integer solution, and one normally shows that the rounded solution's cost 
+can is within a factor, say $\rho$, of the fractional solution's cost. It is clear then
+that the solution's cost is within $\rho$ of the optimum cost.   \\
+
+\noindent
+{\bf Example.} Let us take the set cover problem we did in the first class. 
+Here is an integer program for it.
+\begin{align}
+\min 				& \qquad \sum_{j=1}^m c(S_j)x_j	& \label{lp:setcover} \\
+\textrm{ subject to}	& \qquad \sum_{j: i\in S_j} x_j \ge 1	& \forall i \in U \label{setcover:c1} \\
+				& \qquad x_j \in \{0,1\} 			& \forall j = 1 ... m \label{setcover:c2}	
+\end{align} 
+
+\noindent
+To get the LP relaxation, we replace the constraint \eqref{setcover:c2} by $0\le x_j\le 1$.
+Suppose $x$ is an optimal solution to the resulting LP (to stand for linear program henceforth).
+By the discussion above, we get $\opt \ge \sum_{j=1}^m c(S_j)x_j$.
+
+Now suppose we are told that each element appears in at most $f$ sets; that is, the frequency
+of each element is at most $f$. For example, in the special case of vertex cover, the frequency
+of each element (edge) is $2$. What can we say then?
+Well, let's look at \eqref{setcover:c1}. For each element in $U$, there are at most $f$ terms in the corresponding summation, and thus at least one of the $x_j$'s must be $\ge 1/f$. In other words, the algorithm which picks all sets $S_j$ with $x_j\ge 1/f$, that is rounds their value up to $1$, is assured to be a set cover.
+Furthermore, the cost of this ``integral'' solution is at most $f\cdot \sum_{j=1}^m c(S_j)x_j \le f\cdot\opt$. 
+Thus we get a simple $f$-approximation to set cover using linear programs.
+
+Given a particular LP relaxation for an optimization problem, there is a limit on the
+best approximation factor obtainable by the process described above. 
+Take an instance $I$ of the problem (set cover, say), and let $\lp(I)$ be the value of the 
+LP relaxation, and $\opt(I)$ be the value of the optimum. Since our solution can't cost less than 
+$\opt(I)$, the best approximation factor we can hope for in this instance is $\frac{\opt(I)}{\lp(I)}$.
+Thus, the best approximation factor one can get for the minimization problem via this LP relaxation is at most
+$$\sup_{\mbox{instances}~I} \frac{\opt(I)}{\lp(I)}$$
+This quantity is called the integrality gap of the LP relaxation and is very useful in judging the efficacy of a
+linear program.  What is the integrality gap of the LP relaxation of \eqref{lp:setcover} in terms of $f$?
+
+
+\subsection{Some facts regarding linear programs.}
+
+\noindent
+A minimization linear program, in its generality, 
+can be denoted as 
+\begin{align}
+\min & \qquad c \cdot x & \label{eq:primal} \\
+\mbox{subject to} &\qquad Ax \ge b & \notag 
+\end{align}
+\noindent
+The number of variables is the number of columns of $A$, the number of constraints is the number of rows of $A$. The $i$th column of $A$ is denoted as $A_i$, the $i$th row as $a_i$.
+Note that constraints of $A$ could also include constraints of the form $x_i \ge 0$. These non-negativity constraints are often considered separately (for a reason). Let's call the other constraints {\em non-trivial} constraints. For the discussion of this section, let $n$ be the number of variables and let $m$ denote the number of non-trivial constraints. Thus the number of rows in $A$ are $(m+n)$ and $\rank(A) = n$ (since it contains an $I_{n\times n}$ as a submatrix).
+
+A solution $x$ is a feasible solution if it satisfies all the constraints. 
+Some constraints may be satisfied with equality, others as a strict inequality. 
+A feasible solution $x$ is called {\em basic} if the constraints satisfied with equality span the entire space. Let $B$ be the equality rows of $A$ such that $Bx=b_B$, where $b_B$ are the entries of $b$ corresponding to the rows of $B$. Note that $B$ depends on $x$. $x$ is a basic feasible solution if $\rank(B) = n$.
+The following fact is a cornerstone in the theory of linear optimization.
+
+\begin{fact}
+There is an optimal solution to every LP which is a basic feasible solution.
+\end{fact}
+
+Let $x$ be a basic feasible solution, and let $\supp(x) := \{i: x_i > 0\}$. Let $B$ be the basis such that $Bx = b_B$. Note that $B$ contains at most $n - \supp(x)$ non-negativity constraints. Therefore, at least $\supp(x)$
+linearly independent non-trivial constraints which are satisfied with equality.
+This fact will be used crucially a few classes later. 
+\begin{fact}
+There is an optimal solution to every LP with at least $\supp(x)$ linearly independent non-trivial constraints 
+satisfied with equality.
+\end{fact}
+%
+%Let's move on to duality of linear programs.
+%Every linear program has a {\em dual} linear program. For this discussion, let $A$ be the rows corresponding only to the non trivial constraints (in retrospect, I should have used ${A}\choose{I}$ as a notation above).
+%Then the dual to the above program is the following. In the following, $A'$ is the transpose of matrix $A$.
+%
+%\begin{align}
+%\max & \qquad b \cdot y & \label{eq:dual} \\
+%\mbox{subject to} &\qquad A'y \le c & \notag \\
+%			   & \qquad y \ge 0 & \notag  
+%\end{align}
+%\def\x{{x^*}}
+%\def\y{{y^*}}
+%The original program is called the {\em primal} linear program. In the dual, there is a variable $y_i$ corresponding to every (non-trivial) constraint in the primal. Furthermore, every variable in the primal leads to a constraint in the dual. Thus, there are $m$ variables in the dual and $n$ constraints.  
+%If Fact 1 was a cornerstone, the following fact, called {\em strong duality} is  the crown jewel of optimization!
+%
+%\begin{fact}
+%The optimum value of \eqref{eq:primal} equals the optimum value of \eqref{eq:dual}.
+%\end{fact}
+%
+%Let $(x^*,y^*)$ be {\em any} pair of optimal solutions to the primal and the dual. The following are the complementary slackness conditions.
+%
+%\begin{fact}
+%
+%1.) $\x\cdot(A'\y - c) = 0$; that is, if $x^*_i > 0$ then $A_i\cdot \y = c_i$, and if $A_i\cdot\y < c_i$, then $x^*_i = 0$. \\
+%\noindent
+%2.) $\y\cdot(A\x - b) = 0$; that is, if $y^*_i > 0$ then $a_i\cdot \x = b_i$, and if $a_i\cdot\x > b_i$, then $y^*_i = 0$.
+%\end{fact}
+%
+A linear program can be solved in polynomial time, polynomial in the number of variables and constraints, by using the {\em ellipsoid algorithm}. Actually more is true. Suppose there is a polynomial (in $n$) time algorithm which given a candidate solution $x$ checks if whether $Ax\ge b$, and if not returns a violated inequality $a_i\cdot x < b_i$.
+Such an algorithm is called the {\em separation oracle}. If a separation oracle exists, then LPs can be solved 
+in time polynomial in only the number of variables. 
+This can possibly be (and will be) used to solve LPs 
+with exponentially (in $n$) many constraints. By the way, note that if $m$ is polynomial in $n$, then clearly there is a polytime separation oracle. \\
+
+\noindent
+Let's talk a bit more about how the ellipsoid algorithm works. Actually, the ellipsoid method checks feasibility of a system of inequalities in polynomial time. This is equivalent to solving the LP: one 
+guesses the optimum $M$ of the LP and adds the constraint $c\cdot x \le M$ to the system $Ax\ge b$. 
+Suppose that the system $Ax\ge b$ is bounded; if not, it can be made bounded by intersecting with a fairly large cube. In each iteration of the ellipsoid algorithm, a candidate solution $x_t$ is generated. 
+(It is the centre of a carefully constructed ellipsoid containing $\{x:Ax\ge b\}$ - hence the name of the algorithm.) Now, the separation oracle either says that $x_t$ is feasible in which case we are done, or else it returns a constraint $a_t\cdot x\ge b_t$ (or $c\cdot x \le M$) which is violated by $x_t$. 
+The nontrivial theorem regarding the ellipsoid algorithm is that in polynomial (in $n$) many iterations, we either get a feasible solution or a proof that the system is infeasible. If the system is infeasible, then our guess $M$ was too low and we raise it; if the system is feasible then we lower our guess and run again. By doing a binary search, we can reach the true optimum $M$ in polynomial time. 
+
+\def\A{\hat{A}}
+\def\b{\hat{b}}
+Consider the run of the ellipsoid algorithm when the guess was $M^{-}$, ``just below'' $M$.
+That is, the LP cannot take any value between $M$ and $M^{-}$.
+Let $(\A,\b)$ be the collection of polynomially many constraints/rhs'es returned by the separation oracle in the various iterations,
+after which the algorithm guarantees infeasibility.
+Consider the system $\A x\ge \b$; we claim that $\min\{c\cdot x: Ax\ge b\} = \min\{c\cdot x: \A x\ge \b\}$.
+Surely, the second is lower since we have removed constraints. However, the ellipsoid algorithm certifies infeasibility of $\{c\cdot x\le M^{-}, ~ \A x \ge \b\}$. So, $\min\{c\cdot x: \A x\ge \b\} = M$ as well.
+Thus given a cost vector $c$, the exponentially many constraints of the LP can be ``essentially" reduced to the polynomial sized LP. \\
+
+\def\P{{\mathcal P}}
+\noindent
+We end our discussion with one final point. We claimed that there exists an optimum solution which is basic feasible. However, the ellipsoid algorithm is not guaranteed to return a basic feasible solution. Can we get a  optimal basic feasible solution in polynomial time? More generally, given a point $x \in \P := \{x: Ax\ge b\}$ 
+which is guaranteed to minimize $c\cdot x$ over all points of $\P$, can we move to a basic feasible solution of $\P$ of the same value. (We have reverted to the old notation where $A$ includes the non-negativity constraints as well). %By the above discussion we can assume $A$ to have polynomially many constraints.
+Consider the equality submatrix $Bx = b_B$. If $B$ is full rank, we are at a basic feasible solution. 
+If not, let $v$ be a vector in the null space of $B$; that is $a_i\cdot v = 0$ for all $a_i\in B$. Such a vector can be found by solving a system of linear equations, for instance. Suppose $c\cdot v \ge 0$.
+Consider $x' = x - \alpha v$ where $\alpha$ is a positive scalar such that for all $i\notin B$, $a_i\cdot(x - \alpha v) \ge b_i$. Since $\P$ is bounded, we have that $a_i\cdot v > 0$ for some $i$. Choose $\alpha := \min \frac{a_\cdot x - b}{a_i\cdot v}$ over the $i$'s $\notin B$ with $a_i\cdot v > 0$. What can we say about $x'$? It is feasible. 
+$c\cdot x' \le c\cdot x$ (implying $c\cdot v = 0$). Since $a_i\cdot v > 0$ and $v$ is in the null space of $B$, $a_i$ and $B$ form a linearly independent system. So, we move to a solution with an extra linearly independent constraint in the equality matrix. Repeat this till one gets a basic feasible solution.
+
+\begin{fact}
+An optimum basic feasible solution to a LP can be found in polynomial time.
+\end{fact}
+
+\begin{remark}
+A word of caution. Whatever written above about the ellipsoid method should be taken with a pinch of salt (although the above fact is true). After all, I have not described how the ``carefully constructed" ellipsoids are generated. To make all this work in polynomial time is more non-trivial and we refer the reader to the book ``Geometric Algorithms and Combinatorial Optimization" by Gr\"otschel, Lov\'asz, and Schrijver.
+\end{remark}
+
+\noindent
+Let's get back to approximation algorithms.
+
+\section{Facility Location}
+\noindent
+{\bf LP Relaxation}
+\begin{align}
+\min & \qquad \sum_{i\in F}f_iy_i + \sum_{i\in F,j\in C} c(i,j)x_{ij} & \qquad (x_{ij},y_i \ge 0) \\
+\mbox{ subject to } & \qquad \sum_{i\in F} x_{ij} \ge 1 & \qquad \forall j\in C \label{eq:client} \\
+			     & \qquad y_i \ge x_{ij} & \qquad \forall i\in F,~\forall j\in C \label{eq:fac-client}	 
+\end{align}
+
+Let $(x,y)$ be a fractional solution to the above LP. We define some notation.
+Let $F_{LP} := \sum_{i\in F}f_iy_i$. Let $C_j := \sum_{i\in F}c(i,j)x_{ij}$. Let $C_{LP} = \sum_{j\in C} C_j$.
+We now show an algorithm which returns a solution of cost at most $4(F_{LP} + C_{LP}) \le 4\opt$.
+The algorithm proceeds in two stages. The first stage is called {\em filtering} which will ``take care" of the 
+$x_{ij}$'s, the second stage is called {\em clustering} which will ``take care" of the $y_i$'s. \\
+
+\noindent
+{\bf Filtering.} Given a client $j$, order the facilities in increasing order of $c(i,j)$. That is, 
+$c(1,j) \le c(2,j) \le \cdots \le c(n,j)$. The fractional cost of connecting $j$ to the facilities is $C_j$; our
+goal is to pay not much more than this cost (say within a factor $\rho > 1$ which we will figure out what it should be later). So, we look at the set of facilities $N_j(\rho) := \{i: c(i,j)\le \rho\cdot C_j\}$. Now it is possible that $x_{ij} > 0$ for some $i\notin N_j(\rho)$. However, we can change the solution so that $j$ is fractionally connected only to facilities in $N_j(\rho)$. This is called filtering the fractional solution.
+
+\def\x{\bar{x}}
+\def\y{\bar{y}}
+Define $\x_{ij}$ as follows. $\x_{ij} = \frac{\rho}{\rho -1 }\cdot x_{ij}$ for $i\in N_j(\rho)$, $\x_{ij} = 0$ for $i\notin N_j(\rho)$. 
+\begin{claim}
+$\x$ satisfies \eqref{eq:client}.
+\end{claim}
+\begin{proof}
+Let us consider the sum $C_j = \sum_{i} c(i,j)x_{ij} = \sum_{i\in N_j(\rho)} c(i,j)x_{ij} + \sum_{i\notin N_j(\rho)} c(i,j)x_{ij}$. Since $c(i,j) > \rho\cdot C_j$ for all $i\notin N_j(\rho)$, we get 
+$\sum_{i\notin N_j(\rho)} x_{ij} < \frac{1}{\rho}$, for otherwise the second term in the RHS above exceeds $C_j$. This implies $\sum_{i\in N_j(\rho)} x_{ij} \ge (1 - \frac{1}{\rho})$ implying $\sum_{i\in F} \x_{ij} \ge 1$.
+\end{proof}
+
+\noindent
+Suppose we could guarantee that a client $j$ is always connected to a facility $i$ with $\x_{ij} > 0$,
+then we could argue that the cost paid to connect this pair is at most $\rho\cdot C_j$. 
+However, we have to argue about the facility opening costs as well. This is done using a clustering idea. \\
+
+\noindent
+{\bf Clustering.} Suppose we could find sets of disjoint facilities $F_1,F_2,\ldots$ such that in each $F_k$, 
+we have $\sum_{i\in F_k}y_i \ge 1$, and we only open the minimum cost facility $i^*_k$ in each $F_k$. Then, our total facility opening cost would be $\sum_{k} f_{i^*_k} \le \sum_k \sum_{i\in F_k} f_iy_i \le F_{LP}$.
+In fact, if the $1$ is replaced by $\alpha$, then our facility opening cost is at most $F_{LP}/\alpha$.
+We now show how to obtain such a clustering.  \\
+
+\noindent
+The clustering algorithm proceeds in rounds. In round $\ell$, the client with minimum $C_j$ in $C$ is picked.
+The facility $F_\ell$ is defined as the set of facilities $\{i: \x_{ij_\ell} > 0\}$. All clients $j$ such that there exists an $i\in F_\ell$ with $\x_{ij} > 0$ are deleted from $C$. Let all these clients be denoted by the set $N^2(j_\ell)$.
+The procedure continues till $C$ becomes empty. % (or all clients have been assigned to some $N^2(j_\ell)$.
+ Note that $F_k$'s are disjoint. 
+
+The algorithm opens the cheapest facility $i_\ell \in F_\ell$ and connects all clients $j\in N^2(j_\ell)$ to $i_\ell$.
+Let's argue about the facility opening cost. Note that for each $F_\ell$, we have $\sum_{i\in F_\ell} y_i \ge \sum_{i\in F_\ell} x(i,j_\ell) \ge \frac{\rho -1}{\rho} \sum_{i\in F_\ell} \x_{ij_\ell} \ge \frac{\rho -1}{\rho}$ by Claim 1. Thus, the total facility opening cost is at most $\frac{\rho}{\rho -1}\cdot F_{LP}$.
+
+Consider a client $j$. Either it is a $j_\ell$, in which case the assignment cost is at most $\rho\cdot C_j$.
+Otherwise, it is connected to $i_\ell \in F_\ell$ for some $\ell$. However, there is some $i$ (not necessarily $i_\ell$) in $F_\ell$ such that $x_{ij} > 0$. Now, $c(i_\ell,j) \le c(i,j) + c(i,j_\ell) + c(i_\ell,j_\ell) \le \rho\cdot C_j + 2\rho\cdot C_{j_\ell} \le 3\rho\cdot C_j$ since $C_j \ge C_{j_\ell}$. The latter's because the $j$'s are considered in increasing order of $C_j$. 
+
+So, $\alg \le \frac{\rho}{\rho -1}F_{LP} + 3\rho C_{LP}$. If $\rho = 4/3$, then the above gives $\alg \le 4(F_{LP} + C_{LP})$.
+
+\section{Generalized Assignment Problem}
+In GAP, we are given $m$ items $J$, and $n$ bins $I$. Each bin $i$ can take a maximum load of 
+$B_i$. Each item $j$ weighs $w_{ij}$ in bin $i$, and gives profit $p_{ij}$ when put in it. 
+The goal is to find a max-profit feasible allocation. \\
+
+\noindent
+{\bf LP Relaxation} 
+\begin{align}
+\max & \qquad \sum_{i\in I,j\in J}p_{ij}x_{ij}  & \qquad (x_{ij}  \ge 0) \label{lp:gap}\\
+\mbox{ subject to } & \qquad \sum_{j\in J} w_{ij} x_{ij} ~\le~ B_i & \qquad \forall i\in I \\
+			     & \qquad \sum_{i\in I}  x_{ij} ~\le ~1 & \qquad \forall j \in J
+\end{align}
+
+Solve the LP to get a fractional solution $x$. Suppose all the weights $w_{ij}$ were $B_i$, say. Then the first constraint is equivalent to $\sum_{j\in J} x_{ij} \le 1$. Consider the bipartite graph $(I,J,E)$ where we have an edge $(i,j)$ if $x_{ij} > 0$. Then, the solution $x$ above is a maximum weight {\em fractional matching} in this bipartite graph. This implies that there is an {\em integral matching} of the same weight, and thus there is an allocation equalling the LP value (and hence the optimum value). This is a non-trivial combinatorial optimization fact and is key to the approximation algorithm below. Let's come to this fact later. 
+
+Of course $w_{ij}$ is not equal to $B_i$, although we can assume $w_{ij} \le B_i$ since if not we know $x_{ij}$
+has to be $0$ for such a pair. (Note this must be put into the above LP explicitly, that is, we must set $x_{ij} = 0$ for such pairs as constraints.) Thus, in general, $\sum_{j\in J} x_{ij} \ge 1$. Let $n_i := \ceil{\sum_{j\in J}x_{ij}}$. The algorithm proceeds as follows: it uses $x$ to define a fractional matching on a different bipartite graph, use it to get an integral matching of equal weight in it, and then do a final step of pruning.  \\
+
+\noindent
+{\bf New Bipartite Graph.} One side of the bipartition is $J$. The other side is $I'$ which consists of $n_i$ copies of each bin $i$ in $I$. For each bin $i\in I$, consider the items in $J$ in {\em increasing} weight order.
+That is, suppose, $w_{i1} \le w_{i2} \le \cdots \le w_{im}$. Consider the fractions $x_{i1},x_{i2},\ldots,x_{im}$ in this order. Let $j_1,j_2,\ldots,j_{n_i-1}$ be the ``boundary" items defined as follows. $x_{i1} + \cdots + x_{j_1} \ge 1$, and $x_{i1} + \cdots + x_{j_1 - 1} < 1$; $x_{i1} + \cdots + x_{j_2} \ge 2$, and $x_{i1} + \cdots + x_{j_1 - 2} < 2$; and so on. Formally, for each $1 \le \ell \le n_i-1$,
+$$ \sum_{j=1}^{j_{\ell}} x_{ij} \ge \ell; ~~~ \sum_{j=1}^{j_{\ell}-1} x_{ij} < \ell$$
+Recall there are $n_i$ copies of the bin $i$ in $I'$. The $\ell$th copy, call it $i_\ell$, has an edge to items $j_{\ell - 1}$ to $j_{\ell}$ ($j_0$ is the item $1$). The $n_i$th copy has an edge to items $j_{n_{i-1}-1}$ to $m$. \\
+
+\noindent
+{\bf New Fractional Matching.} $x'$ is so defined such that for every copy $i_\ell$, the total fractional weight incident on it is at most $1$ (in fact, it'll be exactly $1$ for all copies but the $n_i$th copy). The total fractional weight incident on item $j$ is the same as that induced by $x$. It's clear how to do it given the way edges are defined above; formally it's the mess given below.
+
+\begin{align*}
+x'_{i_\ell,j} & \qquad = & x_{ij}, &\qquad  \mbox{ for } j_{\ell - 1} < j < j_{\ell} \\
+x'_{i_\ell,j_{\ell-1}} & \qquad = & x_{i,j_{\ell-1}} - x'_{i_{\ell-1},j_{\ell-1}} & \qquad \mbox{(if $\ell = 1$, then the second term is $0$).} \\
+x'_{i_\ell,j_\ell} & \qquad = & 1 - \sum_{j=j_{\ell-1}}^{j_\ell - 1} x'_{i_\ell,j} & 
+\end{align*}
+
+\noindent
+{\bf Integral Matching and Pruning.} Note that $x'$ defines a fractional matching in $(I',J,E')$. Thus, there is an allocation of items to $I'$ whose profit is at least the LP profit (and thus at least \opt). The assignment to $I'$ implies an assignment to $I$ in the natural way: bin $i$ gets all items allocated to the $n_i$ copies in $I'$. 
+Is this feasible? Not necessarily. But, the total weight allocated to bin $i$ is not too much larger than $B_i$. 
+
+\begin{claim}
+The total weight of items allocated by the integral matching above is at most $B_i + \Delta_i$, 
+where $\Delta_i := \max_{j\in J} w_{ij}$. 
+\end{claim}
+\begin{proof}
+We use the fact that the items (for bin $i$) were ordered in increasing order of weights. 
+Let $J_\ell$ be the set of items from $j_{\ell -1}$ to $j_\ell$, and let $J_{n_i}$ be the items from 
+$j_{\ell}$ to $m$. Since $x$ is a feasible solution to the LP, we get
+$$B_i \ge \sum_{j\in J} w_{ij}x_{ij} = \sum_{\ell=1}^{n_i} \sum_{j\in J_\ell} w_{ij}x'_{i_\ell,j} \ge 
+\sum_{\ell=1}^{n_i} \left(w_{i,j_{\ell-1}}\cdot \sum_{j\in J_{\ell}} x'_{i_\ell,j}\right) \ge w_{i,j_1} + \cdots + w_{i,j_{n_i-1}}$$
+The second inequality uses the increasing order of weights, the last uses the fact that $x'$ forms a fractional matching. 
+
+Now, bin $i$ gets at most one item from each $J_\ell$ (since each copy $i_\ell$ gets at most item from it's 
+neighbors in $J_\ell$.) Note that the heaviest item in $J_\ell$ weighs $w_{i,j_\ell}$, and $\Delta_i = w_{i,n_i}$.
+Thus, the load on bin $i$ is at most $w_{i,j_1} + \cdots + w_{i,n_i-1} + w_{i,n_i}$
+which is at most $B_i + \Delta_i$.
+\end{proof}
+
+To summarize, we have found an allocation whose profit is at least $\opt$ and each bin $i$ has load at most $B_i + \Delta_i$. For each bin $i$ now consider the heaviest item $j$ allocated to it. We know that $w_{ij} \le B_i$. We also know weight of all the {\em other} items allocated to it is $\le B_i$. To make the allocation feasible, keep either $j$ or the rest, whichever gives more profit. In this pruned allocation, each bin thus gets profit at least half of what it got in the earlier infeasible allocation. Thus, the profit of this new feasible allocation is at least $\opt/2$. Thus, the above algorithm is a $1/2$-approximation.
+
+\subsection{Fractional Matching to Integral Matching}
+Given a fractional matching $x$, construct the fractional bipartite graph
+$G=(I,J,E_f)$ where there is an edge between $i\in I$ and $j\in J$ with $0<x_{ij}<1$.
+We now describe a procedure which takes $x$ and converts it to $x'$ such that two things occur:
+a) the number of edges in the corresponding $E_f$ is strictly less, and b) $\sum_{i,j} w_{ij}x_{ij} \le \sum_{i,j} w_{ij}x'_{ij}$. The fact follows. \\
+
+\noindent
+{\bf Procedure }{\sc Rotate.}
+\begin{enumerate}
+\item Pick a path or cycle in $G = (I,J,E_f)$. Call the edges picked $F$. Decompose $F$ into two matchings
+$M_1$ and $M_2$.
+\item Let $$\eps_1 := \min\left( \min_{(i,j) \in M_1} x_{ij}, \min_{(i,j)\in M_2} (1-x_{ij}) \right)$$
+$$\eps_2 := \min\left( \min_{(i,j) \in M_2} x_{ij}, \min_{(i,j)\in M_1} (1-x_{ij}) \right)$$
+\item Define  $x^{(1)}$ as follows. 
+	For each $(i,j)\in M_1$, $x^{(1)}_{ij} = x_{ij} - \eps_1$,
+	for each $(i,j)\in M_2$, $x^{(1)}_{ij} = x_{ij} + \eps_1$,
+	for all other edges $x^{(1)}_{ij} = x_{ij}$. Define $x^{(2)}$ similarly. 
+\item Let $x'$ be the $x^{(1)}$ or $x^{(2)}$ with larger $\sum_{i,j}w_{ij}x'_{ij}$. 
+\end{enumerate}
+
+\noindent
+It is clear that the number of edges in $E_f$ decreases in this procedure. Also note that the sum $\sum_{i,j}w_{ij}x'_{ij}$ is at least $\sum_{i,j} w_{ij}x_{ij}$. This is because the ``increase" in weight in $x^{(1)}$ over $x$ is precisely $\eps_1\left(\sum_{(i,j)\in M_2} w_{ij} - \sum_{(i,j)\in M_1}w_{ij}\right)$, and that in $x^{(2)}$ is 
+$\eps_2\left(\sum_{(i,j)\in M_1} w_{ij} - \sum_{(i,j)\in M_2}w_{ij}\right)$. One of them is at least $0$.
+The following claims ends the analysis of the procedure.
+
+\begin{claim}
+$x'$ is a feasible fractional matching.
+\end{claim}
+\begin{proof}
+If $F$ forms a cycle, then it's clear that the fractional ``load" on any vertex remains unchanged.
+If $F$ forms a path, then we need to only concern about end vertices. Let $i$ be such a vertex.
+Note that there are no edges $(i,j')$ with $x_{ij'} = 1$ incident on it, 
+and exactly one edge $(i,j)\in E_f$ incident on it. In the end, $x'_{ij} \le 1$.
+\end{proof}
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+\end{document}

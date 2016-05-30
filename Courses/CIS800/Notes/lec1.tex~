@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+
+\title{Lecture 1: Greedy Approximation Algorithms}
+\author{}
+\date{}
+\maketitle
+\section{Set Cover}
+Given a universe $U$ of $n$ elements, and a collection of sets $\{S_1,\ldots,S_t\}$, each $S_i\subseteq U$ and having cost
+$c(S_i)$. The set cover problem is to pick a minimum cost collection of the sets which cover all elements.
+
+\vspace{2ex}\noindent
+\begin{boxedminipage}{\algobox}
+Procedure {\sc Greedy-SC}
+\begin{algorithmic}[1]
+  \STATE $X$ denotes the set of uncovered elements and $\script{F}$ denotes the set cover picked by the algorithm. \\
+  \STATE Initialize $X \to U$ and $\script{F} \to \emptyset$. \\
+  \WHILE{$X$ is not $\emptyset$}
+  	\STATE Let $S$ be the set which minimizes $\frac{c(S)}{|S\cap X|}$.\\
+	\STATE $\script{F} = \script{F} \cup S$. $X = X\setminus S$.
+  \ENDWHILE
+\end{algorithmic}
+\end{boxedminipage}
+\vspace{1ex}
+
+\noindent
+{\bf Analysis.} Let $\script{F} := \{S_1,\ldots,S_r\}$ be the sets cover picked by the algorithm, of total cost \alg.
+Let $\{O_1,\ldots,O_\ell\}$ be the the optimal set cover of cost $\opt$. Also, let us denote the set of uncovered 
+elements just before iteration $i$ to be $X_i$. Thus, $X_1 = U$ and $X_{r+1} = \emptyset$.
+Note that $S_i \cap X_i$, the set of elements covered at iteration $i$, is precisely $X_i \setminus X_{i+1}$. \\
+
+\noindent
+Greedy choice tells us for all $i\in [r]$, we have
+\begin{align}
+\forall j \in [\ell]: ~~ \frac{c(S_i)}{|S_i\cap X_i|}  \qquad & \le & ~ \frac{c(O_j)}{|O_j\cap X_i|} \\
+\Rightarrow  ~~ \frac{c(S_i)}{|S_i\cap X_i|}  \qquad & \le & \frac{\sum_{j=1}^\ell c(O_j)}{\sum_{j=1}^\ell |O_j\cap X_i|} \le \frac{\opt}{|X_i|} \label{eq:weakness}
+\end{align}
+The last inequality follows since $O_j$'s form a cover and thus, $\bigcup_{j=1}^\ell O_j\cap X_i = X_i$.
+Adding over all $i$ we get
+\begin{align*}
+\alg = \sum_{i=1}^r c(S_i) 	\qquad & \le & \opt \cdot \sum_{i=1}^r \frac{|S_i\cap X_i|}{|X_i|} \\
+					\qquad & \le & \opt \cdot \sum_{i=1}^r \frac{|X_i| - |X_{i+1}|}{|X_i|} \\
+					\qquad & \le & \opt \cdot \left(\frac{1}{|U|} + \frac{1}{|U|-1} + \cdots + 1\right) \\							\qquad & \le & \opt \cdot H_n
+\end{align*}
+
+\begin{theorem}
+Procedure {\sc Greedy-SC} is a $H_n$-approximation algorithm.
+\end{theorem}
+
+Can we do a better analysis? We now show a slightly different way of analyzing giving us a better factor.
+Let $k := \max |S_i|$ be the size of the largest cardinality set in the collection. We argue now that the factor can be improved to $H_k$. To do this we introduce the ``charging trick".
+
+Once again let $\{S_1,\ldots,S_r\}$ be the sets picked by our algorithm. Recall that we pick set $S_i$ in iteration $i$ because it minimized $\alpha := \frac{c(S_i)}{|S_i\cap X_i|}$. For each element $j \in S_i\cap X_i$, that is, each new element covered by $S_i$, assign a charge $\alpha_j = \alpha$. Do this for every set picked. Observe the following things: each element gets charged once, and $\alg = \sum_{j\in U} \alpha_j$.
+%and if $\alpha_j < \alpha_{j'}$, then $j$ was covered before $j'$. 
+
+Now pick a set $O_i$ in the optimal set cover. Order the elements of $O_i$ in the order in which they got covered by the algorithm.
+%increasing order of  $\alpha_j$. So $\alpha_1 \le \alpha_2 \le \cdots \le \alpha_{|O_i|}$. 
+What do we know about $\alpha_j$?
+When this element $j$ was being covered by our algorithm, we had the choice of picking $O_i$. Furthermore, 
+none of the elements $j,j+1,\ldots$ were covered. So, it must be that $\alpha_j \le \frac{c(O_i)}{|O_i|-j+1}$.
+Thus, $\sum_{j\in O_i}\alpha_j \le c(O_i)\cdot H_{|O_i|} \le c(O_i)\cdot H_k$. Summing over all $O_i$'s, we get
+$$\alg = \sum_{j\in U} \alpha_j \le \sum_{i=1}^\ell \sum_{j\in O_i} c(O_i)\cdot H_k = \opt\cdot H_k.$$
+
+\begin{theorem}
+Procedure {\sc Greedy-SC} is a $H_k$-approximation algorithm, where $k$ is the cardinality 
+of the maximum cardinality set. 
+\end{theorem}
+
+Consider now the vertex cover problem. This is a special case of set cover where $k=\Delta$, the max-degree.
+Thus, the greedy algorithm which picks the maximum degree vertex, deletes it, and iterates till all edges are covered is a $H_\Delta$-approximation. 
+
+
+\section{Metric Facility Location}
+In the facility location problem, we are given a set of facilities $F$, a set of clients $C$. Facility $i\in F$ has a cost $f_i$ of opening. It costs $c(i,j)$ to connect client $j$ to facility $i$. Clients can only be connected to open facilities. The objective is to find a set of facilities to open and connect clients to open facilities minimizing the total cost. This problem is normally called the {\em uncapacitated} facility location problem or simply UFL,
+so as to distinguish it from the capacitated facility location problem where each facility has a capacity which bounds the number of clients it can serve. This is a harder problem.
+If the connection costs form a metric, that is, $c(i,j) \le c(i,j') + c(j',i') + c(i',j)$ for all $i,i'\in F$ and $j,j'\in C$, 
+then the problem is called the metric UFL. We now give a constant factor approximation for the metric UFL problem.
+
+
+\vspace{2ex}\noindent
+\begin{boxedminipage}{\algobox}
+Procedure {\sc Greedy-UFL}
+\begin{algorithmic}[1]
+  \STATE $X$ denotes the set of facilities opened and $D$ denotes the set of assigned clients. 
+               Each client in $D$ will be assigned a facility in $X$, and we will maintain this assignment 
+               as $\sigma : D\to X$. \\
+  \STATE Initialize $X,D \to \emptyset$. \\
+  \WHILE{$D$ is not $C$}
+  	\STATE  Given a facility $i$, let $D'\subseteq D$ be the set of clients who are closer to $i$ than their
+	              currently assigned facility. Let $\delta(D,i) := \sum_{j\in D'}(c(\sigma(j),j) - c(i,j))$ denote the 
+	              reduction in connection costs if $i$ is opened. \\
+	\STATE  Pick a facility $i$ and a set of unassigned clients $Y\subseteq C\setminus D$ so as to minimize
+	 		$$ \frac{{\bf 0}_{i\in X}\cdot f_i + \sum_{j\in Y} c(i,j) - \delta(D,i)}{|Y|}$$
+		      where ${\bf 0}_{i\in X}$ is $0$ if $i\in X$, $1$ otherwise. 
+	\COMMENT{{\em Note if $i\in X$, then $\delta(D,i) = 0$.}} \\
+	\STATE $X = X \cup i$. $D = D\cup Y$. Assign all $j\in Y\cup D'$ to $i$.
+  \ENDWHILE
+\end{algorithmic}
+\end{boxedminipage}
+\vspace{1ex}
+\def\i{{i^*}}
+
+\noindent
+Let's fix some notation. Let $X^*$ be the set of facilities opened by the optimal algorithm. Let $\sigma^*$ 
+be the assignment of clients to $X^*$ of the optimal solution. Given a client $j$, let $c^*_j := c(\sigma^*(j),j)$,
+and let $c_j := c(\sigma(j),j)$. We let $F^* = \sum_{i\in X^*}f_i$ and $C^* = \sum_{j\in C}c^*_j$.
+Note that $\opt =  F^* + C^*$. Similarly, let $F_{\alg} =  \sum_{i\in X}f_i $ and $C_{\alg}=  \sum_{j\in C}c_j$. 
+$\alg =  F_{\alg} + C_{\alg}$. We introduce another bit of notation: $\Gamma_i$ and $\Gamma^*_i$ will respectively denote the set of clients assigned to facility $i$ by our and the optimal algorithm. \\
+
+\noindent
+We applying the charging idea. Whenever a client $j$ is assigned to a facility for the {\em first time}, 
+we let $\alpha_j :=  \frac{{\bf 0}_{i\in X}\cdot f_i + \sum_{j\in Y} c(i,j) - \delta(D,i)}{|Y|}$, where $Y$ 
+is the set of clients being assigned for the first time in that iteration. Note that $j$ could be re-assigned
+later on, but we do not modify $\alpha_j$. Observe that, $\alg = \sum_{j\in C} \alpha_j$.  \\
+%
+%\begin{claim}
+%For two clients $j_1$ and $j_2$, if $j_1$ enters $D$ before $j_2$, then $\alpha_{j_1} \le \alpha_{j_2}$.
+%\end{claim}
+%\begin{proof}
+%Suppose $j_2$ enters $D$ when client $i$ is brought into $X$, and $Y$ and $D'$ are as defined by the algorithm. $\alpha_{j_2} = \frac{f_i + \sum_{j\in Y}c(i,j) + \sum_{j\in D'}(c(i,j) - c(\sigma(j),j)}{|Y|}$, where $\sigma(j)$ is the assignment right before this iteration. Now, since $j_1$ enters $D$ before $j_2$, we have
+%$$\alpha_{j_1} \le \frac{f_i + \sum_{j\in Y} c(i,j) + \sum_{j\in D'}c( }{}$$
+%\end{proof}
+
+\noindent
+Pick a facility $\i$ in $X^*$ and let $k:=|\Gamma^*_\i|$. 
+Order the clients in $\Gamma^*_\i$ in the order they arrive in $D$.
+Consider the iteration at which the $j$th client is being added. A facility $i$ is chosen along with 
+a set of clients $Y$ containing $j$. Let $\sigma'$ be the assignment at the beginning of this iteration. 
+
+
+\begin{align}
+\forall \ell < j: ~~ \alpha_j &\qquad \le & c(\sigma'(\ell),\ell) + c^*_\ell + c^*_j \label{eq:eq1} \\
+\alpha_j & \qquad \le & \frac{f_\i + c^*(\Gamma^*_\i) - \sum_{\ell < j}c(\sigma'(\ell),\ell)}{(k-j+1)} \label{eq:eq2}
+\end{align}
+
+When $j$ is being added, one possible choice of the algorithm is to connect the singleton $j$ to $\sigma'(\ell)$
+for some $\ell < j$. Thus, $\alpha_j \le c(\sigma'(\ell),j) \le c(\sigma'(\ell),\ell) + c(\i,\ell) + c(\i,j)$, by metricity (finally used!). This implies \eqref{eq:eq1} since both $j,\ell \in \Gamma^*_\i$.
+Another possible choice of the algorithm is to add the facility $\i$ and the set $Y := \{\ell: \ell \ge j\}$.
+Furthermore, all the clients $\ell < j$, could be re-assigned to $\i$. (Note that this might be suboptimal, but it is erring in the correct direction). So, $\alpha_j \le \frac{f_\i + \sum_{\ell\ge j} c(\i,\ell) - \sum_{\ell < j}(c(\sigma'(\ell),\ell) - c(\i,\ell))}{(k-j+1)}$ which on rearrangement gives \eqref{eq:eq2}. 
+
+Adding \eqref{eq:eq1} for all $\ell < j$, and \eqref{eq:eq2} gives us
+$k\alpha_j \le  \sum_{\ell<j} c^*_\ell + (j-1)c^*_j + f_\i + c^*(\Gamma^*_\i) $. Adding over all $j\in \Gamma^*_\i$
+gives, 
+\begin{align*}
+k\alpha(\Gamma^*_\i) &\qquad \le & \sum_{j=1}^k \sum_{\ell < j} c^*_\ell + \sum_{j=1}^k (j-1)c^*_j + k(f_\i + c^*(\Gamma^*_\i) \\
+& \qquad = & k(f_\i + 2c^*(\Gamma^*_\i))
+\end{align*}
+\noindent
+Dividing by $k$ and adding over all $\i\in X^*$, we get 
+$\alg = \alpha(C) \le \sum_{\i\in X^*} \alpha(\Gamma^*_\i) \le F^* + 2C^*$.
+
+\begin{theorem}
+Procedure {\sc Greedy-UFL} is a 2-approximation.
+\end{theorem}
+
+\subsection{Improving the factor with greedy augmentation}
+An algorithm is a $(\lambda,\mu)$ approximation to UFL if $\alg \le \lambda F^* + \mu C^*$.
+Note that the above is a $(1,2)$ approximation. The following theorem shows how to ``balance'' the two out to get a better factor. 
+
+\begin{enumerate}
+\item {\bf Input:} Algorithm $\script{A}$ which is a $(\lambda,\mu)$ approximation; parameter $\alpha \ge 1$.
+\item Scale up all facility opening costs by a factor of $\alpha$.
+\item Run $\script{A}$ to open a set of facilities $X_0$. $\sigma_0$ be the assignment of clients to nearest facility in $X_0$. Scale down facility costs back to original. Initialize $X$ to $X_0$.
+\item While there exists facility $i\in F\setminus X$ such that $f_i \le \delta(C,i)$
+\begin{quote}Add facility $i$ which minimizes $\frac{f_i}{\delta(C,i)}$, to $X$.\end{quote}
+\item Return $X$ as the set of opened facilities. Connect every client to the nearest open facility.
+\end{enumerate}
+
+\begin{theorem}
+The above algorithm is a $(\lambda + \ln (\alpha), 1 + \frac{\mu - 1}{\alpha})$ approximation to UFL.
+\end{theorem}
+\begin{proof}
+Let $F_0$ and $C_0$ be the facility opening and connection costs of $X_0$ and $\sigma_0$, 
+and let $F_\alg$ and $C_\alg$ be the same for $X$ and $\sigma$.
+Note that 
+\begin{equation}\label{eq:lambdamu}
+\alpha F_0 + C_0 \le \lambda\alpha F^* + \mu C^*
+\end{equation}
+\noindent
+Let the new facilities picked be $\{1,\ldots,t\}$, and let $X_i := X\cup \{1,\ldots ,i\}$. Thus, $X = X_t$.
+$\sigma_i$ be the assignment of clients to the nearest facility in $X_i$. Let $C_i$ be the connection costs of $\sigma_i$.
+
+Observe the following things. $C_i$'s are decreasing and $C_{i-1} - C_i = \delta(C,i)$ for $1\le i\le t$.
+Also, for each $1\le i\le t$ and for each $i^*\in X^*\setminus X$, $\frac{f_i}{\delta(C,i)} \le \frac{f_{i^*}}{\delta(C,i^*)}$. Thus, 
+$$\frac{f_i}{\delta(C,i)} \le \frac{\sum_{\i\in X^*\setminus X} f_\i}{\sum_{\i\in X^*\setminus X}\delta(C,\i)} \le \frac{F^*}{C_{i-1} - C^*}.$$
+\noindent
+Let's do a technical gimmick here: since we pick facilities from $1$ to $t$, only if the total cost of the algorithm decreases (since $f_i \le \delta(C,i)$), the cost of our algorithm when we open $X = X_t$ is no more than the cost of the algorithm when we open $X_\ell$, for $\ell \le t$. Let $\ell$ be the smallest iteration at which $C_\ell \le F^* + C^*$. That is, $C_{\ell - 1} > F^* + C^*$. 
+Henceforth we analyze the cost of the algorithm which opens only $X_\ell$.
+
+The above inequality gives us
+$$\sum_{i=1}^\ell f_i \le F^* \sum_{i=1}^\ell \frac{C_{i-1} - C_i}{C_{i-1} - C^*}$$
+
+\noindent
+The summation on the RHS is familiar -- we saw it in our first analysis of set cover. Here's a slightly different way of bounding the expression on the right. First we break the summation in the RHS  as follows:
+$$ \sum_{i=1}^\ell \frac{C_{i-1} - C_i}{C_{i-1} - C^*} = \sum_{i=1}^{\ell-1} \frac{C_{i-1} - C_i}{C_{i-1} - C^*}  + \frac{C_{\ell - 1} - (F^*+C^*)}{C_{\ell-1} - C^*} + \frac{(F^*+C^*) - C_\ell}{C_{\ell-1} - C^*}$$
+
+Now the two summands on the above RHS can be upper bounded by the integration
+$$ \sum_{i=1}^{\ell-1} \frac{C_{i-1} - C_i}{C_{i-1} - C^*}  + \frac{C_{\ell - 1} - (F^*+C^*)}{C_{\ell-1} - C^*}  \qquad \le \qquad \int_{F^*+C^*}^{C_0 - C^*} \frac{dx}{\left(x - C^*\right)} $$
+
+\noindent
+Putting everything together and using $C_{\ell-1} > F^*+C^*$, 
+\begin{align*}
+\sum_{i=1}^\ell f_i \le  F^*\ln\left(\frac{C_0 - C^*}{F^*}\right) + (F^*+C^* - C_\ell)
+\end{align*}
+Since $F_\alg = F_0 + \sum_{i=1}^\ell f_i$ and $C_\alg = C_\ell$, we get
+\begin{equation}\label{eq:algo}
+\alg \le F_0 + F^*\ln\left(\frac{C_0 - C^*}{F^*}\right) + (F^*+C^*)
+\end{equation}
+\noindent
+Let $\beta = \frac{C_0 - C^*}{F^*}$. Using \eqref{eq:lambdamu}, we get that $F_0 = F^*\left(\lambda - \frac{\beta}{\alpha}\right) + C^*\left(\frac{\mu - 1}{\alpha}\right)$. So, 
+$$\alg \le  F^*\left( \lambda + 1 + \ln(\beta) - \frac{\beta}{\alpha} \right) + C^*\left(1 + \frac{\mu - 1}{\alpha}\right)$$
+The proof completes by noting the maximum value of the coefficient of $F^*$ is obtained when $\beta = \alpha$.
+\end{proof}
+\noindent
+Now using the $(1,2)$ approximation described above, we get the following
+\begin{corollary}
+There is a $1.57$-approximation for metric UFL.
+\end{corollary}
+\end{document}

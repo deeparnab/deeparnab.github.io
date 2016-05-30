@@ -1,0 +1,73 @@
+\documentclass[10pt]{article}
+\usepackage{hw}
+\usepackage{amsthm}
+
+\LectureNumber{1}
+\LectureDate{May 21st, 2009}
+\LectureTitle{}
+
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{fancybox}
+\usepackage{psfig}
+
+
+\newcommand{\ddate}[1]{\noindent {\marginpar{ \bf #1}} \newline \indent}
+
+\def\ni{\noindent}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.0in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{9in}
+
+\begin{document}
+\MakeScribeTop
+\begin{enumerate}
+\item Given precedence constraints for a machine scheduling problem as a directed graph, how would you check if the graph is acyclic (that is the precedence constraints are consistent)? What is the best time complexity (in the big-Oh notation) you can come up with?
+
+\item 
+Suppose $\gamma_1$ and $\gamma_2$ are regular performance measures. Which of the following are regular? If you say a measure is regular, prove it. If you say otherwise, give an example to show that it is not.
+\begin{itemize}
+\item $w_1\gamma_1 + w_2\gamma_2$, for $w_1,w_2 \ge 0$ .
+\item $\gamma_1 - \gamma_2$ .
+\item $w_1\gamma_1 - w_2\gamma_2$, for $w_1 > w_2 \ge 0$ .
+\item $e^{c\gamma_1}$, for some $c > 0$. Here $e$ is the base of the natural logarithm, $2.718\ldots$ .
+\item $\gamma_1/\gamma_2$ .
+\end{itemize}
+
+\item 
+Given a schedule for a scheduling problem, let $N_u(t)$ denote the number of unfinished jobs at time $t$. Therefore, $N_u(0) = n$ and $N_u(C_{max}) = 0$. Consider the performance measure
+$$\overline{N_u} := \frac{1}{C_{max}} ~\int^{C_{max}}_{0} N_u(t)dt$$
+
+Express this performance measure as a function of performance measures we studied in class. Is this performance measure regular? Why or why not?
+
+
+\item
+Given an instance of a machine scheduling problem $(J ~|~|~ \gamma)$ where $\gamma$ is a regular performance measure, show that there exists an active schedule which is optimal. 
+
+\item 
+In the {\em Traveling Salesman Problem} (TSP), we have a salesman who needs to start at his office at city $0$ and visit $n$ cities and come back to his office. The distance between city $i$ and $j$ for $0 \le i\neq j \le n$ is given as $d_{ij}$. The problem is to find a tour of the salesman with minimum total distance. Show that this problem is equivalent to a scheduling problem in the $(\alpha ~|~ \beta ~|~ \gamma)$ notation. (By equivalence, we mean solving one problem would imply the solution to another.)
+
+\item 
+Consider the following shop scheduling problem with $2$ machines and $4$ jobs.
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|c|c|}\hline
+Jobs & 1 & 2 & 3 & 4 \\ \hline
+$p_{1j}$ & 8 & 6 & 4 & 12 \\
+$p_{2j}$ & 4 & 9 & 10 & 6 \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{0.1in}
+Consider the two problems, $(F2~|~|~C_{max})$ and $(O2 ~|~|~C_{max})$,
+given the above data. By problem $4$ above we know that there exists an optimal 
+active schedule. How many active schedules are there for the above problem?
+Find optimal schedules for the above two problems and {\em argue}  that your schedules are optimal. Try to make your argument as rigorous as you can. 
+Arguments such as ``I have tried all possible schedules'' will not be considered rigorous and are not recommended.
+(Hint: Try to argue that $C_{max}$ of any schedule must be at least some value depending only on the processing times and then construct the schedule)
+\end{enumerate}
+\end{document}
+

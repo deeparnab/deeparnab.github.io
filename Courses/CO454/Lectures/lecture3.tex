@@ -1,0 +1,123 @@
+\documentclass[11pt]{article}
+\usepackage{scribe}
+\usepackage{amsthm}
+
+\LectureNumber{3}
+\LectureDate{May 12th, 2009}
+\LectureTitle{Reductions among Scheduling Problems; Single Machine Environments}
+
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{fancybox}
+\usepackage{psfig}
+
+
+\newcommand{\ddate}[1]{\noindent {\marginpar{ \bf #1}} \newline \indent}
+
+\def\ni{\noindent}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.0in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+
+\begin{document}
+\MakeScribeTop
+\def\lle{\trianglelefteq}
+\section{Reductions among Scheduling Problems}
+We say a scheduling problem $(\alpha~|~\beta~|~\gamma)$ can be reduced to another scheduling problem $(\alpha'~|~\beta'~|~\gamma')$ 	
+if an algorithm for the latter problem can be used to solve the former problem. We denote this using the following notation
+$$ (\alpha~|~\beta~|~\gamma)  \lle (\alpha'~|~\beta'~|~\gamma') $$
+The reduction is efficient if a polynomial time algorithm for the latter problem leads to a polynomial time algorithm for the former problem.
+
+Sometimes these reductions are easy. For instance, it is easy to see that $(\alpha~|~\beta~|~\sum C_j) \lle (\alpha~|~\beta~|~\sum w_jC_j)$, or any other non-weighted to weighted reduction. Or, $(P~|~\beta~|~\gamma) \lle (Q~|~\beta~|~\gamma) \lle (R~|~\beta~|~\gamma)$.
+However sometimes these reductions can be tricky. 
+
+\begin{theorem}
+$(\alpha~|~\beta~|~L_{max}) \lle (\alpha~|~\beta~|~\sum U_j)$
+\end{theorem}
+\begin{proof}
+Suppose we have an algorithm to solve any instance of $(\alpha~|~\beta~|~\sum U_j)$. Consider an instance of $(\alpha~|~\beta~|~L_{max})$
+with due dates $(d_1,\ldots,d_n)$ for the jobs. The crux of the theorem is in the following claim.
+\begin{claim}
+Let $z$ be the minimum value such that the instance $(\alpha~|~\beta~|~\sum U_j)$ with due dates $(d_1+z,\ldots,d_n+z)$ has a schedule $S$ with
+optimum $\sum U_j = 0$. Then $S$ is an optimal schedule for $(\alpha~|~\beta~|~L_{max})$ with maximum lateness $z$.
+\end{claim}
+\begin{proof}
+Since $S$ is such that no job is late with due dates $(d_1+z,\ldots,d_n+z)$, the completion time of every job is $C_j \le d_j+z$. 
+Furthermore, since $z$ is the minimum, there must be a job $j$ with $C_j = d_j + z$. Therefore, when the due dates are 
+$(d_1,\ldots,d_n)$, the maximum lateness of $S$ is $L_{max} = z$.
+
+Now consider any schedule $S'$ for the instance  $(\alpha~|~\beta~|~L_{max})$ with due dates $(d_1,\ldots, d_n)$.
+Suppose the lateness is $z' < z$. By a similar argument as above, the same schedule $S'$ with due dates
+$(d_1+z',\ldots,d_n+z')$ has no late job. But this contradicts the minimality of $z$. 
+\end{proof}
+
+Thus, assuming that all processing times are integers, the algorithm for $(\alpha~|~\beta~|~L_{max})$ is to solve $L_{max}$ instances
+of the $(\alpha~|~\beta~|~\sum U_j)$ problem with due dates $(d_1+z,\ldots,d_n+z)$, $z$ varying from $1$ to $L_{max}$. 
+\end{proof}
+
+\begin{exercise}
+The above reduction is {\em not} a polynomial time reduction since the number of iterations is $L_{max}$ which is not necessarily polynomial.
+How would you make the above reduction polynomial? (Hint: Binary Search).
+\end{exercise}
+
+Reduction is a very important tool in the study of complexity of any type of problems. As we will see in a few lectures from now, we can 
+classify problems into ``easy'' and ``hard'' problems. If a problem $A$ can be reduced to problem $B$, and problem $A$ is ``hard'', then we 
+automatically get that problem $B$ is ``hard''. Conversely, if problem $B$ is ``easy'', then we automatically get that problem $A$ is ``easy''.
+
+\section{Single Machine Environment}
+The single machine environment is the easiest machine environment. However, that doesn't mean all scheduling problems in this environment
+is easy! Moreover, the design of algorithms for the single machine environment gives insight on how to design algorithms for more complicate
+multiple machine environments. In the next few lectures we will be concentrating on algorithms for the single machine environment, in particular,
+exact algorithms.
+
+\subsection{Minimizing Average Completion Time $(1~|~|~\sum C_j), (1~|~|~\sum w_jC_j)$}
+We need to come up with a permutation $\{1,2,\ldots,n\}$ of the jobs in $J$ such that $\sum_j C_j$ is minimized. Note that in the sum
+$\sum_j C_j$, the processing time of the job which arrives first is added $n$ times, the second job $n-1$ times and so on. Thus, intuitively,
+we should process the jobs in increasing order of processing times. This rule is called the {\em Shortest Processing Time}
+rule, or simply the SPT rule. The next theorem shows that the intuition above is correct.
+
+\begin{definition}
+(SPT): Process the jobs in increasing order of processing time.
+\end{definition}
+
+\begin{theorem}
+The SPT rule gives an optimal schedule $(1~|~|~ \sum C_j)$.
+\end{theorem}
+\begin{proof}
+Suppose the optimal schedule $S$ is not SPT. Then note that there must be a job $k$ and a job $\l$ such that $p_k > p_\l$ and the machine processes $k$ 
+before $\l$. It is not too hard to see that one can assume $k$ and $\l$ are consecutive in the schedule. Now consider the schedule $S'$ 
+which is the same as $S'$ except the order of $k$ and $\l$ are switched. Note that the completion time of all jobs $j\neq k,\l$ remains unchanged.
+Assume that the processing of job $k$ starts at time $t$ in schedule $S$.
+Therefore, 
+$$\sum_{j} (C^{S}_j - C^{S'}_j) = [(t+p_k) + (t+p_k+p_\l)] - [(t+p_\l) + (t+p_\l+p_k)] = p_k - p_\l > 0$$
+which is a contradiction since $S$ was the optimal schedule.
+\end{proof}
+
+The above argument where we interchanged two jobs which did not satisfy our rule of scheduling to argue about optimality is called 
+the {\em interchange argument}. A similar argument can be used to show that a generalization of the SPT is optimal for minimizing the 
+weighted completion time.
+
+\begin{definition}
+(WSPT): Process the jobs in decreasing order of $w_j/p_j$.
+\end{definition}
+
+\begin{theorem}\label{thm:wspt}
+The WSPT rule gives an optimal schedule $(1~|~|~ \sum w_jC_j)$.
+\end{theorem}
+
+\begin{proof}
+Suppose the optimal schedule $S$ is not WSPT. Then there must be two jobs $k$ and $\l$ such that $S$ processes $\l$ right after $k$ but $$w_k/p_k < w_\l/p_l$$
+Consider the schedule which is the same as $S$ but interchanges the order of $k$ and $\l$. Note that any job other than $k$ and $\l$ doesn't change its completion time. Therefore,
+$$\sum_{j} (w_jC^{S}_j - w_jC^{S'}_j) = [w_k(t+p_k) + w_\l(t+p_k+p_\l)] - [w_l(t+p_\l) + w_k(t+p_\l+p_k)] = w_\l p_k - w_kp_\l > 0$$
+which is a contradiction since $S$ is the optimal schedule.
+\end{proof}
+
+%An interchange argument can also be shown to prove that given any nondecreasing function $f:\R\to\R$, the SPT rule is optimal
+%for any objective function of the form $(\gamma = \sum f(C_j))$. 
+
+
+\end{document}

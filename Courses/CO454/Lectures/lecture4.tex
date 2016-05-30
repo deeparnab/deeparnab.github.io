@@ -1,0 +1,136 @@
+\documentclass[11pt]{article}
+\usepackage{scribe}
+\usepackage{amsthm}
+
+\LectureNumber{4}
+\LectureDate{May 14th, 2009}
+\LectureTitle{Single Machine Environments (Release Dates) }
+
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{fancybox}
+\usepackage{psfig}
+
+
+\newcommand{\ddate}[1]{\noindent {\marginpar{ \bf #1}} \newline \indent}
+
+\def\ni{\noindent}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.0in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+
+\begin{document}
+\MakeScribeTop
+\section{Minimizing Average Completion Time with Release Dates}
+Consider the case when there are release dates $r_j$ for every job and we want to minimize the average completion time.
+That is, we want to solve $(1~|~r_j~|~\sum C_j)$. Our first attack will be to apply the SPT rule. However, we are faced with a problem
+since the job with the shortest processing time might not be released at time $0$. There are two possible ways we could 
+modify SPT. \\
+\\
+\noindent
+1. Sort the jobs in increasing processing times. Process jobs in this order, if job $j-1$ is finished at time $C_{j-1}$ and
+$C_{j-1} < r_j$, then remain idle till $r_j$ and process job $j$ at time $r_j$. \\
+
+\noindent
+2. Starting from time $t=0$, at time $t$ process the job $j$ which has the shortest processing time among all jobs which have
+been released by time $t$; if no such job, then remain idle. \\
+
+\noindent
+Unfortunately, none of the above algorithms are optimal. In fact, the problem is NP-hard, a concept which we will dig deeper into 
+in the coming lectures. For the time being suffice to know that we do not expect any polynomial time exact algorithm. 
+However, if preemption is allowed, then the above problem can indeed be solved in polynomial time.
+
+\subsection{Release Dates with Preemption $(1~|~r_j,pmtn~|~\sum C_j)$}
+If preemption is allowed, then the following generalization of SPT works.
+\begin{definition}
+(SRPT) Shortest Remaining Processing Time: At any point of time, schedule the job with the shortest remaining processing time,
+preempting when jobs with shorter processing times are released.
+\end{definition}
+
+\begin{theorem}
+SRPT gives an optimal algorithm for $(1~|~r_j,pmtn~|~\sum C_j)$.
+\end{theorem}
+\begin{proof}
+The proof also follows by an interchange argument, however in this case we do not interchange two jobs but possibly parts of the two jobs.
+Consider an optimal schedule $S$ in which a job $k$ is being processed at time $t$ while there exists an unfinished job $l$ such that $r_\l \le t$, that is,
+the job $l$ is available at time $t$, and $x_k > x_\l$, where $x_k$ and $x_\l$ are the remaining amounts of the two jobs.
+
+Note that the machine processes job $k$ and $l$ for $x_k + x_\l$ units after time $t$. Construct a new schedule $S'$ by processing only job $\l$ on the first $x_\l$ units of these times, and processing job $k$ on the remaining $x_k$ units. Since $x_\l < x_k$, in the new schedule job $\l$ finishes 
+strictly {\em before} the time when either job $k$ or $\l$ finished in the old schedule. That is $C^{S'}_\l < \min\{C^S_k,C^S_\l\}$. Also note that
+$C^{S'}_k = \max \{C^S_k,C^S_\l\}$ and $C^{S'}_j = C^S_j$ for all other $j\neq k,\l$. Thus, $\sum C_j$ strictly decreases which is a contradiction.
+\end{proof}
+
+Unlike the proof without release times, the above argument {\em does not} extend to the weighted case (Can you see why?). In fact, the weighted 
+case is NP-hard even with preemption. Now we show how the above algorithm can be used to give an efficient {\em approximation} algorithm for
+$(1|r_j|\sum C_j)$.
+
+\subsection{Release Dates without preemption $(1|r_j|\sum C_j)$}
+Firstly, let us define what an approximation algorithm is.
+\begin{definition}
+Given a scheduling problem $(\alpha|\beta|\gamma)$ a $\rho$-approximation algorithm (for $\rho \ge 1$) returns a schedule 
+$S$ such that $\gamma(S) \le \rho\cdot\gamma(S^*)$ where $S^*$ is the optimal schedule.
+\end{definition}
+
+We now describe a $2$-approximation algorithm for the problem $(1|r_j|\sum C_j)$. This algorithm will use the exact algorithm for the
+problem $(1|r_j,pmtn|\sum C_j)$ to get the schedule. Henceforth we will denote the optimal schedule for the $(1|r_j|\sum C_j)$ as $S^*$
+and denote the average completion time of $S^*$ as $OPT$. 
+
+Let $P$ be the optimal schedule found by the SRPT algorithm for the problem $(1|r_j,pmtn|\sum C_j)$. Note that 
+\begin{equation}\label{eq:lb}
+OPT \ge \sum_j C^P_j
+\end{equation}
+This is because any feasible schedule for $(1|r_j|\sum C_j)$ is a feasible schedule for $(1|r_j,pmtn|\sum C_j)$.
+Thus the average completion time of $P$ is a {\em lower bound} on that of the optimum schedule.
+In fact in the schedule $S$ that we construct, we will show that the average completion time of $S$ is at most twice the 
+average completion time of $P$ rather the twice the optimum. This method of comparing the solution with a lower
+bound on which we have a better handle on, rather than the optimum is very prevalent in the field of approximation 
+algorithms. We now state the algorithm. \\
+\\
+\noindent
+Algorithm {\tt Convert-From-Preemption} 
+\begin{enumerate}
+\item Apply SRPT to obtain the optimal schedule $P$ for $(1|r_j,pmtn|\sum C_j)$.
+\item Order the jobs in increasing order of completion time in $P$, that is, \\
+$C^P_1 < C^P_2 < \cdots < C^P_n$.
+\item Process the jobs {\em non-preemptively} in this order to get schedule $S$.
+\end{enumerate}
+
+\begin{theorem}
+Algorithm {\tt Convert-From-Preemption} is an efficient factor $2$-approximation algorithm for $(1|r_j|\sum C_j)$.
+\end{theorem}
+\begin{proof}
+We know that $\sum_j C^P_j \le OPT$. If we show that for every job $j$, $C^S_j \le 2C^P_j$, then we will be done.
+Let $t^S_j$ be the time when job $j$ is started in schedule $S$.
+Say that the machine is idle at time $t$ in $S$ if it is not processing any job at time $t$. Note that a machine is idle 
+only if the next job in the order to be processed on the machine has not yet been released. Let ${\tt idle}(t)$ denote the 
+total time the machine is idle in schedule $S$ until time $t$.
+Now note that 
+$$C^S_j = \sum_{i\le j} p_i + {\tt idle}(t^S_j)$$
+The above is true for any non-preemptive schedule. Also note that 
+$\sum_{i\le j} p_j \le C^P_j$ for by definition of the order, all jobs $i\le j$ finish before $j$ in $P$.
+Now comes the crucial claim.
+
+\begin{claim}
+In the schedule $S$, the machine has no idle time from $C^P_j$ to $t^S_j$.
+\end{claim}
+\begin{proof}
+Suppose the machine is idle at time $t\in [C^P_j,t^S_j]$. Then it must be awaiting the release of 
+some job $k$ which comes in order before $j$, that is $r_k > C^P_j$. However, the reason it is in order before $j$ is 
+because $C^P_k < C^P_j$. In other words, $P$ completes $k$ before $C^P_j$ and in particular,
+the job must have been released by time $C^P_j$. 
+\end{proof}
+The above claim implies that ${\tt idle}(t^S_j) = {\tt idle}(C^P_j) \le C^P_j$. 
+Thus, we get $C^S_j \le 2C^P_j$.
+\end{proof}
+
+A factor $\rho$ approximation algorithm is {\em tight} if there is an example where the optimum and the schedule found by the algorithm is indeed away by a factor $\rho$. Is the above factor $2$ approximation algorithm tight? 
+
+
+
+
+
+\end{document}

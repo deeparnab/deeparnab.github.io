@@ -1,0 +1,180 @@
+<html> <head> <title>CO454 Scheduling Theory, Spring 2009</title> </head> <body size=3
+font="ARIAL" text="black" bgcolor="white" link="blue" alink="blue" vlink="blue">
+
+<h1>
+CO454 Scheduling Theory, Spring 2009 <br>                                                                                                     
+</h1>
+
+<b>Instructor: <a href="http://www.math.uwaterloo.ca/~deepc">Deeparnab Chakrabarty</a></b> (Office: MC4009, Email: deepc[at]uwaterloo.ca) <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  <b>Time:</b> Tuesday - Thrusday 11:30am - 12:50pm<br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  <b>Location:</b> MC4060 <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  <b>Office Hours: </b> Fridays 11am - 1pm <br>
+<br>
+<b>Teaching Assistant:</b> Irene Pivotto</a> (Office: DC3145, Email: ipivotto[at]math.uwaterloo.ca) <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  <b>Office Hours: </b> Tuesdays 3pm - 4pm, Fridays 2pm - 3pm <br>
+<hr>
+<a href="./co454.html"> Home </a> &nbsp &nbsp &nbsp &nbsp <a href="./co454.pdf"> Course Information </a>  &nbsp &nbsp &nbsp &nbsp <a
+href="./announcements.html">Announcements</a>
+&nbsp &nbsp &nbsp &nbsp <a href="./lectures.html"> Assignments, Solutions and Notes </a>
+
+<hr>
+<br>
+<li>
+<b>``Formula'' for Final Grades</b>
+I am going to reweigh the grading scheme so that if you think you have not done well in-term, you can make-up with your end-term.
+However, I am <b>not</b> going to take the best of your in-term and end-term. Thus, getting a 0 in the in-term and 100 in the end-term
+won't give you 100. The final grade will be a weighted average of your in-term and end-term, where you can put more weight on your
+end-term by doing better on your end-term. I will not say the exact formula, although I could tell you, by email, how much you would
+need to get a pass-grade.
+</li>
+<br><br>
+
+
+<li>
+Graded HW6 assignments and all uncollected old assignments+midterm have been put in a box outside my office. 
+I am going to keep two extra office hours (11am to 1pm) on 12th and 13th August.
+</li>
+<br><br>
+
+
+
+<li>
+There will be <b>NO CLASS</b> on Thursday, July 23rd. There will be class on July 28th, where I will review what all we did on the course. You are all encouraged 
+to ask questions, as long as you do not ask me what will be on the end term. I might not know that answer myself. Time permitting, I will also
+say what I know about the state of the art of various scheduling problems, and also tell you what I know (not much) about practical scheduling. 
+We got a flavour of things done in practice today (July 21st) - the shifting bottle heuristic. 
+</li><br><br>
+
+
+<li>
+FINALS are on August 14th, 12:30pm at PAC 6. The exam duration is 2hrs and 30 minutes. You will be allowed to bring in one "help-page" written in your handwriting (both sides allowed).
+I will also provide the <a href="./Lectures/models.pdf">models.pdf</a> file in the finals, so do not bother copying stuff from it. You are encouraged to hand in the sheet
+with your examination to show how much, or less, you needed for the help-page.
+GOOD LUCK!
+</li><br><br>
+
+
+
+<li>
+HW6 is out. It is due on July 28th, the last day of class. I have also put up the lecture notes till just before shop-scheduling. 
+I have followed shop scheduling from the text-book; so if you want to get a heads up before I post the notes for those,
+refer to Chapter 6 & 7 of the textbook. Recall, the textbook is online and available via your waterloo accounts.
+</li><br><br>
+
+
+<li>
+HW5 is out. It is due on July 21st. 
+</li><br><br>
+
+<li>
+There was a portion missing in the solution of Q2 in HW3, it is correted now. Irene will be taking a review lecture on Tuesday, June 23rd. 
+BEST OF LUCK, for the Midterms!!
+</li><br><br>
+
+
+<li>
+As I mentioned in class, I will be out of town from the 22nd of June to 29th of June. Which means, I will not be able to have office hours on 26th of June,
+which is just before the due date for HW4. Please make use of the 19th June office hours to the fullest. I will be in touch with email though to answer specific questions.
+</li><br><br>
+
+<li>
+<b>HW4</b> is posted. Sorry for the delay in posting it! 
+</li><br><br>
+
+<li>
+HW2 Solutions are posted. Remember: the username-passwd is co454 and 454co, respectively. Lecture notes for June 9,11 are posted. 
+I will post HW4 containing questions on parallel machines by the weekend. These are mainly meant for you to get practise on parallel machines,
+since they will be in the syllabus for the midterm. However, I will make the HW4 due only on the 30th of June, in case you do not find time
+to write the homework up before the midterm. Tentatively, there will be two more homeworks after that. HW5 will be tentatively posted on July 7th, and due
+on July 16th, and HW6 will be tentatively posted on July 21st and due by July 30th. The <b>FINALS</b> for co454 is on August 14th, 
+12:30pm.
+</li><br><br>
+
+
+<li>
+Typos in HW3: Q4, part (b), $\beta > 1$ instead of $\beta > 0$. Q5, part a) and b), you need to show NP-hardness by reducing $(1|r_j|L_{max})$ to partition and bin-packing, 
+not the other way around, as was mentioned in the earlier version. The HW3 now contains the correct version.<br><br>
+</li>
+
+
+<li>
+<b>MIDTERM</b> will be on June 25th. It will be in-class, closed notes and books. <b> Homeworks 3</b> has been posted and is due on June 18th.<br><br>
+</li>
+
+<li>
+Lecture notes for this week have been posted. <b> Homework 2</b> has been posted. It is due on June 4th. We strongly advise students not to start the homework till the 
+last few days. Corrected homework 1 copies will be returned on Tuesday.
+<br><br>
+</li>
+
+<li>
+<b>May 21st</b> We looked at <a href="http://en.wikipedia.org/wiki/Dynamic_programming">dynamic programming</a>, in particular, a dynamic programming solution to the knapsack 
+problem. In the last 10 minutes, we noted that the problem of 
+minimizing the weight of late jobs when all the due dates are the same is equivalent to the knapsack problem. Next time, we will generalize the DP for knapsack to a DP for 
+maximizing the total weight of timely jobs. 
+<br><br>
+</li>
+
+<li>
+I had erroneously put the TA's office room as DC3154. It should be DC3145. Sorry for the trouble! <br>
+<br>
+</li>
+<li>
+<b>May 19th</b> We looked at minimizing maximum latency and saw EDD gives an optimal schedule. We also looked at a generalization of $(1||L_{max})$,
+called $(1||f_{max})$ where each job comes with a nondecreasing function $f_j$ and the goal is to minimize the maximum $f_j(C_j)$ over all $j$.
+We showed a greedy algorithm LCL solves the problem optimally.<br><br>
+</li>
+<li>
+<b>May 14th</b>  We looked at average completion time problem with release dates. I told you guys that the problem $(1|r_j|\sum C_j)$ is NP-complete.
+Later in the course we will first understand what NP-complete means and then we will prove the above assertion. Nevertheless, we showed
+that with preemption, the problem is solvable by a modification of SPT called SRPT (R for Remaining). We then used the SRPT algorithm to get
+a factor $2$ algorithm for the non-preemptive version. I ended the class asking if the algorithm was tight? I don't know the answer to the question.
+<b> Update: </b> See Homework 2 for an answer to this!!<br>
+<br>
+Two things I forgot to mention in class. The average weighted completion time problem (which is ofcourse harder than without weights) remains NP-hard
+even with preemptions. Secondly, the CFP is not the best approximation algorithm for the problem. The state of the art algorithm actually achieves
+any factor strictly bigger than $1$, say $1.01$, approximation in polynomial time. However, this algorithm is slightly out of the scope of the syllabus of the
+course, but we might flirt with it later on. <br>
+<br>
+</li>
+<li>
+<b> May 12th</b> We started on algorithms! We first studied the notion of reduction among scheduling problems and reduced $(\alpha|\beta|L_{max})$ to 
+$(\alpha|\beta|\sum U_j)$. To obtain a polynomial time reduction we need <a href = "http://en.wikipedia.org/wiki/Binary_search"> binary search </a>. 
+We then studied the SPT and WSPT rule for solving $(1||\sum C_j)$ and $(1||\sum w_jC_j)$ problem. Can you think of other performance measures when SPT be applied?<br> <br>
+</li>
+<li>
+Homework 1, question 6: the order of the machines in the flow shop problem is every job needs to be processed on machine 1 followed by machine 2.<br><br>
+</li>
+<li>
+<b> Homework 1 </b> is out. It is due on 21st May, Thursday, before class starts. Assignments should be written as legibly as possible and handed in as 
+a singled stapled stack of papers. Typing out solutions is recommended, although email submissions will not be allowed. If you are not able
+to make it to class that day, then you must submit the solution beforehand to the instructor. For instance, submitting by sliding beneath my office
+is fine, but not encouraged. No submissions after 11:30am will be accepted unless extenuating circumstances prevail.<br>
+</li> 
+
+<li>
+The Lecture 1 and Lecture 2 notes are out. Although they don't represent the order of things we did in the class, all the stuff should be there in both
+combined. <br><br>
+</li>
+
+<li>
+<b> May 7: </b> We covered what regular performance measures are and indicated why most of the objectives we did in class are regular. We saw how to use
+Gantt charts or block diagrams to represent schedules. We studied nondelay schedules and showed that some optimal schedule must be nondelay if preemption
+is allowed. We studied a generalization called active schedules. Atlhough, we didn't do in class, all active schedules are nondelay. Can you see why? <br><br>
+</li>
+
+<li>
+Sharon pointed out that the recommended (not required) textbook is available online via a school computer or by getting logged into TRELLIS. The book link is 
+<a href="http://dx.doi.org/10.1007/978-0-387-78935-4"> (here) </a> and the TRELLIS catalogue entry is 
+<a 
+href="http://trellis1.tug-libraries.on.ca/cgi-bin/Pwebrecon.cgi?v1=1&ti=1,1&Search%5FArg=Michael%20and%20Pinedo&SL=None&CNT=25&Search%5FCode=CMD%2A&PID=CnBAvHdNZq4KiCr75ayZBspSBVym&SEQ=20090506193954&SID=1"> 
+(here) </a>. Thanks Sharon!<br><br>
+ </li>
+<li>
+<b> May 5: </b> We covered a few examples of scheduling problems and started on the (\alpha | \beta | \gamma) notation. We covered the machine environment 
+(\alpha) and almost whole of the objective function (\gamma). Next class we will study the various constraints (\beta) after a review of what we did today.<br><br>
+</li>
+<li>
+<b> May 5: </b> Welcome to the first lecture of the term. I will be using this page to make announcements that were made in class - so keep an eye out for
+this place once in a while. 
+</li>

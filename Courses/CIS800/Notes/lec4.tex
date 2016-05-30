@@ -1,0 +1,227 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{remark}{Remark}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+
+\title{Lecture 4:  Pipage Rounding}
+\author{}
+\date{}
+\maketitle
+\noindent
+Consider the maximum coverage problem: given a universe $U$ and a collection 
+of subsets of $U$: $\{S_1,\ldots,S_m\}$, choose a collection of $k$ sets so as to 
+maximize the cardinality of their union.  
+
+One can consider the following greedy algorithm: pick the set which covers the maximum number of uncovered elements iteratively till you pick $k$ sets. This algorithm achieves an a $(1 - (1-1/k)^k)$ approximation factor. \\
+
+\noindent
+We now give another algorithm which achieves a better factor in certain cases.
+Consider the following linear program for the problem.
+
+\begin{align}
+\max & \qquad \sum_{i\in U} z_i & (x,z \ge 0) \label{eq:lp} \\
+\mbox{ subject to} & \qquad z_i \le 1 & \forall i\in U \\
+			    & \qquad z_i \le \sum_{j: i\in S_j} x_j & \forall i\in U \\
+			    & \qquad \sum_{j=1}^m x_j  = k & 
+\end{align}
+
+\def\P{{\mathcal P}}
+Note that the above objective can be rewritten as $\max \{\sum_{i\in U} \min(1, \sum_{j:i\in S_j} x_j): ~~\sum_j x_j = k\}$. Denote $\{x\in [0,1]^m: \sum_j x_j = k\}$ as $\P$ and the function $L(x) := \sum_{i\in U} \min(1, \sum_{j:i\in S_j} x_j)$. Then from the above discussion \eqref{eq:lp}
+is equivalent to 
+\begin{equation}\label{eq:lin}\max ~\{L(x): ~~x\in \P\}\end{equation}
+which can be solved in polytime and upper bounds the optimum.\\
+
+\noindent
+Now consider the following {\em non-linear} function. 
+$$F(x) := \sum_{i\in U}\left(1 - \Pi_{j: i\in S_j} (1 - x_j) \right)$$ 
+Observe that whenever $x\in \{0,1\}^m$, $F(x)$ equals the value of the algorithm 
+which picks sets with $x_j = 1$. Thus, the following {\em non-linear} program 
+\begin{equation}\label{eq:nonlin}\max ~\{F(x): ~~x\in \P\}\end{equation}
+ is also an upper bound on \opt. It might seem pointless going to this non-linear program since we don't know how to solve this in polynomial time (even when the domain is $[0,1]^m$). But what makes this interesting is that  \eqref{eq:nonlin} actually has an {\em integral} optimum unlike \eqref{eq:lp}. More precisely, given any fractional solution to \eqref{eq:nonlin}, there is a rounding algorithm which returns an integral solution of at least the value of the fractional solution. This is the so called {\em pipage rounding} algorithm which we will describe below.
+ 
+ \def\xint{x^{{\tt int}}}
+To summarize, we know how to solve \eqref{eq:lin} but the solution is not integral. We don't know how to solve
+\eqref{eq:nonlin}, but we know there is an integral optimum. To complete the picture, if we show $F(x) \ge \rho\cdot L(x)$ for all $x\in \P$ for some $\rho \le 1$, then we have an $\rho$-approximation. To see this, solve \eqref{eq:lin} to get $x^*$. Run the pipage rounding algorithm to get $\xint$. We know that $$\alg = F(\xint) \ge F(x^*) \ge \rho\cdot L(x^*) \ge \rho \cdot\opt$$
+
+\noindent
+Before we describe the pipage rounding algorithm for \eqref{eq:nonlin}, let us show that $\rho = \left(1 - (1 - 1/f)^f\right)$ suffices, where $f$ is the maximum number of sets an element of $U$ occurs in. So for the $k$-vertex coverage problem, we get a $3/4$-approximation.
+
+\begin{claim}
+For all $x\in \P$, $F(x) \ge \rho\cdot L(x)$.
+\end{claim}
+\begin{proof}
+It suffices to show $1 - \Pi_{j:i \in S_j}(1-x_j) \ge \rho\cdot \min(1,\sum_{j:i\in S_j} x_j)$ for any $i\in U$.
+%Let's assume $\sum_{j:i\in S_j} x_j \le 1$ since this is the worst case (why?).
+By the AM-GM inequality, the LHS is at least $1 - (1 - \frac{\sum_{j:i\in S_j} x_j}{f})^{f}$. 
+If $\sum_{j:i\in S_j} x_j \ge 1$, then this is at least $1 - (1 - \frac{1}{f})^f$; therefore, we may assume
+$\sum_{j:i\in S_j} x_j < 1$.
+
+Since the function \mbox{$g(t) := 1- (1 - \frac{t}{f})^f$} is concave in $t\in [0,1]$, 
+we have for $t < 1$, $g(t) \ge (1-t)g(0) + tg(1) =t(1 - (1 - \frac{1}{f})^f)$.  Thus, 
+$$1 - \Pi_{j:i \in S_j}(1-x_j) \ge 1 - \left(1 - \frac{\sum_{j:i\in S_j} x_j}{f}\right)^{f} \ge \left(\sum_{j:i\in S_j} x_j\right) \left(1 - \left(1-\frac{1}{f}\right)^f \right)$$
+\end{proof}
+
+\subsection*{Pipage Rounding} 
+The setting where pipage rounding applies is more general than the one described above. Abstractly, 
+suppose we want to maximize a function on $m$ variables in $\{0,1\}^m$ intersected with a polytope.
+$$\max \{F(x): ~~ x\in {\mathcal P} \cap \{0,1\}^m ~\}$$
+Now suppose for every non-integral $x\in \P$, there exists a vector $v_x$ and $\alpha_x,\beta_x > 0$ such that both $x+\alpha_x v_x$ and $x - \beta_x v_x$ have strictly larger number of integral coordinates. Furthermore, 
+for all $x\in \P$, also suppose the function $F()$ is {\em convex} in the direction $v_x$. That is, the one-dimensional function $g_{x}()$ defined as $$g_{x}(t) := F(x + tv_x)$$ is a convex function. Then, the following abstract rounding procedure takes a feasible $x\in \P$, and returns an $\{0,1\}^m$-vector $\xint\in \P$ with 
+$F(\xint)\ge F(x)$. \\
+
+\noindent
+Procedure {\sc Pipage} 
+\begin{quote}
+Repeat till $x$ is a $\{0,1\}$-vector: if $F(x+\alpha_x v_x) \ge F(x)$, $x = x+\alpha_x v_x$; else 
+	$x = x - \beta_xv_x$. 
+\end{quote}
+\vspace{2ex}
+\noindent
+Since $F()$ is convex in direction of $v_x$, we know that $F(x) \le \max\left(F(x+\alpha_xv_x), F(x - \beta_xv_x)\right)$  (Because $g_x(0) \le \frac{\beta_x}{\alpha_x + \beta_x}g_x(\alpha) + \frac{\alpha_x}{\alpha_x + \beta_x}g_x(-\beta_x)$). So the value of $F(x)$ never goes down. Furthermore, since the number of integral coordinates increases, the above procedure terminates in at most $m$ steps. \\
+
+Let us now move to concrete examples. To start with, let's take the coverage problem described above. Here, 
+$\P := \{x\in [0,1]^m: \sum_{j=1}^m x_j = k\}$. Suppose $x$ is a non-integral vector in $\P$. Note that there are at least two fractional coordinates. Let it be $x_p$ and $x_q$. Our vector $v_x$ is then the vector $(e_p - e_q)$, where $e_p$ is the vector with $1$ in the $p$th coordinate and $0$ elsewhere. $\alpha_x = \min(1-x_p,x_q)$ and $\beta_x = \min(1-x_q,x_p)$. Note that $x + \alpha_xv_x$ and $x - \beta_xv_x$ are vectors in $\P$ with at least one less fractional coordinate.  
+
+\indent
+$F(x) = \sum_{i\in U}\left(1 - \Pi_{j: i\in S_j} (1 - x_j) \right)$. For any $x\in \P$, and fractional coordinates $x_p$ and $x_q$, note that the function $g_x(t)$ is also a sum of functions of $t$; each function is either a constant 
+(if $i\notin S_p$ and $i\notin S_q$), or a linear function (if $i$ is in exactly one of $S_p$ or $S_q$), or a quadratic in $t$ with a positive coefficient for $t^2$ (if $i\in S_p$ and $i\in S_q$). All of there are convex, and thus $F()$ is convex in the direction of $v_x$. Therefore pipage rounding is applicable and we thus, as claimed before, given a fractional vector $x\in \P$, we can get an integral vector $\xint\in \P$ with 
+$F(\xint) \ge F(x)$. \\
+
+\noindent 
+Let us summarize how pipage rounding can be used to obtain approximation algorithms for maximization problems (maximization is nothing special, the minimization case goes through with convexity replaced with concavity, etc). First we cast the problem as a problem of maximizing $\max \{F(x): x\in \P\cap \{0,1\}^m\}$. 
+We need three things for all to work.
+
+\vspace{2ex}
+\begin{center}
+\begin{boxedminipage}{6.5in}
+\begin{enumerate}
+\item For any (non-integral) $x\in \P$, we need a vector $v$ and $\alpha,\beta > 0$ such that $x+\alpha v$
+	or $x - \beta v$ have strictly more integral coordinates.
+\item For all $x$, the function $F()$ needs to be convex in the direction of $v$. More precisely, the function 
+	$g_x(t) := F(x+tv)$ needs to be convex.
+\item Finally, we need a {\em starting} fractional $x$ with a guarantee that $F(x) \ge \rho\cdot \opt$.
+
+	One way to do so is to get a {\em linear approximator} for $F$. That is, a linear function $L(x)$ such that 
+	$F(x) \ge \rho\cdot L(x)$ for all $x\in \P$. Then the starting $x$ is the solution of the linear program 
+	$\max\{L(x):x\in \P\}$ (assuming $\P$ is a set of linear constraints). This was done in the application 
+	above. Another way could be just find an {\em approximate} solution to the non-linear program 
+	$\max\{F(x): x\in \P\}$. 
+\end{enumerate}
+\end{boxedminipage}
+\end{center}
+
+\noindent
+
+\begin{remark}
+If pipage rounding is applicable, then note that $\P$ must be an integral polytope. Otherwise, given a fractional vertex $x\in \P$, one can never get the vector $v$ and $\alpha,\beta > 0$
+such that $x + \alpha v$ and $x -\beta v$ both lie in $\P$. 
+\end{remark}
+
+\begin{remark}
+In fact, one doesn't require the first condition very strongly. It suffices if one can show $x + \alpha v$
+and $x - \beta v$ ``make progress" towards an integral solution. One possible measure of progress if
+both $x+\alpha v$ and $x-\beta v$ lie on a face of $\P$ smaller dimension.
+\end{remark}
+\def\I{\script{I}}
+\subsection*{Maximizing Monotone Submodular Functions over Matroid Constraints}
+\noindent
+{\bf Definitions.} A set function $f:2^U \to {\mathbb Z}_{\ge 0}$ is submodular if $f(A) + f(B) \ge f(A\cup B) + f(A\cap B)$ for all $A,B \subseteq U$. It is monotone if for any pair of sets $A\subseteq B$, $f(A) \le f(B)$.
+A set system $M := (U,\script{I})$ form a matroid if it satisfies the following two conditions: a) if $B\in \script{I}$ and $A\subseteq B$, then $A\in \I$, and b) for any two sets $A,B \in \I$, with 
+$|A| < |B|$, there exists an element $i\in B$ such that $A\cup i \in \I$.  The sets in $\I$ are called {\em independent sets}. \\
+
+\noindent
+{\bf Problem.} Given a monotone submodular function $f$ and a matroid $M := (U,\I)$, find $S\in \I$ which maximizes $f(S)$. \\
+
+This abstract problem above captures {\em a lot} of problems. In fact, sometimes it is not that easy to see that this is indeed the case. This is because the submodular function and the set system may have to be designed carefully. The coverage problem described above falls in this class. A few more will be covered in exercises.
+
+\begin{theorem}[Calinescu-Chekuri-P\'al-Vondr\'ak 2009]
+There is a randomized $(1-1/e)$ approximation algorithm to the problem of maximizing a monotone submodular function over a matroid constraint.
+\end{theorem}
+\noindent
+{\bf Matroid Polytope.} Given a set $S\in \I$, we can define the characteristic vector of $S$ as the $\{0,1\}^n$ vector which has $1$ in the coordinates corresponding to $i\in S$. The matroid polytope is defined as the convex hull of all the characteristic vectors. This can be represented as follows. We need a definition. Given a set $S\subseteq U$, the {\em rank} of $S$, $r_M(S)$, is the size of the largest independent subset of $S$. 
+The matroid polytope is defined as 
+$$\P := \{x\in [0,1]^n: ~~ \sum_{i\in S} x_i \le r_M(S), ~\forall S\subseteq [n]\}.$$
+
+\noindent
+The polytope has the following property. Given $x\in \P$, let $\script{L}$ denote a set of maximally linearly independent constraints which hold with equality. If $x$ is not a basic feasible solution, we know that dimension of the space spanned by $\script{L}$ is strictly less than $n$. Then there exists $i$ and $j$ and positive $\alpha$ and $\beta$ such that the number of linearly independent tight constraints which hold with equality with $x + \alpha(e_i - e_j)$ and $x - \beta(e_i - e_j)$ is strictly larger. This gives us the condition 1 for pipage rounding.
+
+
+Let me give a sketch of how to find $e_i,e_j,\alpha,\beta$ given $x$. Call a set $S$ tight if $\sum_{i\in S}x_i = r_M(S)$. Now the rank itself is a submodular function (why?), and this implies that if $A$ and $B$ are tight
+sets, so are their intersections and union (why?). Therefore, given $i$ one can define the minimal tight set containing $i$. As a result, unless $x$ is integral, one can find $i,j$ such that the minimal tight set containing $i$ coincides with the minimal tight set containing $j$. These are our $i$ and $j$. Now consider increasing $i$ and decreasing $j$; we can keep doing this till a subset of this set becomes tight and this leads to a new linearly independent equality constraint, or till $x_j = 0$ in which case this is added as the linearly independent constraint. Whatever the value at which one of these happen gives $\alpha$. The converse process gives $\beta$. \\
+
+
+\noindent
+{\bf Submodular Function to Continuous Non-Linear Function.} Given $f$, define $F:[0,1]^n \to {\mathbb R}_{\ge 0}$ as follows:
+
+$$ F(x_1,\ldots,x_n) := \sum_{S\subseteq [n]} \left( f(S)\prod_{i\in S} x_i \prod_{i\notin S} (1-x_i) \right)$$
+\noindent
+Note the following
+\begin{enumerate}
+\item $F(x_1,\ldots,x_n)$ is the expected value of $f(S)$ where $S$ is obtained by sampling each element $i$ independently with probability $x_i$. This can be used to obtain an {\em estimate} of $F(x_1,\ldots,x_n)$ -- we might come back to this later in the class.
+
+
+\item Monotonicity of $f$ implies $\frac{\partial F}{\partial x_i} \ge 0$, for all $i$, for all $x$.\\
+	Submodularity implies $\frac{\partial^2 F}{\partial x_i \partial x_j} \le 0$ for $i\neq j$, for all $x$.
+
+\item For any two coordinates $i,j$; let $v = e_i - e_j$.The function $g_{x,i,j}(t) = F(x+ tv)$ is convex for all $x,i,j$. This is because 
+$$\frac{d^2 g_{x,i,j}(t)}{dt^2} = \sum_{p,q} \frac{\partial^2 F(x+tv)}{\delta x_p \delta x_q} v_pv_q = \frac{\delta^2 F(x+tv)}{\delta x_i^2} - 2\frac{\delta^2 F(x+tv)}{\delta x_i \delta x_j} + \frac{\delta^2 F(x+tv)}{\delta x_j^2} \ge 0$$
+
+\end{enumerate}
+\noindent
+Point 3 above gives us the condition 2 required by pipage rounding above. Point 1 and 2 above give the third condition for pipage rounding in form of the following theorem which we will not get into.
+
+\begin{theorem}[Vondr\'ak 08]
+If $F$ satisfies point 2 above, and if $\nabla{F}$ can be estimated, and if given weights $w_j$ the vector $v\in \P$ maximizing $\sum_j v_jw_j$ can be found in polynomial time, then there is a randomized $(1-1/e)$-approximation to the problem of maximizing $F(x): x\in \P$.
+\end{theorem}
+
+Putting all together (and adding a bunch of details mainly arising out of the above theorem's implementation),
+we get the $(1-1/e)$ approximation to maximizing a monotone submodular function over a matroid constraint.
+
+
+
+\end{document}

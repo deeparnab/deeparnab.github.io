@@ -1,0 +1,48 @@
+<html> <head> <title>CO454 Scheduling Theory, Spring 2009</title> </head> <body size=3
+font="ARIAL" text="black" bgcolor="white" link="blue" alink="blue" vlink="blue">
+
+<h1>
+CO454 Scheduling Theory,
+Spring 2009 <br>
+</h1>
+
+<b>Instructor:</b> Deeparnab Chakrabarty (Office: MC4009, Email: deepc[at]uwaterloo.ca) <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  <b>Time:</b> Tuesday - Thrusday 11:30am - 12:50pm<br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  <b>Location:</b> MC4060 <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  <b>Office Hours: </b> Fridays 11am - 1pm <br>
+<br>
+<b>Teaching Assistant:</b> Irene Pivotto</a> (Office: DC3145, Email: ipivotto[at]math.uwaterloo.ca) <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  <b>Office Hours: </b> Tuesdays 3pm - 4pm, Fridays 2pm - 3pm <br>
+<hr>
+<a href="./co454.html"> Home </a> &nbsp &nbsp &nbsp &nbsp <a href="./co454.pdf"> Course Information </a>  &nbsp &nbsp &nbsp &nbsp <a 
+href="./announcements.html">Announcements</a> 
+&nbsp &nbsp &nbsp &nbsp <a href="./lectures.html"> Assignments, Solutions and Notes </a>
+
+<hr>
+<b> Course Description </b> <br>
+<br>
+Scheduling problems form a large part of resource allocation problems where sparse resources have to be assigned over time to complete tasks and optimize over
+one or multiple objectives. Such problems are ubiquitous in industrial manufacturing, operations research, economics and computer science. This course will cover
+the basics of scheduling theory from an algorithmic perspective. In particular, we will study efficient algorithms to solve various scheduling problems
+stressing on proofs of correctness rather than focussing on heuristics. The course will also contain a brief overview of computational complexity and various
+techniques for the design of efficient exact and approximate algorithms. <br>
+<br>
+<b> Prerequisites </b> <br>
+<br>
+MATH 239/249 and either CO350 or CO352; or CO 355.
+Students should be familiar with discrete math, and an introductory course on algorithms will be advantageous. If in doubt, talk with the instructor.
+<br>
+<br>
+<b> Textbooks </b> <br>
+<br>
+There is no required textbook. The book <i>Scheduling: Theory, Practices and Applications </i> by Michael Pinedo is a good reference though.
+<br>
+<br>
+<b> Grading </b> <br>
+<br>
+There will be bi-weekly assignments which will count for 30% towards the final marks. There will be one midterm in the third week of June 
+counting for 25% and a final counting for 45% of the total marks. Students who are unable to take the midterm must submit an university 
+regulated reason (for instance a medical certificate) for not doing so in which case some alternative will be discussed with the instructor.
+
+
+
