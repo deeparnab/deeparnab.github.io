@@ -111,7 +111,9 @@ div#image{
 div#image img{
     margin:0px;
     padding-left:70px;
-    }
+    height:0.8em;
+	weight:0.8em;
+	}
 
 div#footer{
     margin-top:10px;
