@@ -1,0 +1,457 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="test.css" id="styleId" />
+</head>
+
+<script language="javascript">
+function toggle(targetId) {
+target = document.getElementById(targetId);
+if (target.style.display == "none"){
+target.style.display="";
+} else {
+target.style.display="none";
+}
+}
+//-->
+</script>
+
+<body>
+<div id="header">
+    <div id="headername">
+      <a href="./index.htm"> Deeparnab Chakrabarty</a>
+   </div>
+   <div id="position">
+     Microsoft Research <br>
+     #9, Lavelle Road <br>
+     Bangalore, Karnataka 560001 <br>
+     Email: deeparnab @ gmail.com, dechakr @ microsoft.com
+   </div>
+</div>
+<hr>
+<div id="publist">
+<center><h2> <u>Chronological List of Publications </u></h2> 
+</center>	
+<br><br>
+<b> 2016 </b>
+<br>
+
+<ul>
+<li>
+<b> The Non-Uniform k-Center Problem.</b>
+	<a href="http://arxiv.org/pdf/1605.03692v2.pdf"> [pdf] </a>
+	<a href = "javascript:toggle('nukc')"> [abs] </a><br>
+	with Prachi Goyal, Ravishankar Krishnawamy.<br>
+	In <i>Proc. ICALP 2016.</i>
+	<div id="nukc" class="abs" style="display:none"><p>
+	We look at a generalization of the k-center problem and the k-center with outliers problem. We are given k possibly different radii balls,
+	and we have to figure out how to place them on a metric space such that the unions of dilated versions of these cover
+	the whole metric space. We want to make the dilation as small as possible. 
+	</div>
+
+</li>
+
+<li>
+<b> IQ-Hopping: Distributed Oblivious Channel Selection for Wireless Networks </b>
+	<a href="coming soon"> [pdf] </a>
+	<a href = "javascript:toggle('iqhopping')"> [abs] </a><br>
+	with Apurv Bhartia, Krishna Kant Chintalapudi, Lili Qiu, Bozidar Radunovic, Ramachandran Ramjee.<br>
+	In <i>Proc. MOBIHOC 2016.</i>
+	<div id="iqhopping" class="abs" style="display:none"><p>
+	
+	</div>
+</li>
+
+
+</ul>
+<br>
+<b> 2015 </b>
+<br>
+
+<ul>
+
+<li>
+	<b> Online Buy-at-Bulk Network Design. </b>
+	<a href="./PUBS/CEKP15.pdf"> [pdf] </a>
+	<a href = "javascript:toggle('onlinebab')"> [abs] </a><br>
+	with Alina Ene, Ravishankar Krishnawamy, and Debmalya Panigrahi <br>
+	In <i>Proc. FOCS 2015.</i>
+	<div id="onlinebab" class="abs" style="display:none"><p>
+	In the buy-at-bulk network design problem, we are given a graph with source-sink pairs with demand, concave costs on edges, and the goal is to route
+	these demands concurrently so as to minimize the total cost. The concavity of edges captures the economies of scale. We consider the online version where
+	the demands appear one-by-one and need to be routed on the fly. We give the first polylogarithmic competitive ratio for this problem.
+	</div>
+</li>
+
+
+<li>
+<b> Property Testing on Product Distributions: Optimal Testers for Bounded Derivative Properties. </b>
+<a href="http://eccc.hpi-web.de/report/2014/042/download"> [pdf]</a>
+<a href =" javascript:toggle('product')"> [abs] </a><br>
+with Kashyap Dixit, Madhav Jha, and C. Seshadhri.<br>
+In <i>Proc. SODA 2015</i>
+<div id="product" class="abs" style="display:none"> <p>
+In property testing, the concept of distance is crucial and is often defined using the Hamming distance between objects. For instance, a function's distance to monotonicity 
+is often defined to be the fraction of domain points at which it needs to be modified to make it monotone. How does the situation change when the underlying distribution used to measure
+the distance is not uniform. In this paper, we look at arbitrarty <b> product </b> distributions, and essentially show the quality of a monotonicity tester is worst for the uniform distribution.
+More precisely, we prove that the query complexity is essentially the entropy (but not quite) of the product distribution by exhibiting simple testers and not-so-simple lower bounds.
+Our results hold for a general class of properties which we call bouned derivative properties.
+</div>
+</li>
+
+<li>
+<b> On (1,eps)-Restricted Assignment Makespan Minimization.</b>
+<a href="./PUBS/CKL.pdf"> [pdf]</a> 
+<a href = "javascript:toggle('makespan')"> [abs]</a><br>
+with Sanjeev Khanna and Shi Li. <br>
+In <i>Proc. SODA 2015</i>
+<div id="makespan" class="abs" style="display:none"><p>
+In a breakthrough in 2011, Svensson <a href="http://epubs.siam.org/doi/abs/10.1137/110851201"> showed </a> that the value of the optimum makespan can be <i> estimated </i> 
+up to a factor of 1.95, in the restricted assignment setting. However, a polynomial time algorithm to obtain a schedule achieving the corresponding makespan is as of yet not known.
+In this paper, we look at a special case of restricted assignment problem where jobs are of two sizes - 1 or eps. We demonstrate a polynomial time (2 - delta) approximation
+for some constant delta > 0 which doesn't depend on epsilon.
+</div>
+</li>
+
+
+
+</ul>
+
+<br>
+<b>2014</b>
+<br>
+
+  <ul>
+	
+	<li>
+	<b> Provable Submodular Minimization using Wolfe's Algorithm. </b>
+	<a href="./PUBS/CJK2.pdf"> [pdf] </a>
+	<a href = "javascript:toggle('wolfe')"> [abs] </a><br>
+	with Prateek Jain and Pravesh Kothari.<br>
+	In <i>Proc. NIPS 2014 </i>. <font color="brown"> Oral Presentation</font>
+	<div id="wolfe" class="abs" style="display:none"><p>
+	In 1976, Wolfe proposed an algorithm to find the minimum Euclideam norm point in a polytope. He proved finite convergence of his algorithm, although the known running time is exponential in the
+	number of vertices of the polytope. In 1980, Fujishige observed that Wolfe's minimum norm point algorithm can be used to minimize submodular functions by running it on the function's base polytope.
+	In practice, it has been observed that this Fujishige-Wolfe minimum norm point algorithm works decently well, although, no theoretical guarantee (apart from Wolfe's) was known. 
+	In this paper, we make some progress. We prove that Wolfe's algorithm has 1/t convergence, in that, in O(t) iterations it returns a t-approximate solution. Along with a robust version of Fujishige's
+	theorem regarding submodular functions, this implies a <i> pseudopolynomial time</i> for submodular minimization.
+	</div>
+	</li>
+
+
+  	<li>
+  	<b> Approximability of Capacitated Network Design.</b>
+	<a href="./PUBS/CCKK.pdf"> [pdf] </a>
+	<a href="javascript:toggle('capnd')"> [abs] </a> <br>
+	with Chandra Chekuri, Sanjeev Khanna, and Nitish Korula.<br>
+	In <i> Algorithmica (2014)</i>. Previous version in <i> IPCO 2011 </i>. 
+	<div class = "abs" id = "capnd" style = "display:none"> 
+		<p> Capacitated Network Design is the natural generalization of the SNDP problem, where we need to pick the cheapest subgraph of a <i>capacitated</i> graphs satisfying certain cut constraints.
+		Unlike the unit capacity version, this problem seems harder. For instance, the directed version is label cover hard even when there's a single pair cut constraint.
+		We give logarithmic approximations when there are global cut constaints, and when picking multiple copies of edges are allowed.
+		</div>
+  	</li>
+  
+  
+    <li><b>Submodularity Helps in Nash and Nonsymmetric Bargaining Games.</b>
+    	<a href="./PUBS/CGVWY.pdf">[pdf]</a><br>
+    with Gagan Goel, Vijay V. Vazirani, Lei Wang, and Changyuan Yu.<br>
+    In <i> SIAM Journal of Discrete Math (SIDMA) 28(1): 99-115 (2014).</i> Previous version in <i>WINE 2008.</i>
+    </li>
+    
+    
+    <li> <b>Welfare maximization and truthfulness in mechanism design with ordinal preferences.</b> 
+    	<a href="http://arxiv.org/pdf/1312.1831v2.pdf">[pdf]</a>
+		<a href="javascript:toggle('WMATIMDWOP')"> [abs]</a><br>
+    with Chaitanya Swamy. <br>
+    In <i>Proc. ITCS 2014</i></li>
+	<div id="WMATIMDWOP" class="abs" style="display:none"><p>
+	In an allocation setting where preferences of agents are orders over outcomes rather than cardinal numbers for each preference, the notion of 
+	social welfare is not well defined or agreed upon. Furthermore, when mechanisms are randomized, the concept of truthfulness comes into question. In this paper,
+	wearing our TCS hats, we propose a notion of welfare called rank approximation. A mechanism has c-rank approximation if for all i between 1 and n, 
+	the number of agents getting their top i choices
+	is within c-factor of the allocation tailored to maximize the number of agents getting their top i choices.
+	We also propose a notion of truthfulness, called lex-truthfulness, in randomized ordinal mechanisms. This notion is nicely sandwiched between two notions studied in the literature.
+	Equipped with these notions, we define matching market mechanisms which are lex-truthful and have optimal rank approximation.
+
+	</div>
+   </ul>
+
+<br>
+<b>2013</b>
+<br>
+   
+<ul>
+
+  <li>
+    <b> Hypergraphic LP Relaxations for Steiner Trees.</b>
+     <a href="./PUBS/CKP-full.pdf"> [pdf]</a>
+     <a href="javascript:toggle('HLRSFST')"> [abs]</a>. <br>
+     with Jochen Koenemann and David Pritchard. <br>
+     In <i> SIAM Journal of Discrete Math (SIDMA) 27(1): 507-533 (2013). </i> Previous version in <i> IPCO 2010.</i>
+    <div id="HLRSFST" class="abs" style="display:none"><p> The best known approximation, due to <a href="">this</a> paper, is based on what we call hypergraphic LP relaxations. This paper
+		was independent and concurrent of their work where we study a list of hypergraphic relaxations and prove their equivalence. We also prove a "better-than-2" integrality gap, but this has 
+		been since then <a href="">improved</a>. </div>
+     </li>
+
+  <li><b>Capacitated Network Design on Undirected Graphs.</b> 
+  	<a href="./PUBS/CKLN.pdf">[pdf]</a>
+  	<a href="javascript:toggle('ckln')">[abs]</a><br>
+  with Ravishankar Krishnawamy, Shi Li, and Srivatsan Narayanan.<br> 
+  In <i>Proc APPROX 2014</i>.
+   <div id="ckln" class="abs" style="display:none"> 
+    <p>In this paper, we show that the capacitated network design problem is Label-Cover hard. Here, we are given a capacitated graph G and two vertices s and t. The goal is to find the smallest subgraph H of G so that s can route R units of flow to t. We also show a flow-additivity theorem for undirected graphs which, somewhat surprisingly, shows that the max flow between a set of vertices to a sink t is at least half 
+   the sum of the individual flows of these vertices (provided the set is minimal)</div></li>
+
+   <li><b>An Optimal Lower Bound for Monotonicity Testing over Hypergrids.</b>  
+	   <a href="http://eccc.hpi-web.de/report/2013/062/download">[pdf]</a>
+   	   <a href = "javascript:toggle('monolowerbound')">[abs]</a> <br>
+   with C. Seshadhri. <br>
+   In <i> Proc. RANDOM 2013</i>.
+   <div id="monolowerbound" class="abs" style="display:none"> 
+   <p>
+   We complement our STOC 2013 paper with a matching lower bound of Omega(d log n/eps). This holds for adaptive, two-sided testers. 
+   On the flip side, this is only for functions which have unbounded range.</div>
+   </li>
+   
+   <li>
+   	<b> Budget smoothing for internet ad auctions: a game theoretic approach. </b>
+   		<a href="./PUBS/CCCDW.pdf ">[pdf]</a>
+   		<a href="javascript:toggle('budthrot')">[abs]</a><br>
+   	with Denis Charles, Max Chickering, Nikhil R. Devanur, and Lei Wang. <br>
+   	In <i> Proc. EC 2013</i>.  
+   	<div id="budthrot"; class="abs"  style="display:none">
+       <p>
+       In Internet ad auctions, the search engine often has to "throttle" budget constrained advertisers to spread their expenditure equally across a specified time period.
+       We ask how should this `budget-smoothing' be done? We put on our game theoretic hats and propose a notion of regret-free smoothing policies. We show these always exist, and for single slot auctions can be found in polynomial time via an algorithm which smells of Gale-Shapley's deferred acceptance algorithm.
+Finally, we design a heuristic for budget smoothing which performs considerably better than existing benchmark heuristics.
+ </div>
+   </li>
+
+	<li>
+	<b> A o(n) monotonicity tester for Boolean functions on the hypercube. </b>
+		<a href="http://eccc.hpi-web.de/report/2013/029/revision/1/download"> [pdf]</a>
+		<a href="javascript:toggle('boolmon')">[abs]</a>  <br>
+	with C. Seshadhri. <br>
+	In <i> Proc. STOC 2013. </i> <font color="brown">Invited to SICOMP Special Issue.</font>
+	 <div id="boolmon"; class="abs"  style="display:none"> 
+  <p>We make progress on Boolean monotonicity testing giving the first sublinear (in dimension) algorithms. On the way we prove a new directed isoperimetry result, and 
+use it to analyze random walks on the <i> directed </i> hypercube. <b>Note</b>: The proceedings version has a bug and the claimed n^{5/6} 
+is incorrect and we can only achieve n^{7/8}. This has been corrected in the full version linked to above. Also check out the FOCS 2014 paper 
+by Chan, Servedio, and Tan.
+ </div>
+	</li>
+
+	<li>
+	<b> Optimal Monotonicity and Lipschitz Testers over Hypercubes and Hypergrids. </b>
+		<a href="http://eccc.hpi-web.de/report/2012/030/revision/1/download"> [pdf]</a>
+		<a href="javascript:toggle('genmon')">[abs]</a> <br>
+	with C. Seshadhri. <br>
+	In <i> Proc. STOC 2013. </i>
+	<div id="genmon" class="abs" style="display:none"> 
+  <p>We give optimal testers for monotonicity over the hypercube and hypergrid domain. This settles a long standing question in property testing.
+  Our methods are quite general, and applies to first derivative properties, which includes the Lipschitz property as well. The main technique is via matchings and alternate paths
+  on the hypercube and hypergrids.
+  </div>	
+	</li>
+</ul>
+
+<br>
+<b> 2012 </b>
+<br>
+
+<ul>
+<li>
+<b> Approximability of the Firefighter Problem - Computing Cuts over Time. </b>
+	<a href="./PUBS/ACHS-full.pdf"> [pdf] </a>
+	<a href="javascript:toggle('AOFPCCOVT)"> [abs] </a><br>
+	with Elliot Anshelevich, Ameya Hate, and Chaitanya Swamy. <br>
+	In <i> Algorithmica 62(1-2): 520-536 (2012). </i> Previous version in <i> ISAAC 2009.</i>
+	<div id="AOFPCCOVT" class="abs" style="display:none"> 
+	<p> 
+	</div>
+</li>
+
+
+<li>
+  <b>Testing Coverage Functions. </b>
+		<a href="http://arxiv.org/pdf/1205.1587v1.pdf">[pdf]</a>
+		<a href="javascript:toggle('cover')">[abs]</a> <br>
+   with Zhiyi Huang. <br>
+   In <i> Proc. ICALP 2012. </i>
+  <div id="cover" class = "abs" style = "display:none"> 
+		<p>Motivated by a question in <a href="http://arxiv.org/abs/1008.0831">this</a> paper, we study whether coverage functions can be recognized and tested. We give a 
+		polytime reconstruction algorithm for succinct coverage functions. At the same time, we show that without succinctness, even certificates of "non-coverageness" could be exponentially large. </div>
+</li>
+
+</ul>
+
+
+  
+<br>
+<b> 2011 </b>
+<br>
+
+<ul>
+
+<li>
+ <b>Social Welfare in One-Sided Matching Markets without Money. </b>
+		<a href="http://arxiv.org/pdf/1104.2964v1.pdf"> [pdf]</a> 
+				<a href="javascript:toggle('soc-wel')"> [abs]</a> <br>
+ with Anand Bhalgat and Sanjeev Khanna. <br>
+ In <i> Proc. APPROX 2011 </i>.
+  <div id="soc-wel" class="abs" style="display:none"> 
+	<p> We try to explore the notion of welfare in matching markets where the users have ordinal preferences rather than cardinal values. Our contribution is a definition, and to 
+	analyze two existing mechanisms (RSD + PS), and prove their optimality.
+	</div>
+</li>
+
+<li>
+  <b> Optimal Lower Bounds for Universal and Differentially Private Steiner Trees and TSPs. </b>
+	  <a href="http://arxiv.org/pdf/1011.3770v1.pdf"> [pdf]</a>.<br>
+   with Anand Bhalgat and Sanjeev Khanna. <br>
+   In <i> Proc. APPROX 2011.</i>
+</li>
+
+<li>
+<b> Approximability of Sparse Integer Programs. </b>
+	<a href="./PUBS/PC.pdf"> [pdf] </a> <a href="javascript:toggle('pips')"> [abs] </a><br>
+with David Pritchard. <br>
+In <i> Algorithmica 61(1): 75-93 (2011)</i>. 
+<div class = "abs" id = "pips" style = "display:none"> 
+	The paper studies the problem of integer programs which have at most k entries in each column/row. The main result is a O(k^2) approximation algorithm for the column constrained problem. 
+	That's my contribution to the ESA conference version of David's single author paper. Since then, a O(k)-approximation (and many more results) have been found by <a href="http://arxiv.org/abs/0908.2256 "> these guys.</a>	</div>
+</li>
+
+<li>
+  <b> Facility Location with Client Latencies: Linear-Programming based Techniques for Minimum-Latency Problems. </b>
+		<a href="./PUBS/CS-lat.pdf"> [pdf] </a>
+		<a href="javascript:toggle('mlufl')"> [abs]</a><br>
+  with Chaitanya Swamy. <br> 
+  In <i> Proc. IPCO 2011.</i>
+  <div class = "abs" id = "mlufl" style = "display:none"> 
+      <p> We study a generalization of facility location and minimum latency problems which generalizes a host of comb opt problems. 
+	  We give (almost) optimal algorithms with logarithmic approximations, and 
+	  constant approximations for special cases. On the way, we develop an LP based approach to 
+	  minimum latency which we believe (but can't prove) should give better approximation algorithms for the same.
+  </div>
+</li>
+
+<li>
+  <b> New Geometry-Inspired Relaxations and Algorithms for the Metric Steiner Tree Problem.</b>
+    <a href="./PUBS/CDV-full.pdf"> [pdf] </a> <a href="javascript:toggle('CDV-Steiner')"> [abs] </a> <br>
+   with Nikhil R. Devanur and Vijay V. Vazirani. <br>
+   In <i> Math. Programming. 130(1):1-32 (2011)</i>. Previous version in <i> IPCO 2008.</i>
+   <div id="CDV-Steiner" class="abs" style="display:none"><p>  In this paper we describe a new "geometric" relaxation for the Steiner tree problem
+		which turns out to be equivalent to the bidirected cut relaxation. It also shows an upper bound of 4/3 on the integrality gap for <a href="">quasi-bipartite</a> graphs,
+		which at the time was the best known. The current best upper bound is 73/60 given in <a href="">this</a> paper.</div>
+</li>
+
+
+</ul>
+<br>
+<hr>
+<br>
+<b> &#8804 2010 </b>
+<br>
+
+<ul>
+<li>
+  <b> Integrality gap of the hypergraphic relaxation of Steiner trees: A short proof of a 1.55 upper bound.</b>
+     <a href="./PUBS/CKP-orl.pdf"> [pdf]</a> 
+	 <a href="javascript:toggle('ORL-Steiner')"> [abs] </a><br>
+   with Jochen Koenemann and David Pritchard. <br>
+   In <i> Oper. Res. Lett. 38(6): 567-570. (2010).</i>
+   <div id="ORL-Steiner" class="abs" style="display:none"> <p><a href=""> Byrka et al.</a> proved a 1.55 upper bound on the hypergraphic relaxation for Steiner trees. However, their 
+		proof was based on Robbins-Zelikovsky algorithm. In this paper, we give a shorter proof based on iterative randomized rounding.		</div>
+</li>
+
+
+ <li>
+  <b> On Column-restricted and Priority Covering Integer Programs.</b> <a href="./PUBS/CGK-full.pdf"> [pdf] </a> <a href="javascript:toggle('CGK-capcov')"> [abs]</a><br>
+  with Elyot Grant and Jochen Koenemann. <br>
+  In <i> Proc. IPCO 2010.</i>
+  <div id="CGK-capcov" class="abs" style="display:none"> <p> The paper explores the following question: suppose an Integer program ( min c*x Ax >= b, x in {0,1}) has integrality gap a, where A
+is a 0,1 matrix, can one say anything about the "capacitated" version of the IP where each column of A is multiplied by an arbitrary positive integer? That is, is there a relation between a 
+covering problem (say covering a line using intervals) with a version where each element has a demand and each set has a supply. We answer a "conditional" yes: we define a related 
+0,1-optimization problem called the <i> priority</i> version, and if the priority version has integrality gap b, the capacitated version has an O(a+b) algorithm.
+It would've been nice if b was O(a), and indeed we show in some problems that is the case, but <a href="">this</a> paper dashed that hope for general covering IPs.</div>
+  </li>
+
+ 
+<li>
+<b> G-parking functions, acyclic orientations and spanning trees.</b> <a href="./PUBS/BCT.pdf"> [pdf]</a> <br>
+with Brian Benson and Prasad Tetali. <br>
+In <i> Discrete Mathematic 310(8): 1340-1353 (2010).</i>
+</li>
+
+<li>
+  <b> On the Approximability of Budgeted Allocations and
+  Improved Lower Bounds for Submodular Welfare Maximization and GAP.</b>
+    <a href="./PUBS/CG-full.pdf"> [pdf]</a>
+    <a href="./PUBS/CG-conf.pdf"> [conf-pdf]</a> <br>
+    with Gagan Goel. <br>
+    In <i> SIAM Journal of Computing (SICOMP), 39(6):2189-2211 (2010).</i> Previous version in <i> FOCS 2008.</i>
+</li>
+
+ <li>
+  <b> Design is as easy as Optimization.</b>
+    <a href="./PUBS/CMV-full.pdf"> [pdf] </a>
+    <a href="./PUBS/CMV-conf.pdf"> [conf-pdf]</a><br>
+  with Aranyak Mehta and Vijay V. Vazirani.<br>
+  In <i> SIAM Journal of Discrete Math (SIDMA), 24(1): 270-286, (2010).</i> Previous version in <i> Proc. ICALP 2006 </i>
+</li>
+
+<li>
+  <b> Rationality and Strongly Polynomial Solvability of Two Agent Eisenberg-Gale Markets.</b>
+    <a href="./PUBS/CDVEG-full.pdf"> [pdf]</a><br>
+    with Nikhil R. Devanur and Vijay V. Vazirani. <br>
+	In <i> SIAM Journal of Discrete Math (SIDMA),  24(3): 1117-1136, (2010). </i> Previous version in <i> WINE 2006 </i>.
+</li>
+
+
+
+<li>
+  <b> On Allocating Goods to Maximize Fairness.</b>
+     <a href="./PUBS/CCK-full.pdf"> [pdf]</a>
+	  <a href="./PUBS/CCK-conf.pdf"> [conf-pdf]</a><br>
+	  with Julia Chuzhoy and Sanjeev Khanna. <br>
+	  In <i> Proc FOCS 2009.</i>
+</li>
+
+
+<li>
+  <b> Budget Constrained Bidding in Keyword Auctions and Online Knapsack Problems. </b>
+        <a href="./PUBS/CZL-full.pdf"> [pdf] </a>
+        <a href="./PUBS/CZL-conf.pdf"> [conf-pdf]</a> <br>
+  with Yunhong Zhou and Rajan Lukose. <br>
+  In <i> Proc. WINE 2008. </i>
+</li>
+
+<li>
+  <b> On Competitiveness in Uniform Utility Allocation Markets.</b>
+    <a href="./PUBS/CD-full.pdf"> [pdf] </a> <br>
+ with Nikhil R. Devanur. <br>  
+In <i>Oper. Res. Lett. 37(3): 155-158 (2009)</i> Previous version in <i> Proc. WINE, 2007.</i>
+</li>
+
+<li>
+  <b> Fairness and Optimality in Congestion Games. </b>
+   <a href="./PUBS/CMNV-conf.pdf"> [pdf] </a> <br>
+   with Viswanath Nagarajan, Aranyak Mehta and Vijay V. Vazirani. <br>
+  In <i> Proc. EC 2005.</i> 
+</li>
+
+</ul><br><br><br>
+<hr>
+<br>
+
+<div class="footer"> <center><small>Last modified: 28th October, 2014.</small></center><br> </div>
+
+</body>
+</html>
+
+   
+
+   
