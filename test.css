@@ -2,7 +2,7 @@ body{
 	transform: scale(1.20);
     transform-origin: 50% 0%;
     background-color:#effefef;
-    font-family: Palatino, Lora, Arial, Helvetica, Times New Roman;
+    font-family:  Lora, Palatino, Arial, Helvetica, Times New Roman;
     width:800px;
 	margin-top:auto;
     margin-left:auto;
@@ -88,7 +88,7 @@ div#blurb{
     margin-top:20px;
     margin-bottom:auto;
     width:650px;
-    font-family: Palatino, Lora, Helvetica, Times;
+    font-family: Lora, Palatino, Helvetica, Times;
     font-weight:lighter;
     float:right;
 }
@@ -100,7 +100,7 @@ div#news{
     margin-bottom:auto;
     width:800px;
     height:300px;
-    font-family: Palatino, Lora, Helvetica, Times;
+    font-family:  Lora, Palatino, Helvetica, Times;
     font-weight:lighter;
     float:left;
 }
