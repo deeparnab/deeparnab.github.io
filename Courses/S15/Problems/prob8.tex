@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+\title{{\bf Approximation Algorithms} \\ 
+{\normalsize EO249}}
+\date{(Problem Set 8)}
+\maketitle
+{\small 
+Solutions need to be submitted by email to eo249iisc@gmail.com. We prefer latexed solution. 
+Before giving the solutions, you should write how many problems you have attempted and how many you think you have solved.
+Starred problems are optional and (possibly) more fun.
+}
+\vspace{1ex}
+\def\poly{\mathrm{poly}}
+\def\Exp{\mathbf{Exp}}
+\def\Pr{\mathbf{Pr}}
+
+\begin{exercise}
+Recall the multiway cut problem: given an undirected graph $G=(V,E)$ with costs $c_e$ on edges, and given a set of $k$ vertices $T = \{s_1,\ldots,s_k\}$, find a subset $F$ of edges of minimum cost whose deletion separates every $s_i$ from $s_j$. Consider the following algorithm: let $F_i = \delta(S_i)$ be the minimum cost cut separating $s_i$ from 
+$T\setminus s_i$.
+\begin{enumerate}
+\item Show that $F_i$ can be found in polynomial time.
+\item Show that the union of {\bf any} $(k-1)$ of these $F_i$'s forms a valid multiway cut.
+\item Prove that the best among these $k$ possibilities of part (2) is of cost $\leq 2(1-1/k) OPT$.
+\end{enumerate}
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+In this exercise we show that the LP relaxation for multicut that we looked in class has integrality gap $\Omega(\log n)$.
+To do so, we need a definition. An $(\alpha,d)$-expander is an $n$-vertex graph where each vertex has degree $k$ and for every subset $S\subseteq V$ of $|S|\leq n/2$, we have $|\delta(S)| \geq \alpha d |S|$. We will use the fact that $(\alpha,d)$-expanders exist, where $\alpha$ and $d$ are fixed constants. Let $G$ be such an expander and let $c_e = 1$ for all edges.
+
+\begin{enumerate}
+\item For every vertex $u\in V$, let $S_u := \{v: d(u,v) > \frac{\log_d n}{2}\}$. We add an $(s_i,t_i)$ pair with $s_i = u$ and $t_i = v$ for all $v \in S_u$. How many $(s_i,t_i)$ pairs do we add in all?
+\item Construct an LP solution to the multicut problem with LP cost  $\leq \frac{nd}{\log_d n}$.
+\item In this part, we argue that the optimum multicut must be of cost at least $\Omega(nd\alpha)$. 
+\begin{enumerate}
+\item Consider the graph from which the optimum multicut $F^*$ has been deleted. 
+Argue that the diameter of every connected component is at most $\frac{\log_d n}{2}$.
+\item Argue that the size of every connected component is at most $O(\sqrt{n})$.
+\item Find a subset of vertices $S$ by taking a union of a bunch of these components such that
+$n/3 \leq |S|\leq n/2$. Since $\delta(S) \subseteq F^*$, we get by expander property, $|F^*| \geq \Omega(\alpha d n)$.
+\end{enumerate}
+
+
+\end{enumerate}
+\end{exercise}
+
+
+\end{document}
+

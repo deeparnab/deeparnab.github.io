@@ -1,0 +1,87 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\def\Poi{{\sf Poi}}
+
+\begin{document}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+\title{E0234: Assignment 5 Solutions}
+\author{}
+\date{}
+\maketitle
+It is highly recommended you do not google for the answers to the questions below. You can discuss with your friends, but then mention that in your submission.
+The writing should solely be your own.
+
+\begin{enumerate}
+
+\item Let $X_1,\ldots , X_n$ be independent indicator random variables, and let $p_i := \Pr[X_i = 1]$.
+Let $U$ and $L$ be any positive reals such that $U \geq \sum_{i=1}^n p_i \geq L$. Let $X = \sum_{i=1}^n X_i$.
+Prove
+\begin{enumerate}
+	\item $\Pr\left[X \geq (1+\delta)U\right] \leq e^{-U((1+\delta)\ln(1+\delta) -\delta)}$
+	\item $\Pr\left[X \leq (1-\delta)L\right] \leq e^{-L\delta^2/2}$
+\end{enumerate}
+
+\Sol
+
+Follows from the proof of Theorem 4.2 and 4.2 in MR.
+
+\item  We are given a collection of $n$ sets $S_1,\ldots,S_n$ where each $S_i$ is a subset of $U = \{1,2,\ldots,n\}$.
+A $2$-coloring is an assignment  $c:U \to \{-1,+1\}$ to the elements of $U$.
+The {\em discrepancy} of a $2$-coloring is $\max_{j=1}^n \sum_{i\in S_j} c(i)$. 
+What can you say about the discrepancy of a random 
+coloring which independently assigns each element $+1$ or $-1$ with probability $1/2$? 
+In particular, give a confidence bound (in terms of $n$) in which the discrepancy lies with probability $> 99\%$.
+
+\Sol
+
+For $\{1, -1\}$ random variable, we get the following from the Chernoff bound.
+
+\begin{align*}
+ \Pr[c(S_i) \ge \Delta] \le  e^{-\frac{\Delta^2}{|S_i|}} \le  e^{-\frac{\Delta^2}{n}}
+\end{align*}
+
+Using union bound, we have the following.
+
+\[ \Pr[\exists i, |c(S_i)| \ge \Delta] \le n e^{-\frac{\Delta^2}{n}}\]
+
+Hence, $\max_{j=1}^n \sum_{i\in S_j} c(i)$ is at most $O(\sqrt{n\log n})$ within $99\%$ probability.
+
+
+\item 
+\begin{enumerate}
+	\item If $Z$ is a random variable with $\Exp[Z] = 0$ and $|Z| \leq 1$ with probability $1$, then prove $Z$ is $1$-subgaussian.
+	
+	\Sol 
+	
+	\begin{align*}
+	 \Exp[e^{tZ}] &= \Exp[1 + tZ + \frac{t^2 Z^2}{2!} + \ldots]\\
+	 &\le 1 + \frac{t^2}{2!} + \frac{t^4}{4!} + \ldots\\
+	 &= e^{t^2/2}
+	\end{align*}
+
+
+	\item If $Z$ is a $\sigma$-subgaussian random variable, prove that $\Exp[Z] = 0$ and $\Var[Z] \leq \sigma^2$.
+	
+	\Sol
+	
+	\begin{align*}
+	  &\Exp[e^{tZ}] \le e^{\frac{t^2 \sigma^2}{2}}&\\
+	  \Rightarrow &1 + t\Exp[Z] + \frac{t^2}{2}\Exp[Z^2] + \frac{t^3}{3!}\Exp[Z^3] \ldots \le e^{\frac{t^2 \sigma^2}{2}}&\\
+	  \Rightarrow &\Exp[Z] + t\Exp[Z^2] + \frac{t^2}{3}\Exp[Z^3] + \ldots \le 2te^{\frac{t^2 \sigma^2}{2}} &[\text{Differentiating w.r.t }t]\\
+	  \Rightarrow &\Exp[Z] \le 0 &[\text{Putting }t=0]\\
+	  \Rightarrow &\Exp[Z] = 0 &[\text{Since Z is subgaussian, -Z is subgaussian too}]
+	\end{align*}
+
+\end{enumerate}
+
+\item {\bf Johnson-Lindenstrauss Lower Bound.} Consider the following $(n+1)$ points in $n$ dimensions: $\{0,e_1,\ldots,e_n\}$
+where $e_i$ is the $i$th unit vector with $1$ in the $i$th position and $0$ elsewhere. 
+Consider a mapping of these $(n+1)$ vectors to $k$ dimensions such that the pairwise distances are preserved to a $(1\pm \eps)$-multiplicative factor.
+What is the best {\em lower bound} you can prove on $k$? 
+
+\Sol See \href{https://courses.cs.washington.edu/courses/cse522/14sp/lectures/lect10.pdf}{here} and \href{https://courses.cs.washington.edu/courses/cse522/14sp/lectures/lect11.pdf}{here}.
+
+\end{enumerate}
+
+\end{document}

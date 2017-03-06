@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\usepackage{times}
+\def\Var{\mathbf{Var}}
+\begin{document}
+	\paragraph{Packet Routing with Fixed Paths.} 
+	
+	Input is a directed graph and $k$ source sink pairs $s_i,t_i$ {\bf and} paths $p_i$ for each pair. 
+	We need to {\bf route} packets from $s_i$ to $t_i$ along these paths $p_i$. Suppose it takes one unit of time to traverse an edge $(u,v)$ and at a time only one edge can use $(u,v)$.
+	Packets can wait at a vertex, however.
+	We want to find a schedule which minimizes {\em makespan}: the time at which the last packet reaches its destination.
+	
+	Let 
+	\[
+	C := \max_{e\in E} |\{i: e\in p_i\}|~~~~ \textrm{and}~~~~ D := \max_{i=1}^k |p_i|
+	\]
+	be the {\em congestion} and {\em dilation} of the input. Observe that $OPT \geq \max{C,D}$, and so, $OPT = \Omega(C+D)$.
+	We now show that there is a schedule with makespan $OPT \leq O(C + D\log(kD))$.
+	
+	
+	We first describe a generic ``reduction'' from an infeasible schedule to a feasible schedule. 
+	Call a schedule $\alpha$-feasible for some positive integer $\alpha$, if it sends
+	at most $\alpha$ packets through any edge at any time. So $\alpha = 1$ would imply a feasible schedule. 
+	\begin{lemma}
+		Given an $\alpha$-feasible schedule with makespan $T$, we can construct a feasible schedule with makespan $\leq \alpha T$. %$T + \alpha D$
+	\end{lemma}
+	\begin{proof}
+		%Fix an arbitrary order $\{1,2,\ldots,k\}$. For each path $p_i$, consider its edges in order from $s_i$ to $t_i$. Let them be $e_1,\ldots,e_d$ with $d\leq D$.
+		%If for any edge $e_j$, the $\alpha$-feasible schedule routes the $i$th flow and some other $i'$th flow concurrently, we add $i'$ to a set $R$, which is initalized to null.
+		%After we finish processing all the edges, we see that $|R| \leq \alpha D$. Let $r_i$ be the rank of $i$ in $R$.
+		%
+		%Consider the schedule which does the following: for each $i$, it waits for $r_iD$ time steps and then precisely does what the $\alpha$-feasible schedule did.
+		%I claim that this is feasible.
+		%
+		An easier proof of $\alpha T$: Dilation of time. Instead of doing things at $t = 1,2,\ldots$ do it in $t=1,\alpha+1,2\alpha+1,\ldots$ and whenever
+		there is congestion just use the time-steps in between.
+	\end{proof}
+	\noindent	
+	So we can look for $\alpha$-feasible solutions with as low $\alpha$ and as low makespan. 
+	
+	\paragraph{Algorithm.} Each $i$ chooses a random `start' time $r_i \in \{1,2,\ldots, \ceil{\frac{\beta C}{\log(kD)}}\}$ where $\beta = 3$. Schedule packet $i$ from $s_i$ to $t_i$ starting at 
+	$r_i$ and not stopping at all in between. 
+	
+	\begin{lemma}\label{lem:cong}
+		With probability $> 1-\frac{1}{kD}$, the above schedule is $O\left(\log(kD)\right)$-feasible.
+	\end{lemma}
+	\begin{corollary}
+		There exists a feasible schedule with makespan $O(C + D\log(kD))$.
+	\end{corollary}
+	\begin{proof}
+		The (in)feasible schedule has makespan $\leq \frac{\beta C}{\log(kD)} + D$. The corollary follows from the previous two lemmas.
+	\end{proof}
+	\begin{proof}{(Proof of Lemma ~\ref{lem:cong})}
+		Fix an edge $e$ and a time instant $1 \leq t \leq D + \frac{\beta C}{\log(kD)}$.
+		\def\cong{{\sf cong}}
+		Let $\cong(e,t)$ be the number of packets passing through edge $e$ at time instant $t$. We can write $\cong(e,t)$ as a sum of independent indicator variables.
+		Let $X(i,e,t)$ be the indicator that packet $i$ passes through $e$ at time $t$. Then
+		\[
+		\cong(e,t) = \sum_{i=1}^k X(i,e,t)
+		\]
+		What is $X(i,e,t)$? If $e\notin p_i$, then $X(i,e,t) = 0$ for all $t$. Otherwise, let $e$ be the $\ell$th edge on $p_i$. Then $X(i,e,t) = 1$ iff $r_i + \ell = t$, that is, $r_i = t - \ell$.
+		In particular, if $\ell < t$ pr if $t - \ell > \frac{\beta C}{\log(kD)}$, then $X(i,e,t) = 0$, otherwise, $X(i,e,t) = 1$ iff $r_i = t - \ell$. In any case, $\Exp[X(i,e,t)] \leq \frac{\log(kD)}{\beta C}$.
+		And so,
+		\[
+		\Exp[\cong(e,t)] \leq \log(kD)/\beta
+		\]
+		By Chernoff, and using $\beta>3$,
+		\[
+		\Pr[\cong(e,t) > 3\log(kD)] \leq 2^{-3\log(kD)} = \frac{1}{k^3D^3}
+		\]
+		The number of edges that we need to consider is $\leq kD$. The number of time instants $\leq D + \beta C \leq D+\beta k \leq 3Dk$.
+		So, the probability there exists an edge and time instant $t$ at which more than $3\log(kD)$ packets pass through it is at most $3/(kD)$.
+	\end{proof}
+\end{document}

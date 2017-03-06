@@ -1,0 +1,113 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+\title{{\bf Approximation Algorithms} \\ 
+{\normalsize EO249}}
+\date{(Problem Set 2) Due: Feb 20th, 2015}
+\maketitle
+{\small 
+Solutions need to be submitted by email to eo249iisc@gmail.com. We prefer latexed solution. 
+Before giving the solutions, you should write how many problems you have attempted and how many you think you have solved.
+Starred problems are optional and (possibly) more fun.
+}
+\vspace{1ex}
+
+\begin{exercise}
+Give an example of a set cover instance where the greedy solution has cost at least  $c\cdot H_K\cdot OPT$ for some constant $c$, where $OPT$ is the optimal greedy set cover cost.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+In the {\bf vertex cover} problem, we are given a graph and we need to find the minimum cardinality subset of vertices such that each edge has 
+at least one end point in that subset. A greedy algorithm for the problem picks the largest degree vertex, deletes it, and proceeds recursively.
+How good is the algorithm? Give both upper bounds and lower bounds.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Recall the submodular set cover problem done in class as well as in the notes -- given a universe $U$ with cost $c_i$ for each $i\in U$, a {\bf monotone} submodular function $f$ defined over the subsets of the universe, and a number $R$, find the minimum cost set $A$ such that $f(A) \geq R$. Analyse the greedy algorithm for the problem. Hint: Go through both the analyses done in class -- they may give you different answers.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Consider the source location problem done in class: given a directed graph $G$ where capacity of all edges is $1$ with a single sink $t$ and a set of candidate sources $U = \{s_1,\ldots,s_k\}$ where $c_i$ is the cost of source $i$, pick the minimum cost set of sources $S\subseteq U$ which can together send $R$ units of flow to $t$.
+Show that this problem is as hard as the set cover problem. Does your analysis go through if the graph is allowed to be undirected.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Consider the following for unconstrained submodular maximization problem (for general, not monotone, submodular functions): pick an element $i$ which has the largest marginal value stopping if marginals of all remaining elements is $\leq 0$. More formally, we always maintain a set $S$ which is initialized to the empty set and we pick the element $i$ which maximizes $f(S\cup i) - f(S)$ till all such marginals are negative. 
+
+What is the approximation factor of this algorithm?
+\end{exercise}
+\vspace{1ex}
+\begin{center}
+Starred Problems
+\end{center}
+
+\begin{exercise}(*)
+Let us change the greedy algorithm for the vertex cover described in exercise 2. 
+Instead of picking the vertex with the maximum degree, pick a vertex $v$ {\em randomly} with probability of picking vertex $v$ proportional to degree of the vertex $v$.
+That is, if $X$ is the set of vertices remaining, pick $v\in X$ with probability $d(v)/\sum_{v\in X} d(v)$ where $d(v)$ is the degree of $v$ in the remaining graph.
+
+Obviously, the final set $S$ that is picked is a random set. What can you say about the $\mathbf{Exp}[|S|]$ compared to $OPT$, the minimum cardinality vertex cover?
+What can you say for the ``bad'' examples you have created in exercise 2.
+\end{exercise}
+
+\begin{exercise}(*)
+Consider the following problem: we are given a connected, undirected graph $G$ whose edge set is $E$. Suppose $f$ is a {\em monotone, submodular} function defined over subsets of $E$. The goal is to find a spanning tree $T$ of $G$ which maximizes $f(E(T))$. Propose a greedy algorithm for this problem. Can you analyze this?
+\end{exercise}
+
+\end{document}

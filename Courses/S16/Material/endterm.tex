@@ -1,0 +1,135 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\def\Pr{\mathbf{Pr}}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+ 
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\setlength{\algobox}{6.5in}
+\newcommand{\supp}{{\tt supp}}
+\newcommand{\rank}{{\tt rank}}
+\def\Pr{\mathbf{Pr}}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+
+\begin{document}
+
+\title{E0234 Randomized Algorithms}
+\author{\bf Endterm}
+\date{27th Apr, 2016}
+\maketitle
+\thispagestyle{empty}
+\def\poly{{\tt poly}}
+%You are allowed one A4 sheet of paper in your own handwriting which needs to be submitted with your answer sheet. 
+\begin{center}
+{\small 
+Good luck!
+}
+
+
+\end{center}
+%\hline
+
+\begin{enumerate}
+\item ({\bf 10 points.})
+Suppose we get $k$ i.i.d. samples  $X_1,\ldots,X_k$ from a distribution with mean $\mu$ and std dev $\sigma$, both of which are {\em unknown}.
+We have seen that $Z := \frac{1}{k}\sum_{i=1}^k X_i$ is an unbiased estimator of $\mu$. Describe an unbiased estimator of the variance, $\sigma^2$.
+
+\vspace{.5in}
+
+\item ({\bf 10 points}) $A$ is an array of $n$ distinct numbers. Consider the following algorithm to estimate the approximate median of $A$: sample $k$ entries of $A$ uniformly at random to get the set $R$ and return $r$, the median of $R$. We wish to have the following guarantee:
+\[
+\Pr\left[\mathsf{rank}(r) \in \left[\frac{n}{2} - \eps n , \frac{n}{2} + \eps n \right] \right] \geq 1-\delta
+\]
+where $\mathsf{rank}(r)$ is the index of $r$ in the sorted array $A$. How big does $k$ need to be in terms $n,\eps$ and $\delta$?
+
+\vspace{.5in}
+
+\item ({\bf 15 points})
+\begin{itemize}
+\item[(a)] ({\bf 5 points})
+Let $X_0 = 0$, and for $j \geq 0$, let $X_{j+1}$ be chosen uniformly from the real interval $[X_j, 1]$. Show that the sequence $Y_k = 2^k (1-X_k)$ is a martingale.
+
+\item[(b)] ({\bf 10 points})
+Suppose $G = G(n,dn)$ is a random graph with $n$ vertices and $dn$ edges chosen uniformly at random among all possible edges. Let $MC_n$ denote the size of the maximum cut in $G$. Prove that with constant probability, $$1-\frac{4}{\sqrt{dn}}< \frac{MC_n}{\EX[MC_n]} < 1+\frac{4}{\sqrt{dn}}$$
+\end{itemize}
+
+\vspace{.5in}
+
+	
+\item ({\bf 10+5 points})
+Let $P$ be an undirected path starting from vertex $1$ on the left to vertex $n$ in the right. Given a permutation $\pi$ of $\{1,2,\ldots,n\}$, orient the edges of $P$
+as follows: $(i,i+1)$ is oriented from left to right if $\pi(i) < \pi(i+1)$, and right to left otherwise. Let $Z_\pi$ denote the length of the longest left-to-right directed path in this orientation of $P$.
+\begin{enumerate}
+	\item Find the largest $k$ such that $\Pr[Z_\pi \geq k] \geq 1/2$, where the probability is over a uniformly chosen random permutation $\pi$. We are interested in the asymptotic relationship between $k$ and $n$, if any.
+	\item {\bf Bonus 5 points.} How will you use the above fact to design an algorithm to find long paths in Hamiltonian graphs?
+\end{enumerate}
+
+
+\vspace{.5in}
+
+
+\item ({\bf 15 points})
+Let $G$ be an undirected, non-bipartite and  connected graph with $n$ vertices. Consider two independent random walks starting at two nodes $u$ and $v$ respectively. Show that the expected number of steps for the two walks to meet is $O(n^6)$.
+
+\vspace{.5in}
+
+
+\item ({\bf 20 points.})
+Let $A$ be an $n\times n$ matrix with $|A_{ij}| \leq 1$ entries. In class, we showed the existence of $x\in \{\pm 1\}^n$ such that $||Ax||_\infty \leq \sqrt{2n\ln(2n)}$.
+In this problem we see a better result in case $A$ is row and column sparse. Suppose $A$ has at most $k$ non-zero entries in each row and column.
+\begin{enumerate}
+	\item \textbf{(5 points)} Let $x$ be a random $\{\pm 1\}^n$ vector. For any fixed row $i$, upper bound the probability that $|a_i^\top x| \geq \beta$ where $a_i$ is the $i$th row of $A$.
+	\item \textbf{(5 points)} Prove there exists a $\pm 1$ vector $x$ with $||Ax||_\infty = O(\sqrt{k\ln n})$.
+	\item \textbf{(10 points)} Prove there exists a $\pm 1$ vector $x$ with $||Ax||_\infty = O(\sqrt{k\ln k})$. \textbf{Hint}: LLL.
+\end{enumerate}
+
+
+
+
+
+\ignore{
+
+\item ({\bf X points})
+In our class discussion of the Count-Min sketch, we focused on the {\em strict turnstile} model. Here, each update increments or decrements a coordinate of a vector $\mathbf{x} \in \R^n$ in such a way that $\mathbf{x}_i \geq 0$ for all $i \in [n]$ always.
+
+Now, consider the more general {\em turnstile} model where each update can increment or decrement a coordinate of $\mathbf{x}$ arbitrarily. In this problem, you will modify the Count-Min sketch so that it works in the turnstile model.
+
+Recall the notation used. The Count-Min sketch uses a table $C$ of width $w$ and depth $d$. It maintains $d$ hash functions $h_1, \dots, h_d: [n] \to [w]$ where each $h_\ell$ is pairwise independent. The Count-Min sketch maintains that for all $\ell \in [d]$ and $j \in [w]$:
+$$C[\ell, j] = \sum_{i: h_\ell(i)  = j} \mathbf{x}_i$$
+\begin{enumerate}
+\item[(a)]
+Argue that for any $i \in [n]$ and $\ell \in [d]$, $$\EX[|C[\ell, h_\ell(i)] - \mathbf{x}_i|] \leq \frac{1}{w} \|\mathbf{x}\|_1$$ 
+\item[(b)]
+Let $\hat{\mathbf{x}}_i = \text{median}(\{C[\ell, h_\ell(i)] : \ell \in [d]\})$. Suppose $w = 2/\eps$ and $d = O(\log \delta^{-1})$. Argue that:
+$$\Pr[|\hat{\mathbf{x}}_i - \mathbf{x}_i| > 3 \eps \|\mathbf{x}\|_1] < \delta$$
+\end{enumerate}
+}
+
+\end{enumerate}
+\end{document}

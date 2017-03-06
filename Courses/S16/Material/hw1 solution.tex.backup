@@ -1,0 +1,35 @@
+\documentclass[11pt]{article}
+\input{preamble}
+
+\begin{document}
+
+\title{E0234: Solution Sketch of Assignment 1}
+\author{}
+% \date{Due: Monday, 18th Jan 2016.}
+\maketitle
+\begin{enumerate}
+	\item Suppose you have access to a subroutine {\tt randbit()} which returns $0$ or $1$ with probability $1/2$. Use this to design {\tt randint(n)}, which takes input an integer $n$ and returns an integer 
+	in the range $\{1,\ldots,n\}$ uniformly at random. {\bf Hint:} First do this when $n$ is a power of $2$. How many calls in expectation to {\tt randbit()} is made for input $n$? 
+	
+	{\bf Solution sketch:} First, let us assume that the integer $n$ is a power of two. We call the subroutine randbit() $\log_2 n$ times and return the integer $1+(b_{\log_2 n} \ldots b_1)_2$ as the output of randint(), where $b_i$ is the bit returned by the $i^{th}$ call to randbit() and $(b_{\log_2 n} \ldots b_1)_2$ is the integer whose binary representation is $b_{\log_2 n} \ldots b_1$. It is clear that randint() returns an integer in $\{1, \ldots, n\}$ uniformly at random.
+	
+	\item {\bf Implement} the above algorithm in your favourite language -- find out what is the equivalent of {\tt randbit()} in it. Run your code with $n=8$ a million times storing your answer in an array $a$.
+	Lets call a pair of indices $(i,j)$ a {\em streak} if the entries of $a$ in this range are equal. Let $|j-i+1|$ be the length of this streak. Write down the length of the longest streak in your array $a$.
+	
+	\item In the QuickSort algorithm done in class, let us use $\pi$ to denote the order in which the pivots are chosen. That is, $\pi(1)$ is the value of the first pivot, $\pi(2)$ is the value of the second pivot, and so on.
+	Since every number is chosen as a pivot at some time and exactly once, $\pi$ will be a random permutation of the array $a$. Is this distribution uniform among all permutations of the array? 
+	Give a mathematical and rigorous explanation.
+	
+	\item {\bf Implement} Karger's algorithm in your favourite language. Run it on the file provided in the website. The file is the adjacency matrix of an undirected graph. Each line is a row of the matrix and different rows are separated by new lines. What is the minimum cut size? How many iterations of the subroutine did you need to detect this?
+	
+
+%	\item Given a bipartite graph $G = (A,B,E)$, define the matrix $T_G$ which is an $n\times n$ matrix whose entries are symbols as follows. $T_G[i,j] = T_G[j,i] =  0$ if $(i,j)$ is not an edge, and 
+%	$T_G[i,j] = T_G[j,i] = x_{ij}$ otherwise. Then ${\tt det}(T_G)$ is a polynomial in $m$-variables, where $m$ is the number of edges in $G$. 
+% \begin{enumerate}
+% 	\item Prove that this polynomial is the zero polynomial if and only if
+% 	$G$ has no perfect matching.
+% 	\item Use the above statement to design a randomized algorithm to decide whether a bipartite graph has a perfect matching or not? What is the running time?
+% 	\item Can you generalize the above to work for general graphs?
+% \end{enumerate}	
+\end{enumerate}
+\end{document}

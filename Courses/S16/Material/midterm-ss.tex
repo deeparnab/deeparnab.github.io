@@ -1,0 +1,131 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\def\Pr{\mathbf{Pr}}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+ 
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\setlength{\algobox}{6.5in}
+\newcommand{\supp}{{\tt supp}}
+\newcommand{\rank}{{\tt rank}}
+\def\Pr{\mathbf{Pr}}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+
+\begin{document}
+
+\title{E0234 Randomized Algorithms}
+\author{\bf Midterm: Solution Sketch}
+\date{2nd March, 2016. 1:30pm to 4:30pm.}
+\maketitle
+\thispagestyle{empty}
+\def\poly{{\tt poly}}
+%You are allowed one A4 sheet of paper in your own handwriting which needs to be submitted with your answer sheet. 
+\begin{center}
+{\small 
+Good luck!
+}
+
+
+\end{center}
+%\hline
+
+\begin{enumerate}
+	
+
+\item 
+\begin{enumerate}
+\item[(a)] Prove: for any two random variables $X,Y$, $\Exp[X+Y] = \Exp[X] + \Exp[Y]$.
+
+Use basic definitions.
+
+\item[(b)]
+Prove or disprove: for independent random variables $X,Y$, \mbox{$\Var[XY] = \Var[X]\cdot \Var[Y]$.}
+
+False. Take $X$ and $Y$ to be independent uniform random $0/1$ variables. $\Var[XY] = 3/16$ while $\Var[X] = \Var[Y] = 1/4$
+
+\end{enumerate}
+\vspace{0.5ex}
+
+\item 
+Consider a set system where each set has exactly $10$ elements and every element is present in exactly $10$ sets. 
+Can you colour the elements red or blue such that every set has elements of both colours?
+
+Yes. Use symmetric Lov\'asz Local Lemma.
+%
+%\item A hypergraph is $k$-uniform if each hyperedge has exactly $k$ vertices, and is called
+%$k$-regular if every vertex is in exactly $k$ different hyperedges. A hypergraph is $2$-colorable if every vertex can be coloured either red or blue such that there are no monochromatic hyperedges. Prove that for $k>10$, every $k$-uniform, $k$-regular hypergraph is $2$-colourable.
+\vspace{0.5ex}
+
+\item Consider the random graph $G_{n,p}$ when $p = cn^{-2/3}$, and let $X$ be the number of $4$-cliques in the graph. 
+\begin{enumerate}
+	\item  What is $\Exp[X]$?
+	
+	$p^6 {n \choose 4}= \frac{c^6}{24}-o(1)$ 
+	\item  What is an upper bound on $\Var[X]$?
+	
+	$\Var[X] \leq \frac{n^4}{24} p^6 + \frac{n^6}{8} p^11 + \frac{n^5}{6}p^9 \leq \frac{c^6}{24} + O(n^{-1})$
+	\item  What is $\lim_{n\to \infty} \Pr[X = 0]$? 
+	
+	Use Janson's inequality to get that the limit is $e^{-c^6/24}$. 
+\end{enumerate}
+\vspace{0.5ex}
+
+%\item Prove that for any two random variables $X$ and $Y$ (not necessarily independent), \\ $\Exp[XY] \leq \sqrt{\Exp[X^2]}\sqrt{\Exp[Y^2]}$.
+%Assume $X$ and $Y$ are discrete.
+%\item 
+%$X$ is a random variable with expectation $\mu > 0$ and standard deviation $\sigma$. 
+%Prove $\Pr[X > 0] \geq \frac{\mu^2}{\sigma^2 + \mu^2}$. You are allowed to use the statement from the previous question without proof.
+%\vspace{0.5ex}
+%\item Define  $S_n := |X_1 + \cdots + X_n|$ where each $X_i$'s are independent random variables which are  $\pm 1$ with probability $1/2$.
+%Prove $\Exp[S_n] = \Theta(\sqrt{n})$.
+%\vspace{0.5ex}
+\item
+Suppose you can draw independent samples of a real random variable $X$ that has expectation $0$ and standard deviation $\sigma$. Explain how to use only $O(\log n)$ samples from this source to generate a random variable $Y$ with expectation $\mu$ such that $\Pr[|Y-\mu| > 2 \sigma] < 1/n$. 
+
+Let $S$ be set of $O(\log n)$ samples from $X$, and let $S' = S \cup -S$. Expected value of the median of $S'$ is $0$, and the median deviates from $0$ by more than $2\sigma$ with probability $1/n$. Finally, shift by $\mu$ to get desired variable.
+\vspace{0.5ex}
+\item 
+Consider the following algorithm for the independent set problem on an $n$-node graph. Sample a random permutation $\sigma$ of $\{1,2,\ldots,n\}$. Initialize $I$ to $\emptyset$.
+For $i=1$ to $n$, place $\sigma(i)$ in $I$ if it doesn't have an edge to any vertex in $I$.  In expectation, how large an independent set do you pick?
+
+Expected size is $\sum_{i=1}^n \frac{1}{d_i+1}$ where $d_i$ is the degree of $i$'th vertex. Follows from the fact that probability $\sigma(i)$ is less than $\min\{\sigma(j): (i,j) \in E(G)\}$ equals $\frac{1}{d_i+1}$. 
+
+\vspace{0.5ex}
+
+
+
+
+\item  In $d$-dimensions, there can be at most $d$ unit vectors which are orthogonal to each other.
+Call a pair of unit vectors $\eps$-orthogonal if $|u^\top v|\leq \eps$. How large (in cardinality) a set of pairwise $\eps$-orthogonal unit vectors can you construct in $d$-dimensions?
+
+Can be as large as $k=\exp(O(\eps^2 d))$. Take a random unit vector $v_b = [\frac{b_1}{\sqrt{d}}, \frac{b_2}{\sqrt{d}}, \dots, \frac{b_d}{\sqrt{d}}]$ where each $b_i$ is $+1$ or $-1$ with equal probability. Then, for any two random $b$ and $b'$, $\Exp[v_b \cdot v_{b'}] = 0$ and $\Pr[|v_b \cdot v_{b'}| > \eps] < \frac{1}{k^3}$ by the Chernoff bound. We can then do a union bound over ${k \choose 2}$ pairs $b$ and $b'$ to get the claimed result.
+
+\end{enumerate}
+
+\end{document}

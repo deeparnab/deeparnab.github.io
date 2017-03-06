@@ -1,0 +1,138 @@
+\documentclass[11pt]{article}
+\input{preamble}
+
+\begin{document}
+
+\title{E0234: Solution Sketch of Assignment 3}
+\author{}
+% \date{Due: Monday, 25th Jan 2016.}
+\maketitle
+It is highly recommended you do not google for the answers to the questions below. You can discuss with your friends, but then mention that in your submission.
+The writing should solely be your own.
+
+\begin{enumerate}
+\item[0.] {\bf (Not to be submitted but recommended.)} Implement the randomized median finding algorithm where the sorting algorithm is also implemented by you. 
+Your sorting algorithm should also keep account of number of array comparisons it makes. Run the algorithm 
+on an array of a million entries where each entry is a random real between $0$ and $100$. 
+Compare the time {\bf and} number of comparisons that the randomized median finding algorithm 
+makes with the those of (a) the naive algorithm which just sorts (using your sorting implementation) and returns the middle entry, and (b) The Find algorithm done in class.
+Do you see a big difference?
+
+\item ({\bf From high probability to expectation.}) In class, we proved that the randomized median finding algorithm found the median with $2n + o(n)$ comparisons with probability $1 - o(1)$.
+
+\Sol Follows immediately from the fact that the random variable denoting the number of times the ``outer loop'' of the algorithm ``fails'' is a geometric random variable with rate $1 - o(1)$.
+
+\item Prove that the expected running time of the Find subroutine done in class (see MR, Chap 1.4) is $O(n)$.
+
+\Sol Enough to prove that the number of comparisons made by the algorithm is $O(n)$. 
+Prove that the expected running time of the algorithm is also $2n + o(n)$. Let $X$ be the random variable counting the number of comparisons made by the algorithm. Let $X_{ij}$ be the indicator random variable for the event that $i^{th}$ and $j^{th}$ element (in the sorted order) are compared by the algorithm for $1\le i< j\le n$. Then we have the following.
+
+$$
+X_{ij}=
+\begin{cases}
+Ber(\frac{2}{j-k+1}) & \text{ if } k\le i<j\\
+Ber(\frac{2}{k-i+1}) & \text{ if } i\le j <k\\
+Ber(\frac{2}{j-i+1}) & \text{ if } i\le k <j
+\end{cases}
+$$
+
+We now have the following.
+
+\begin{align*}
+X &= \sum_{1\le i< j\le n} X_{ij}\\
+E[X] &= \sum_{1\le i< j\le n} E[X_{ij}]\\
+&= \sum_{i=1}^{k-1}\sum_{j=i+1}^{k-1} \frac{2}{k-i+1} + \sum_{j=k+1}^n\sum_{i=k}^{j-1} \frac{2}{j-k+1} + \sum_{i=1}^k\sum_{j=k}^n \frac{2}{j-i+1}\\
+&\le \sum_{i=1}^{k-1} 2 + \sum_{j=k+1}^n 2 + 2n\\
+&\le 4n
+\end{align*}
+
+The second inequality follows from the fact that $\sum_{i=1}^k\sum_{j=k}^n \frac{2}{j-i+1} \le 2n$ since each $\frac{2}{j-i+1}$ term appears exactly $j-i+1$ many times in the summation and we have $1\le j-i+1\le n$.
+
+
+
+\item ({\bf Non-uniform Birthday Paradox.}) Consider $m$ balls being thrown randomly into $n$ bins, however, the distribution is not uniformly at random.
+In particular, each ball lands in bin $1$ with probability $p_1$, bin $2$ with probability $p_2$, and so on, where 
+${\bf p} := (p_1,\ldots,p_n)$ is a probability vector with $\sum_{i=1}^n p_i = 1$ and $p_i \geq 0$ for all $i$. What is the smallest $m$ for which you can say that 
+there would be at least one bin with at least $2$ balls with probability $>1/2$?
+{\bf Hint:} Observe that if all $p_i = 1/n$, this is the birthday paradox question, and so $m \approx \sqrt{2n}$. Also note that if some $p_i$ is close to $1$, then the required $m = O(1)$.
+
+\Sol Let $X_{ij}$ be the indicator random variable for the event that balls $i$ and $j$ collide for $1\le i<j\le m$. Then $X_{ij} \sim \text{Ber}(||p||_2^2)$. Let us define $X = \sum_{1\le i<j\le m} X_{ij}$. Then we have the following.
+
+\[ E[X] = {m\choose 2}||p||_2^2 \]
+
+\[ Var(X) \le {m\choose 2}||p||_2^2 + \frac{m^3}{6}||p||_3^3 \]
+
+Now we have the following from Chebyshev.
+
+\[ Pr[X >0] \ge Pr[|X-E[X]|< E[X]] \ge 1 - \frac{1}{{m\choose 2}||p||_2^2} - \frac{m^3||p||_3^3}{6{m\choose 2}^2||p||_2^4} \]
+
+From the inequality above, there exists a constant $c>0$ such that for $m>\frac{c}{||p||_2}$, we have the probability that at least one bin with at least $2$ balls is at least $\frac{1}{2}$.
+
+\item  ({\bf Variance of QuickSort}.) 
+Compute the variance of the number of comparisons made by the QuickSort algorithm. We are looking for the correct order of magnitude and not the exact constants.
+{\bf Hint:} Recall the computation of the expectation from the 1st lecture. Apply first principles.
+
+\Sol Let $X$ be the random variable counting the number of comparisons made by the algorithm. Let $X_{ij}$ be the indicator random variable for the event that $i^{th}$ and $j^{th}$ element (in the sorted order) are compared by the algorithm for $1\le i< j\le n$. Then we know that $X_{ij} \sim \text{Ber}(\frac{1}{j-i+1})$. From definitions we have the following.
+
+\begin{eqnarray*}
+ X &=& \sum_{1\le i<j\le n} X_{ij}\\
+ Var(X) &=& \sum_{1\le i<j\le n} Var(X_{ij}) + \sum_{1\le i<j\le n,1\le k<\ell\le n} Cov(X_{ij}, X_{k\ell})\\
+ Var(X) &\le& \sum_{1\le i<j\le n} E(X_{ij}) + \sum_{1\le i<j\le n,1\le k<\ell\le n} Cov(X_{ij}, X_{k\ell})\\
+ Var(X) &\le& n\log n + \sum_{1\le i<j\le n,1\le k<\ell\le n} Cov(X_{ij}, X_{k\ell})\\
+\end{eqnarray*}
+
+Now we compute Cov$(X_{ij}, X_{k\ell})$ for $1\le i<j\le n,1\le k<\ell\le n$ by the following case analysis. Let the sorted array be $A[1\ldots n]$.
+
+\begin{itemize}
+ \item Case 1: $1\le i<j<k<\ell\le n$ 
+ 
+ Cov$(X_{ij}, X_{k\ell}) = 0$ since $X_{ij}$ and $X_{k\ell}$ are independent in this case.
+ 
+ \item Case 2: $1\le k<i<\ell<j\le n$
+ 
+ \begin{eqnarray*}
+  Cov(X_{ij}, X_{k\ell}) &=& E[X_{ij}X_{k\ell}] - E[X_{ij}]E[X_{k\ell}]\\
+  &=& Pr[k \text{ is chosen first in } A[k\ldots j]]\cdot Pr[i \text{ or } j \text{ is chosen first in } A[i\ldots j]]\\
+  && + Pr[k \text{ is chosen first in } A[k\ldots j]]\cdot Pr[k \text{ or } \el \text{ is chosen first in } A[k\ldots \el]]\\
+  && - \frac{4}{(j-i+1)(\el-k+1)}\\
+  &=& \frac{2(\el - j + k-i)}{(j-k+1)(j-i+1)(\el-k+1)}\\
+  &\le& 0
+ \end{eqnarray*}
+ 
+ \item Case 3: $1\le i<k<j<\ell\le n$
+ 
+ Following argument along the line same as case 2, we have: $Cov(X_{ij}, X_{k\ell}) \le 0$.
+ 
+ \item Case 4: $1\le k<i<j<\ell\le n$
+ 
+ Following argument along the line same as case 2, we have: $Cov(X_{ij}, X_{k\ell}) = 0$.
+ 
+ \item Case 5: $1\le i=k<\el<j$
+ 
+ \begin{eqnarray*}
+  Cov(X_{ij}, X_{k\ell}) &=& E[X_{ij}X_{k\ell}] - E[X_{ij}]E[X_{k\ell}]\\
+  &=& Pr[j \text{ is chosen first in } A[k\ldots j]]\cdot Pr[k \text{ or } \el \text{ is chosen first in } A[k\ldots \el]]\\
+  && + Pr[i \text{ is chosen first in } A[i\ldots j]]\\
+  && - \frac{4}{(j-i+1)(\el-k+1)}\\
+  &=& \frac{1}{j-i+1} - \frac{3}{(j-i+1)(\el-i+1)}\\
+  &\le& \frac{1}{j-i+1}
+ \end{eqnarray*}
+ 
+ Hence, we have the following.
+ 
+ \begin{eqnarray*}
+  \sum_{1\le i<j\le n,1\le k<\ell\le n} Cov(X_{ij}, X_{k\ell}) &=& \sum_{1\le i<j\le n} \sum_{1\le k<\ell\le n} Cov(X_{ij}, X_{k\ell})\\
+  &\le& \sum_{1\le i<j\le n} 1\\
+  &\le& n^2
+ \end{eqnarray*}
+
+ Hence, $Var(X) = O(n^2)$.
+
+\end{itemize}
+
+
+
+\end{enumerate}
+
+
+\end{document}

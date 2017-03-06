@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="test-course.css" id="styleId" text-decoration="none"/>
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
+<title>E0 234: Randomized Algorithms, Spring 2016.</title> </head>
+
+<body>
+<h2>
+<font color="black">
+E0 234: Randomized Algorithms, Spring 2016.</font> <br>
+</h2>
+
+<b>Instructors: <a href = "http://drona.csa.iisc.ernet.in/~arnabb/"> Arnab Bhattacharyya </a> and <a href="http://research.microsoft.com/en-us/um/people/dechakr/"> Deeparnab Chakrabarty </font></a></b><br>
+<b>TA: </b> Palash Dey. <br>
+<b>Venue:</b> CSA 254. <br>
+<b>Times: </b> Mondays and Wednesdays, 2 - 3:30 pm <br>
+<br>
+<hr>  
+
+<br>
+<b> Course Description </b> <br>
+The use of randomness in algorithm design is an extremely powerful paradigm. 
+In this course, we will introduce the basic techniques of designing randomized algorithms although at times we will dive into state-of-the-art topics. 
+Students are expected to have taken an introductory course in algorithm design and analysis, and some familiarity with probability, 
+although not essential, is desirable.<br>
+
+<p>We will be using <a href="http://piazza.com/iisc.ernet.in/spring2016/e0234/home">Piazza</a> for this class. If you are an enrolled student, please <font color="red">sign yourself up</font> at <a href="http://piazza.com/iisc.ernet.in/spring2016/e0234">this link</a>; you could miss important announcements otherwise. 
+<br><br>
+
+<br>
+
+<b> Recommended Books </b> <br>
+<ul>
+<li> <b> Randomized Algorithms </b> by Rajeev Motwani and Prabhakar Raghavan.  
+</li>
+<li> <b> Probability and Computing </b> by Michael Mitzenmacher and Eli Upfal. 
+</li>
+</ul>
+
+<b> Problem Sets </b>(email solutions to <tt>e0234iisc@gmail.com</tt> by due date)<br>
+<ul>
+<li> Problem Set 1 (due 18th Jan) <a href="./Material/hw1.pdf"> (pdf) </a> <a href="./Material/matrix.txt"> (data file for q4) </a></li>
+<li> Problem Set 2 (due 25th Jan) <a href="./Material/hw2.pdf"> (pdf) </a></li>
+<li> Problem Set 3 (due 1st  Feb) <a href="./Material/hw3.pdf"> (pdf) </a></li>
+<li> Problem Set 4 (due 8th  Feb) <a href="./Material/hw4.pdf"> (pdf) </a></li>
+<li> Problem Set 5 (due 15th  Feb) <a href="./Material/hw5.pdf"> (pdf) </a></li>
+<li> Problem Set 6 (due 22nd  Feb) <a href="./Material/hw6.pdf"> (pdf) </a></li>
+<li> Midterm (Mar 2) <a href="Material/midterm.pdf"> Questions</a> and <a href="Material/midterm-ss.pdf">solution sketch</a> </li>
+<li> Problem Set 7 (due 11th Mar) <a href="./Material/hw7.pdf"> (pdf) </a></li>
+<li> Problem Set 8 (due 21st Mar) <a href="./Material/hw8.pdf"> (pdf) </a></li>
+<li> Problem Set 9 (due 30th Mar) <a href="./Material/hw9.pdf"> (pdf) </a></li>
+</ul>
+
+
+<div id="leclist">
+  <b> Lectures</b><br>
+<!-- After (or sometimes before) lectures, we will write a blurb on what we did and provide references
+to where the material is from. Sometimes we may provide pdfs of rough notes. Warning: the notes 
+are really rough in that we write them in one pass and don't necessarily go over them again.
+So they may contain mistakes. If you find one, please let us know and we address them soon.
+</font><br> -->
+
+<ul>
+  <li>
+  <div id="topic"> <b>Lecture 1 (Jan 6)</b>: Introduction, Quicksort, Karger's Algorithm, Monte Carlo and Las Vegas Algorithms. (Ref: MR Chap 1) </div>
+       <div id="blurb"> 
+	   </div>
+  </li>
+  <li>
+  <div id="topic"> <b>Lecture 2 (Jan 11)</b>: Probability space, expectations and linearity thereof, Freivald's matrix multiplication algorithm, and examples of the probabilistic method. (Ref: <a href="Notes/Lecture2.pdf">rough notes</a>, MR Appendix C)</div>
+  </li>
+  <li>
+   <div id="topic"><b>Lecture 3 (Jan 13)</b>: Conditional expectation, a simple branching process, balls and bins, Markov and Chebyshev, pairwise independence and reducing randomness for RP algorithms. (Ref: MR Chap 3)</div>
+  </li>  
+  <li>
+   <div id="topic"><b>Lecture 4 (Jan 20)</b>: Randomized Median Finding, Coupon Collector Problem. (Ref: MR Chap 3)</div>
+  </li>  
+  <li>
+   <div id="topic"><b>Lecture 5 (Jan 25)</b>: Poisson Approximation, Balls and Bins, Coupon Collector Problem, Random Graphs (Ref: MR Chap 3.6, MU Chapter 5)</div>
+  </li>  
+   <li>
+   <div id="topic"><b>Lecture 6 (Jan 27)</b>: Chernoff Bounds, Randomized Rounding (Ref: MR Chap 4)</div>
+  </li>  
+  <li>
+   <div id="topic"><b>Lecture 7 (Jan 29)</b>: Johnson-Lindenstrauss Lemma, Subgaussian random variables, Chernoff (Ref:<a href="http://cs.brown.edu/~matteo/augustseminar/papers/Matousek-VariantsJohnsonLindenstrauss.pdf"> Matousek's paper</a>) <a href="./Material/jlt.pdf"> (rough notes) </a></div>
+  </li>  
+	<li>
+   <div id="topic"><b>Lecture 8 (Feb 1)</b>: Permutation routing on the hypercube, Fixed path routing and scheduling (Ref: MR 4.2,<a href="Material/lmr1.pdf"> very rough notes.</a>)</div>
+	</li>
+	<li>
+   <div id="topic"><b>Lecture 9 (Feb 3)</b>: The Probabilistic Method, Alterations, Independent Sets, Girth and Edges. (Ref: MR 5, MU 6)</div>
+	</li>
+	<li>
+   <div id="topic"><b>Lecture 10 (Feb 8)</b>: Lovasz Local Lemma: symmetric and asymmetric versions, k-SAT satisfiability,, colourful independent sets (Ref: MR 5.5, MU 6.7)</div>
+	</li><li>
+   <div id="topic"><b>Lecture 11 (Feb 10)</b>: Lovasz Local Lemma: packet routing in networks, Moser's constructive proof of LLL (Ref: <a href="Material/lec11.pdf">Rough notes</a>, <a href="https://terrytao.wordpress.com/2009/08/05/mosers-entropy-compression-argument/">Tao blog post</a>)</div>
+	</li><li>
+	<div id="topic"><b>Lecture 12 (Feb 15)</b>: Janson's Inequalities, Triangles in Random Graphs. (Ref: Google! <a href="https://www.ceid.upatras.gr/webpages/courses/probmethweb/lessons/lesson7.pdf">Here</a> are some slides. )</div>
+	</li><li>
+	<div id="topic"><b>Lecture 13 (Feb 19)</b>: Janson's Inequalities: Group Steiner Tree. (Ref: <a href="http://www.cs.cmu.edu/~anupamg/adv-approx/lecture10.pdf"> Notes from CMU </a>. Caution: this is not how we proved stuff in class.)</div>
+	</li><li>
+	<div id="topic"><b>Lecture 14 (Feb 22)</b>: Markov Chains: Definition, a randomized algorithm for 2-SAT, classification of states, existence of stationary distribution, ergodicity theorem (Ref: MR 6.1-6.2, MU 7.1-7.3, <a href="Notes/Lecture14.pdf">Rough notes</a>)</div>
+	</li><li>
+	<div id="topic"><b>Lecture 15 (Feb 24)</b>: Random walks on undirected graphs: definitions of hitting time and commute time, bounds and connection to effective resistance in electrical networks (Ref: MR 6.3-6.4, MU 7.4)</div>
+	</li><li>
+	<div id="topic"><b>Lecture 16 (Mar 4)</b>: Cover times and MCMC: definition of cover times, bounds, log space algorithm for connectivity, polynomial length universal traversal sequences, motivation for MCMC, reduction from approximate sampling to approximate counting (Ref: MR 6.5, 11.1, MU 10.3-10.4, <a href="Notes/Lecture16.pdf">Rough notes</a>)</div>
+	</li><li>
+	<div id="topic"><b>Lecture 17 (Mar 7)</b>: Coupling: definition of total variation distance, mixing time, and coupling between distributions, the coupling lemma, bounding mixing times for lazy random walk on cycle and hypercube (Ref: MU 11, <a href="Notes/Lecture17.pdf">Rough notes</a>, <a href=https://www.msri.org/workshops/391/schedules/2721">lecture on coupling by David Levin</a>)</div>
+	</li><li>
+	<div id="topic"><b>Lecture 18 (Mar 9)</b>: More on bounding mixing time: sampling random spanning trees and (4&Delta; +1)-colorings and coupling-based analysis, spectral methods, conductance and canonical paths (Ref: MU 11.5, MR 11.3, <a href="Notes/Lecture18.pdf">Rough notes</a>)</div></li>
+     <li>
+	<div id="topic"><b>Lecture 19 (Mar 14)</b>: A Markov chain for uniformly sampling matchings, analysis using canonical paths. Martingales: definition, motivation, stopping time. (Ref: MR 4.4.1-4.4.2, MU 12.1-12.2, <a href="Notes/Lecture19.pdf">Rough notes on martingales</a>)</div></li>
+	<li>
+	<div id="topic"><b>Lecture 20 (Mar 18)</b>: Martingales: stopping time theorem, Wald's equation, expected waiting time for patterns in coin tosses, Doob's martingales, Azuma's inequality (Ref: MR 4.4.3-4.4.4, MU 12.2-12.5, <a href="Notes/Lecture19.pdf">Rough notes on martingales</a>)</div></li>
+	<li>
+	<div id="topic"><b>Lecture 21 (Mar 21)</b>: Azuma's inequality in action: stochastic bin packing, number of empty bins, chromatic number in random graphs. Distributed algorithms: Synchronized Byzantine consensus, impossibility when at least n/3 faulty processors, Rabin's randomized consensus algorithm (Ref: MR 4.4.4, MU 12.5, <a href="https://www.cs.princeton.edu/courses/archive/fall08/cos521/lecture20.pdf">Arora's lecture notes for Rabin's algorithm</a>)</div></li>
+	<li>
+	<div id="topic"><b>Lecture 22 (Mar 23)</b>: Streaming Algorithms, Frequency Estimation, Alon-Matias-Szegedy, Flajolet-Martin, Count-Min Sketch. (<a href="http://www.cs.dartmouth.edu/~ac/Teach/CS49-Fall11/Notes/lecnotes.pdf">Streaming lecture notes (Amit Chakrabarti)</a>)</div></li>
+	<li>
+	<div id="topic"><b>Lecture 23 (Mar 28)</b>: Hash functions, Hash Tables, Fredman-Komlos-Szemeredi O(1)-query,O(s)-space double hashing. (MR 8.5) </div></li>
+	<li>
+	<div id="topic"><b>Lecture 24 (Mar 30)</b>: Bloom Filters, Nearest Neighbor problem, Locally Sensitive Hashing. (MU 5.5) </div></li>
+
+
+	</ul>
+
+<hr>
+
+

@@ -1,0 +1,147 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+\title{{\bf Approximation Algorithms} \\ 
+{\normalsize EO249}}
+\date{(Problem Set 6) Due: Mar 20th, 2015}
+\maketitle
+{\small 
+Solutions need to be submitted by email to eo249iisc@gmail.com. We prefer latexed solution. 
+Before giving the solutions, you should write how many problems you have attempted and how many you think you have solved.
+Starred problems are optional and (possibly) more fun.
+}
+\vspace{1ex}
+\def\poly{\mathrm{poly}}
+\def\Exp{\mathbf{Exp}}
+\def\Pr{\mathbf{Pr}}
+
+\begin{exercise}
+Consider the two definitions of randomized algorithms done in class. 
+\begin{itemize}
+\item Prove that if there is a randomized algorithm returning a feasible solution $S$ with \\$\Exp[c(S)] \leq \alpha OPT$, then 
+for any $\eps> 0$, there is also a randomized algorithm which returns a solution $S$ with $\Pr[S \textrm{ feasible and } c(S) \leq (1+\eps)\alpha OPT ] \geq \delta$
+some $\delta \geq 1/\poly(n)$. \\
+(Hint: Use Markov's inequality) 
+%You may assume the cost vector $c$ and $\alpha$ are integers, and $\alpha \leq \poly(n)$.
+\item  Prove that if there is a randomized algorithm returning a feasible solution $S$ with \\$\Exp[c(S)] \geq \frac{OPT}{\alpha}$, then 
+there is also a randomized algorithm which returns a solution $S$ with $\Pr[S \textrm{ feasible and } c(S) \geq \frac{OPT}{\alpha(1+\eps)} ] \geq \delta$
+for some $\delta \geq 1/\poly(n)$. You may assume the cost vector $\alpha \leq \poly(n)$.\\
+(Hint: Note that $c(S) \leq OPT$ since $S$ is feasible.)
+\end{itemize}
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Consider a randomized algorithm for a minimization problem which has the following guarantee: it returns a solution $S$ with $\Exp[c(S)] \leq \alpha OPT$ 
+and $\Pr[S \textrm{ is feasible }] \geq 2/3$. Then show that 
+\[
+\Pr[S \textrm{ is feasible and } c(S) \leq 2\alpha OPT] > \delta
+\]
+for some $\delta> 0$. Can you obtain a similar result for maximization problems?
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Consider a randomized algorithm for a maximization problem which returns a set $S$ and  the value of the solution $S$ is a random variable of the form $v(S) = \sum_i v_iX_i$ where $X_i$ is the indicator variable of $i\in S$. Also suppose the $X_i$'s are independent {\bf and} $\Exp[v(S)] \geq 5\max_i v_i$. Finally, suppose $\Exp[v(S)] \geq \frac{OPT}{\alpha}$ and the probability that $S$ is feasible is at least $9/10$.
+Prove that 
+\[
+\Pr[S \textrm{ is feasible and} v(S) \geq \frac{OPT}{2\alpha} ] \geq 1/10.
+\]
+\end{exercise}
+\noindent
+(Hint: Try to use Chebyshev or Chernoff bound to bound the probability $c(S) < \frac{OPT}{2\alpha}$.)
+\vspace{1ex}
+
+\begin{exercise}
+Give an $O(\sqrt{|E|})$-factor randomized algorithm for the weighted maximum independent set problem by generalizing the 
+unweighted algorithm done in class.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise} (Set Packing)
+Consider the problem where we are given a set system, that is, a universe of $m$ elements $U$ and a bunch of $n$ subsets $S_1,\ldots, S_n$.
+In the set packing problem we have to pick the largest number of sets which do not share an element.
+This exercise develops an $O(\sqrt{m})$ approximation.
+\begin{enumerate}
+\item  Cast the set packing problem as an maximum independent set problem in a graph. What factor (in terms of $m,n$) does the $O(\sqrt{|E|})$-approximation done in class imply ?
+\item Write an LP relaxation for the set packing problem. 
+\item Consider the algorithm which samples each set $S_i$ with probability $p_i = x_i/4\sqrt{m}$. What is $\Exp[|S|]$ where $S$ is the random collection of sets picked?
+Can you lower bound the probability that the sets picked form a disjoint collection? Hint: Go element by element and apply the union bound.
+Using Exercise 3, can you now get a $O(\sqrt{m})$-randomized approximation algorithm ?
+\end{enumerate}
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Consider the following succinct LP relaxation for the minimum congestion routing problem. There is a variable $f_i(e)$ for every $1\leq i\leq k$ and $e\in E$; these are supposed to be flow variables
+of type $i$.
+\begin{align*}
+\min &\qquad c & \\
+\textrm{subject to} 	&\qquad \sum_{i=1}^k  f_i(e) \leq c & \forall e \in E \\
+				&\qquad \sum_{(u,v)\in E} f_i(v,u) = \sum_{(u,w)\in E} f_i(v,w) & \forall i=1\ldots m, \forall v\notin\{s_i,t_i\}				\\
+				& \qquad \sum_{(s_i,v)\in E} f_i(s_i,v) = 1 & \forall i=1,\ldots,k
+\end{align*}
+Given a solution to the above LP, convert it to a solution $f_p$ which have $+$ve value on at most polynomially many paths and 
+is a feasible solution to the LP done in class. \\
+(Hint: Go $i=1$ to $k$. For each $i$, look at the edges with $f_i(e) > 0$. Can there be cycles in this subgraph? Find an $s_i,t_i$ path $p$ using BFS/DFS. How high can you set $f_p$?
+When you have sent this across, what can you say about the residual graph?)
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Consider the configuration LP done in class for GAP. Can you come up with an integrality gap example? How small can you make it?
+\end{exercise}
+\end{document}
+

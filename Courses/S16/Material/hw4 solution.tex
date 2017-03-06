@@ -1,0 +1,142 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\def\Poi{{\sf Poi}}
+
+\begin{document}
+
+\title{E0234: Solution Sketch of Assignment 4}
+\author{}
+\date{}
+\maketitle
+It is highly recommended you do not google for the answers to the questions below. You can discuss with your friends, but then mention that in your submission.
+The writing should solely be your own.
+
+\begin{enumerate}
+\item  {\bf (Filling up the gaps from class presentation.)}
+\begin{enumerate}
+\item For $X \sim \Poi(\lambda)$, prove $\mathbf{Exp}[X] = \mathbf{Var}[X] = \lambda$. Given $X\sim\Poi(\lambda)$ and $Y\sim \Poi(\mu)$ which are independent, prove
+$X+Y \sim \Poi(\lambda+\mu)$.
+
+\Sol 
+
+$\mathbf{Exp}[X] = e^{-\lambda} \sum_{i=1}^\infty i \frac{\lambda^i}{i!} = e^{-\lambda} \lambda \sum_{i=1}^\infty i \frac{\lambda^{i-1}}{i!} = \lambda$
+
+$\mathbf{Exp}[X^2] = e^{-\lambda} \sum_{i=1}^\infty i^2 \frac{\lambda^i}{i!} = \lambda(\lambda-1) $
+
+$\Rightarrow \mathbf{Var}[X] = \lambda$
+
+$\mathbf{Pr}[X+Y = k] = e^{-\lambda-\mu} \sum_{i=0}^k \frac{\lambda^i \mu^{k-i}}{i! (k-i)!} = e^{-\lambda-\mu} \frac{(\lambda+\mu)^k}{k!}$
+
+\item  Let $\calE$ be an event in the balls-and-bins experiment whose probability is either monotonically increasing or decreasing with the number of balls thrown. 
+Let $\calE'$ be the corresponding event when each bin independently has $Y_i \sim \Poi(m/n)$ many balls.
+
+Prove that $\Pr[\calE] \leq 2\Pr[\calE']$. {\bf Hint:} You can use without proof that for $X\sim \Poi(\lambda)$, when $\lambda$ is a positive integer, $\mathbf{Med}(X) = \lambda$.
+
+\Sol
+
+Let $Z = \sum_{i=1}^n Y_i$. Then we know the following:
+Consider the case when $Pr[\calE]$ is monotonically increasing with $m$ (the other case is similar).
+\begin{align*}
+ Pr[\calE] &= Pr[\calE' | Z=m] &\\
+ &\le Pr[\calE' | Z\ge m] &\text{[since Pr[$\calE$] is monotonically increasing with $m$]}\\
+ &= \frac{Pr[\calE' \cap Z\ge m]}{Pr[Z\ge m]} &\\
+ &= 2 Pr[\calE' \cap Z\ge m] &\text{[since $m$ is median of $Z$]}\\
+ &\le 2Pr[\calE']&
+\end{align*}
+
+
+\item Recall some notation from class: $Y_i \sim \Poi(m/n)$ and $Z = \sum_i Y_i$. Let $\calE$ be an event which is monotonically decreasing with $Z$; that is, $\Pr[\calE~|Z=k] \geq \Pr[\calE~|Z=k']$ if $k < k'$. Suppose $\Pr[\calE|Z=a] - \Pr[\calE|Z=b] \leq \delta$ for some non-negative integers $a < b$. 
+
+Prove
+\[
+\Big| \Pr[\calE~|a \leq Z \leq b ]  - \Pr[\calE~|Z = c] \Big| \leq \delta, ~~~~~\forall a\leq c\leq b.
+\]
+
+\Sol
+
+\begin{align*}
+ \Pr[\calE~|a\leq Z\leq b] &= \frac{\Pr[\calE \cap a\leq Z\leq b]}{\Pr[a\leq Z\leq b]}\\
+ &= \frac{\sum_{i=a}^b \Pr[\calE \cap Z=i]}{\sum_{i=a}^b \Pr[Z=i]}
+\end{align*}
+
+Now we know:
+
+\[ \frac{\Pr[\calE \cap Z=a]}{\Pr[Z=a]} \geq \frac{\Pr[\calE \cap Z=a+1]}{\Pr[Z=a+1]}\geq \cdots \frac{\Pr[\calE \cap Z=b]}{\Pr[Z=b]}\]
+
+Hence, we have:
+
+\[ \Pr[\calE ~| Z=b] \leq \Pr[\calE ~| a \leq Z\leq b] \leq \Pr[\calE ~| Z=a] \]
+
+Therefore,
+
+\[
+\Rightarrow \Big| \Pr[\calE~|a \leq Z \leq b ]  - \Pr[\calE~|Z = c] \Big| \leq \delta, ~~~~~\forall a\leq c\leq b.
+\]
+
+\end{enumerate}
+
+
+\item Consider the coupon collector setting. Let $\tau$ be the (random) time when you observe $k$ copies of every coupon where $k$ is a fixed integer $> 1$.
+Prove that for any real constant $c$,
+\[\lim_{n\to \infty} \Pr[\tau > n\left(\ln n + (k-1)\ln\ln n + c\right)] = 1 - e^{-e^{-c}}\]
+
+\Sol
+
+Let $\calE'$ be the event that there exists at least one coupon that has been seen at most $k-1$ times in $n\left(\ln n + (k-1)\ln\ln n + c\right)$ draws.
+
+\begin{align*}
+ \Pr[\calE'] &= 1 - \Pr[\forall i, Y_i \ge k]\\
+	     &= 1 - \left(1 - e^{-\frac{m}{n}} \sum_{i=0}^{k-1} \frac{(m/n)^i}{i!} \right)^n\\
+	     &\ge 1 - \left(1- e^{-\frac{m}{n}} \frac{(m/n)^{k-1}}{(k-1)!} \right)^n\\
+	     &\ge 1 - \left(1 - \frac{e^{-c}}{n} \frac{1}{(\ln n)^{k-1}} (\ln n)^{k-1}	     \right)^n\\
+	     &= 1 - e^{e^{-c}}
+\end{align*}
+
+The rest of the calculation is similar to the one done in class.
+
+
+\item Consider $n$ balls thrown into $n$ bins. What can you say about the $k$th largest load?
+More precisely if the load profile is $(X_1,\ldots,X_n)$, define
+$L_k := \textrm{$k$th-largest}(X_1,\ldots,X_n).$
+Express the function $f(n,k)$ such that $L_k = \Theta(f(n,k))$ whp. %From what we did in class, we get $p(n,1) = \log n/\log\log n$.
+Start with $k=2$. 
+
+\Sol
+
+\begin{align*}
+ \Pr[L_k > t] &\le {n\choose k} {n\choose t} {(n-t)\choose t} \cdots {(n-(k-1)t)\choose t} \frac{1}{n^{kt}}\\
+ &\approx \frac{n^{(t+1)k}}{t!^k n^{kt}}\\
+ &= \left( \frac{n}{t!} \right)^k
+\end{align*}
+
+Choose $t = (2+\frac{1}{k}) \frac{\ln n}{\ln \ln n}$.
+
+
+\item
+Consider a counter that receives packets arriving on a stream. The counter is initialized to $0$. If the counter is currently at $i$ and a new packet arrives, then the counter is incremented with probability $2^{-i}$ (and otherwise remains unchanged). Suppose $n$ packets arrive in total, and let $X_n$ be the random variable denoting the counter value at the end of the stream.
+\begin{enumerate}
+\item[(a)]
+Show that $\mathbf{Exp}[2^{X_n}] = n+1$. 
+
+\Sol
+
+Inductive step: $\mathbf{Exp}[2^{X_n}] = \mathbf{Exp}[2^{X_{n-1}+1} 2^{-X_{n-1}}] + \mathbf{Exp}[2^{X_{n-1}} (1-2^{-X_{n-1}})] = 1 + \mathbf{Exp}[2^{X_{n-1}}] = n+1$
+\item[(b)]
+Show that $\mathbf{Var}[2^{X_n}] = \frac{n(n-1)}{2}$.
+
+\Sol
+
+\begin{align*}
+ \mathbf{Var}[2^{X_n}] &= \mathbf{Exp}[2^{2X_n}] - \mathbf{Exp}[2^{X_n}]^2\\
+ &= \mathbf{Exp}\left[2^{2X_{n-1}} 2 2^{-X_{n-1}} + 2^{2X_{n-1}}\left(1- 2^{-X_{n-1}}\right)\right] - (n-1)^2\\
+ &= \mathbf{Exp}[2^{2X_{n-1}}] - n^2 + 3\mathbf{Exp}[2^{X_{n-1}}] - 2n - 1\\
+ &= \frac{(n-1)(n-2)}{2} + n-1\\
+ &=\frac{n(n-1)}{2}
+\end{align*}
+
+\end{enumerate}
+
+\noindent \textbf{Hint}: Use induction on $n$.
+\end{enumerate}
+
+\end{document}

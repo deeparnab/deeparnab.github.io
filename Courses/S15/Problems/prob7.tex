@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+\title{{\bf Approximation Algorithms} \\ 
+{\normalsize EO249}}
+\date{(Problem Set 7)}
+\maketitle
+{\small 
+Solutions need to be submitted by email to eo249iisc@gmail.com. We prefer latexed solution. 
+Before giving the solutions, you should write how many problems you have attempted and how many you think you have solved.
+Starred problems are optional and (possibly) more fun.
+}
+\vspace{1ex}
+\def\poly{\mathrm{poly}}
+\def\Exp{\mathbf{Exp}}
+\def\Pr{\mathbf{Pr}}
+
+\begin{exercise}
+Consider the following linear programming relaxation for the minimum spanning tree problem.
+Let the given graph be $G = (V,E)$. Given a subset $S$ of the vertices, let $E[S]$ denote the set of edges with {\bf both} endpoints in $S$.
+\begin{align*}
+\min & \quad \sum_{e\in E} c_ex_e & \\
+\text{such that} & \quad \sum_{e\in E[S]} x_e \leq |S| - 1 & \forall S\subseteq V \\
+& \quad \sum_{e\in E} x_e = |V| - 1
+\end{align*}
+\begin{enumerate}
+\item Write the dual to the above LP. 
+{\bf Caution:} Note that it is a minimization problem and the first inequality is a $\leq$.
+\item (*) Recall the greedy algorithm for the minimum spanning tree problem: till one gets a spanning tree traverse edges in increasing cost order and select it only if it doesn't form a cycle with the existing selected edges. Prove that this is the optimum solution by giving a {\bf dual fitting}. That is, find a feasible dual solution which equals the cost of the tree returned by the above algorithm.
+\end{enumerate}
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+In class, we did the online set cover problem where every set had cost $= 1$. Consider the general cost case where set $S_i$ has cost $c_i$. Modify the online algorithm done in class. You can just do the online fractional set cover problem.
+
+{\bf Hint:} In each run of the while loop, we maintained that the total increase in the primal cost is at most $1$. How will you modify $x_i$ to maintain the same invariant? How will you initialize the $x_i$'s?
+
+\end{exercise}
+
+
+\end{document}
+

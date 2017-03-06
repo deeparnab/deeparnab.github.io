@@ -1,8 +1,8 @@
 body{
-	transform: scale(1.25);
-    transform-origin: 15% 15%;
+	transform: scale(1.20);
+    transform-origin: 50% 0%;
     background-color:#effefef;
-    font-family: Palatino, Arial, Helvetica, Verdana;
+    font-family: Palatino, Lora, Arial, Helvetica, Times New Roman;
     width:800px;
 	margin-top:auto;
     margin-left:auto;
@@ -12,7 +12,7 @@ body{
 hr {
     margin:0px;
     border:0px;
-    height:5px;
+    height:1px;
     background-color:maroon;
 }
 
@@ -26,7 +26,7 @@ div#header{
     margin-top:50px;
     margin-bottom:auto;
     width:800px;
-    height:70px;
+    height:80px;
 }
 
 
@@ -34,10 +34,10 @@ div#header div#headername{
     margin:0px;
     padding:0px;
     font-weight:light;
-    font-size:2em;
-    color:grey;
-    width:400px;
-    height:70px;
+    font-size:1.8em;
+    color:black;
+    width:350px;
+    height:60px;
     float:left;
 }
 
@@ -50,10 +50,10 @@ div#header div#headername a{
 div#header div#position{
     margin:0px;
     padding:0px;
-    width:400px;
-    height:70px;
+    width:450px;
+    height:60px;
     font-size:0.8em;
-    font-style:italic;
+    font-style:small;
     color:black;
     text-align:right;
     float:right;
@@ -64,26 +64,43 @@ div#header div#position a{
     text-decoration:none;
 }
 
+div#image{
+    margin:0px;
+    padding:0px;
+    border:0px;
+    width:150px;
+    margin-top:30px;
+    float:left;
+}
+
+div#image img{
+    margin:0px;
+    padding-left:0px;
+	padding-right:0px;
+	height:10em;
+	}
+
+	
+
 div#blurb{
     margin:0px;
     padding:0px;
     margin-top:20px;
     margin-bottom:auto;
-    width:575px;
-    height:150px;
-    font-family: Palatino, Arial, Helvetica, Verdana;
+    width:650px;
+    font-family: Palatino, Lora, Helvetica, Times;
     font-weight:lighter;
-    float:left;
+    float:right;
 }
 
-div#blurb1{
+div#news{
     margin:0px;
     padding:0px;
     margin-top:20px;
     margin-bottom:auto;
     width:800px;
     height:300px;
-    font-family: Palatino, Arial, Helvetica, Verdana;
+    font-family: Palatino, Lora, Helvetica, Times;
     font-weight:lighter;
     float:left;
 }
@@ -99,26 +116,10 @@ div#blurb a{
     text-decoration:none;
 }
 
-div#blurb1 a{
+div#news a{
     color:inherit;
     text-decoration:none;
 }
-
-div#image{
-    margin:0px;
-    padding:0px;
-    border:0px;
-    width:225px;
-    height:170px;
-    margin-top:30px;
-    float:right;
-}
-
-div#image img{
-    margin:0px;
-    padding-left:70px;
-	height:10em;
-	}
 
 div#footer{
     margin-top:10px;

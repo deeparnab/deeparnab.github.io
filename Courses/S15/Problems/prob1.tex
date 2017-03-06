@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+\title{{\bf Approximation Algorithms} \\ 
+{\normalsize EO249}}
+\date{(Problem Set 1) Due: Feb 6th, 2015}
+\maketitle
+{\small 
+Solutions need to be submitted by email to eo249iisc@gmail.com. We prefer latexed solution. 
+Before giving the solutions, you should write how many problems you have attempted and how many you think you have solved.
+Starred problems are optional and (possibly) more fun.
+}
+\vspace{1ex}
+
+\begin{exercise}
+Write a {\bf formal} proof to establish the following matching lower bound for TSP:
+For any subset $O$ of even cardinality, show that the cost of the minimum cost matching $M_O$ satisfies
+$c(M_O) \leq \frac{1}{2}OPT_{TSP}$.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Prove that it is NP-hard to obtain a polynomial time  $\alpha$-approximation for any $\alpha$ for the general TSP. Hint: Use the fact that Hamiltonian Cycle problem is NP-complete.
+\end{exercise}
+\vspace{1ex}
+
+
+\begin{exercise}
+Give an example to show that the analysis of the $1.5$-approximation for TSP done in class is almost tight.
+In particular, come up with an instance of $n$points and metric costs, an MST $T$, a minimum cost matching $M_O$ where
+$O$ is the set of odd vertex nodes of $T$, such that $c(T + M_O) \geq (1.5 - g(n)) OPT$ for some function $g$ which goes to $0$ as $n$ goes to infinity.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Given a connected multigraph $G$ where every degree is even, give a polynomial time algorithm to find an Eulerian walk.
+Given a strongly connected multigraph $G$ where every vertex has in-degree equal to out-degree, give a polynomial time algorithm to find an Eulerian walk.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Design a polynomial time algorithm to find the minimum cost cycle cover of a directed graph $G$.
+Hint: Consider the bipartite graph $H = (A,B)$ where $A$ and $B$ are copies of vertices of $G$ and there is an edge from $u\in A$ to $v\in B$
+iff there is a directed edge from $u$ to $v$ in $G$. What do cycle covers in $G$ correspond to in $H$? 
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}(*)
+The Travelling salesman path problem, or simply TSPP is the following: given $n$ points $\{1,\ldots,n\}$ and symmetric costs $c(i,j) = c(j,i)$
+satisfying the metric property $c(i,k) \leq c(i,j) + c(j,k)$ for all $i,j,k$, find the minimum cost path starting from $1$ and ending at $n$ and traversing all other
+vertices once. 
+\begin{enumerate}
+\item Show that TSPP is NP-hard to solve.
+\item What are some lower bounds on the optimum TSPP? Is MST a lower bound?
+\item What is the best factor approximation algorithm you can find for TSPP?
+\end{enumerate}
+
+\end{exercise}
+
+\end{document}

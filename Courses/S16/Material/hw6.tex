@@ -1,0 +1,34 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\def\Poi{{\sf Poi}}
+
+\begin{document}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+\title{E0234: Assignment 6}
+\author{}
+\date{Due: Monday, 22nd Feb 2016.}
+\maketitle
+It is highly recommended you do not google for the answers to the questions below. You can discuss with your friends, but then mention that in your submission.
+The writing should solely be your own.
+
+\begin{enumerate}
+\item In the permutation routing problem on the hypercube, consider the following randomized oblivious protocol. Each $x$ considers a random order of $\{1,2,\ldots,n\}$ and then bit-fixes to get to $\pi(x)$ in that order. Show that this protocol has expected makespan of $2^{\Omega(n)}$.
+
+\item
+For the packet routing and scheduling problem on fixed paths, consider the ``active'' protocol which tries to move the packets as soon as possible, that is, packets start routing immediately 
+waiting at vertices in a fixed waiting order in case of collisions. We argues in class this has makespan $O(CD)$. What is the best {\em lower bound} you can prove on the makespan?
+
+\item 
+In class, we saw that a random cut in an undirected graph has expected cut size $|EG|/2$. What is the best lower bound you can prove on the probability that the random cut is $\geq |EG|/2$?
+
+\item 
+A legal coloring of a graph $G$ with $c$ colors assigns a color in $\{1,2,\ldots,c\}$ to every vertex such that for all edges $(u,v)$, the color of $u$ and color of $v$ are different.
+The {\em chromatic number} $\chi(G)$ of a graph $G$ is the minimum number of colors with which a graph can be legally colored.
+Prove that for any integers $g$ and $c$, there exists a graph $G$ with girth $\geq g$ and $\chi(G) \geq c$.
+
+
+
+\end{enumerate}
+
+\end{document}

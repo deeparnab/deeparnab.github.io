@@ -3,6 +3,7 @@
 
 <head>
 <link rel="stylesheet" type="text/css" href="test.css" id="styleId" />
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
 </head>
 
 <script language="javascript">
@@ -22,20 +23,69 @@ target.style.display="none";
     <div id="headername">
       <a href="./index.htm"> Deeparnab Chakrabarty</a>
    </div>
-   <div id="position">
-     Microsoft Research <br>
-     #9, Lavelle Road <br>
-     Bangalore, Karnataka 560001 <br>
-     Email: deeparnab @ gmail.com, dechakr @ microsoft.com
-   </div>
+ 	<div id="position">
+		Department of Computer Science, Dartmouth College <br>
+		<b> Mail:</b> 6211 Sudikoff Lab, Hanover, NH 03755-3510 <br>
+		<b>Tel:</b> 123-456-7890, <b>Fax:</b> -0987 <br>
+		<b>Email:</b> deeparnab.chakrabarty@dartmouth.edu, deeparnab@gmail.com </small>
+   </div> 
 </div>
 <hr>
 <div id="publist">
-<center><h2> <u>Chronological List of Publications </u></h2> 
+<center><h2> <u>List of Publications </u></h2> 
+<small>(Copyright notice: Most of these papers are published and the copyright has been transferred to the respective publishers.)</small>
 </center>	
-<br><br>
-<b> 2016 </b>
+
 <br>
+<!-- <br><br>
+<b> 2017 </b>
+<br>
+ -->
+<ul>
+<li> 
+<b> Subquadratic Submodular Function Minimization.</b>
+	<a href="https://arxiv.org/pdf/1610.09800.pdf">[pdf] </a>
+	<a href="javascript:toggle('subqsfm')">[abs]</a><br>
+	with Yin Tat Lee, Aaron Sidford, Sam Wong.<br>
+	In <i> Proc. STOC 2017. </i>
+	<div id="subqsfm" class="abs" style="display:none"> 
+	<p> Submodular functions on an n-element universe can be minimized in polynomial time. The best known algorithms make O(n<sup>3</sup>) queries or O(n<sup>2</sup> polylog M) queries, where M is the
+	largest absolute value of the function. In this paper, we give a O(nM<sup>3</sup>)-time exact, and a O(n<sup>5/3</sup>/eps<sup>2</sup>))-time eps-approximate algorithm. The latter is for functions in [-1,1] and the approximation is additive.
+	</div>
+</li>
+
+<li>
+<b> The Heterogeneous Capacitated k-Center Problem.</b>
+	<a href="https://arxiv.org/pdf/1611.07414">[pdf] </a>
+	<a href="javascript:toggle('hckc')">[abs]</a><br>
+	with Ravishankar Krishnawamy, Amit Kumar.<br>
+	In <i> Proc. IPCO 2017.</i>
+	<div id="hckc" class="abs" style="display:none">
+	<p> In the k-center problem, we need to install k-centers in a metric space and assign clients to them 
+	so as to minimize the max client-center distance. In the usual <i>homogeneous</i> capacitated version, each of the k-centers have the same capacity constraint indicating the maximum number of clients it can serve.
+	We consider the case when the k-centers have different capacity constraints. 
+	Our problem is different from the <i><a href="https://www.cs.umd.edu/~samir/grant/focs12.pdf" style="color:inherit">non-uniform</a></i> <a href="http://vmadan2.web.engr.illinois.edu/papers/capacitated-k-center.pdf" style="color:inherit"> capacitated</a> k-center problem where instead each point on the metric space has a capacity constraint indicating the 
+	maximum number of clients that can be served by a center opened at that point. We give one application to a network scheduling problem.
+	</div>
+</li>
+
+<li>
+<b> Deterministic Fully Dynamic Approximate Vertex Cover and Fractional Matching in O(1) Amortized Update Time.</b>
+	<a href="https://arxiv.org/pdf/1611.00198">[pdf] </a>
+	<a href="javascript:toggle('dyn')">[abs]</a><br>
+	with Sayan Bhattacharya, Monika Henzinger.<br>
+	In <i> Proc. IPCO 2017.</i>
+	<div id="dyn" class="abs" style="display:none">
+	<p> We give fully dynamic <i> deterministic</i> algorithms for the minimum vertex cover and the maximum fractional matching problem which have O(1)-amortized update time and O(1)-approximation.
+	Previously, <a href="https://docs.google.com/viewer?a=v&pid=sites&srcid=ZGVmYXVsdGRvbWFpbnxzb2xvc2hheXxneDoyNmQwMzM2MjkzNzAyYWY5">Solomon</a> gave a randomized O(1)-amortized update time algorithms for maintaining a maximal matching. Our results also generalize to the hypergraph setting. 
+	Similar results were obtained concurrently by <a href="https://arxiv.org/abs/1611.05646">Gupta et al.</a>
+ 	</div>
+</li>
+</ul>
+<br>
+
+<!-- <b> 2016 </b>
+<br> -->
 
 <ul>
 <li>
@@ -68,9 +118,9 @@ target.style.display="none";
 
 </ul>
 <br>
-<b> 2015 </b>
+<!-- <b> 2015 </b>
 <br>
-
+ -->
 <ul>
 
 <li>
@@ -119,11 +169,11 @@ for some constant delta > 0 which doesn't depend on epsilon.
 
 
 </ul>
-
 <br>
+<!-- 
 <b>2014</b>
 <br>
-
+ -->
   <ul>
 	
 	<li>
@@ -181,9 +231,9 @@ for some constant delta > 0 which doesn't depend on epsilon.
    </ul>
 
 <br>
-<b>2013</b>
+<!-- <b>2013</b>
 <br>
-   
+ -->   
 <ul>
 
   <li>
@@ -260,9 +310,9 @@ by Chan, Servedio, and Tan.
 </ul>
 
 <br>
-<b> 2012 </b>
+<!-- <b> 2012 </b>
 <br>
-
+ -->
 <ul>
 <li>
 <b> Approximability of the Firefighter Problem - Computing Cuts over Time. </b>
@@ -292,9 +342,9 @@ by Chan, Servedio, and Tan.
 
   
 <br>
-<b> 2011 </b>
+<!-- <b> 2011 </b>
 <br>
-
+ -->
 <ul>
 
 <li>
@@ -352,12 +402,11 @@ In <i> Algorithmica 61(1): 75-93 (2011)</i>.
 
 
 </ul>
-<br>
-<hr>
-<br>
-<b> &#8804 2010 </b>
-<br>
 
+<br>
+<!-- <b> &#8804 2010 </b>
+<br>
+ -->
 <ul>
 <li>
   <b> Integrality gap of the hypergraphic relaxation of Steiner trees: A short proof of a 1.55 upper bound.</b>
@@ -446,10 +495,6 @@ In <i>Oper. Res. Lett. 37(3): 155-158 (2009)</i> Previous version in <i> Proc. W
 </li>
 
 </ul><br><br><br>
-<hr>
-<br>
-
-<div class="footer"> <center><small>Last modified: 28th October, 2014.</small></center><br> </div>
 
 </body>
 </html>

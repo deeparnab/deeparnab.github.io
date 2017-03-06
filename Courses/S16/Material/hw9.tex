@@ -1,0 +1,49 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\def\Poi{{\sf Poi}}
+
+\begin{document}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+\title{E0234: Assignment 9}
+\author{}
+\date{Due: Wednesday, March 30, 2016.}
+\maketitle
+It is highly recommended you do not google for the answers to the questions below. You can discuss with your friends, but then mention that in your submission.
+The writing should solely be your own.
+
+\begin{enumerate}
+\item 
+Show a strongly connected {\em directed} graph for which there exist vertices $u$ and $v$ such that the expected time to first reach $v$ starting from $u$ by a random walk is exponential in the number of vertices.
+
+\item
+Consider a graph $G$ known to be $3$-colorable. We want to $2$-color the graph such that no triangle is monochromatic (all three vertices have the same color).
+
+Consider the following algorithm. First, color $G$ arbitrarily with red and blue. Then, as long as there is monochromatic triangle, pick a random vertex in that triangle and color it with the opposite color.
+
+Show that the algorithm terminates in polynomial time. To do this, fix a legal $3$-coloring $\mathcal{C}$, and let $dis$ be the number of vertices in which the current $2$-coloring differs from $\mathcal{C}$. Analyze how $dis$ changes as the algorithm proceeds, and argue that if the algorithm takes too long, $dis$ can become $0$.
+
+\item
+Let $G_{n,N}$ be the uniform distribution on $n$-vertex graphs with exactly $N$ edges. Suppose $N = cn$ for some constant $c > 0$. Let $X$ be the expected number of isolated vertices (i.e.,~vertices of degree $0$) for a random graph from $G_{n,N}$. 
+\begin{enumerate}
+\item
+Determine $\EX[X]$.
+\item
+Using Azuma, show that $\Pr[|X - \EX[X]| \geq 2 \lambda \sqrt{cn}] \leq 2e^{-\lambda^2/2}$. 
+\end{enumerate}
+
+\item
+Consider a gambler playing a sequence of independent games, either winning one rupee with probability $1/2$ or losing one rupee with probability $1/2$. The gamber continues until either losing total of $\ell_1$ or winning total of $\ell_2$. Let $X_i$ be $+1$ if he wins in the $i$'th game and $-1$ otherwise. Let $Z_t = (\sum_{i=1}^t X_i)^2 - t$. 
+\begin{enumerate}
+\item
+Show that $Z_1, Z_2, \dots$ form a martingale with respect to $X_1, X_2, \dots$.
+\item
+Let $T$ be the stopping time when the gambler finishes playing. What is $\EX[Z_T]$?
+\item
+Calculate $\EX[T]$. ({\em Hint}: Use what we showed in class about the probabilities of the player winner and losing at time $T$.)
+ \end{enumerate}
+  
+
+\end{enumerate}
+
+\end{document}

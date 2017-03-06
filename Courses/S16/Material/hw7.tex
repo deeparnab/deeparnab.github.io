@@ -1,0 +1,30 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\def\Poi{{\sf Poi}}
+
+\begin{document}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+\title{E0234: Assignment 7}
+\author{}
+\date{Due: Friday, March 11, 2016.}
+\maketitle
+It is highly recommended you do not google for the answers to the questions below. You can discuss with your friends, but then mention that in your submission.
+The writing should solely be your own.
+
+\begin{enumerate}
+\item 
+Let $v$ be a transient state in a Markov chain, and let $\pi$ be a stationary distribution for the Markov chain. Show that $\pi(v)$ must equal $0$.
+
+\item
+(MR Problem 6.8) In a connected graph $G$, an edge is called a {\em bridge} if the removal of the edge disconnects the graph. If $G$ is a connected graph with $n$ vertices and $m$ edges, and $(u,v)$ is an edge in $G$, show that for the simple random walk on $G$, $h_{u,v} + h_{v,u} = 2m$ if and only if $(u,v)$ is a bridge.
+
+\item
+(MR Problem 6.11)
+Suppose $G$ is a regular graph (i.e, every vertex having the same degree). Show that its cover time is $O(n^2 \log n)$. 
+
+\item
+Let $h_{\text{max}}$ be the maximum hitting time between any pair of vertices in an $n$-vertex graph $G$. Show that the time for a random walk to cover every vertex is $O(h_{\text{max}} \log n)$ with high probability.
+\end{enumerate}
+
+\end{document}

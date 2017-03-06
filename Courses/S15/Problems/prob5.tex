@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+\title{{\bf Approximation Algorithms} \\ 
+{\normalsize EO249}}
+\date{(Problem Set 5) Due: Mar 13th, 2015}
+\maketitle
+{\small 
+Solutions need to be submitted by email to eo249iisc@gmail.com. We prefer latexed solution. 
+Before giving the solutions, you should write how many problems you have attempted and how many you think you have solved.
+Starred problems are optional and (possibly) more fun.
+}
+\vspace{1ex}
+\def\poly{\mathrm{poly}}
+\begin{exercise}
+Consider the following LP for the knapsack problem
+\begin{align}
+\max & \qquad \sum_{i=1}^n p_ix_i & \notag \\
+\textrm{such that} &\qquad  \sum_{i=1}^n w_ix_i \leq B\notag \\
+& \qquad 0 \leq x_i \leq 1, \qquad \forall i \notag
+\end{align}
+Here $p_i$ and $w_i$ are the profits and weights of the $i$th item. We may assume $w_i \leq B$ for all $i$.
+\begin{itemize}
+\item Let $x$ be an optimal basic feasible solution to the above LP. What can you say about the set $\{i: 0 < x_i < 1\}$?
+\item Can you use this to argue the integrality gap of the LP $\leq 2$? Can you prove a lower bound on the integrality gap?
+\item  Can you use the above to design a PTAS for the knapsack problem, that is an $(1+\eps)$-approximation running in time $n^{f(\eps)}$ for some function $f$?
+\end{itemize}
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+In the survivable network design problem (SNDP), we are given an undirected graph $G$ with costs on edges. We are also given source-sink pairs $(s_i,t_i)$
+and an integer $r_i$ associated with each pair.
+The goal is to construct a minimum cost subgraph $H$ of $G$ such that for each $i$, there exists at least $r_i$ {\bf edge-disjoint} paths from $s_i$ to $t_i$.
+In this exercise we design a $2$-approximation for the problem.
+\begin{enumerate}
+\item 
+Define the following {\bf set function} $r(S) := \max_{i: |S\cap \{s_i,t_i\}|  = 1} r_i$. Prove that $r$ is {\em weakly supermodular}, that is,
+for any two subsets $A$ and $B$ one of the two holds:
+\[
+r(A \cup B)  + r(A \cap B) \geq r(A) + r(B)
+\]
+\[
+r(A\setminus B) + r(B\setminus A) \geq r(A) + r(B)
+\]
+\item Consider the following LP relaxation for the problem.
+\begin{align}
+\min & \qquad \sum_{e\in E} c_ex_e & \notag \\
+\textrm{such that} &\qquad  x(\delta(S)) \geq r(S) \qquad \forall S\subseteq V\notag \\
+& \qquad x_e \geq 0 \notag
+\end{align}
+where, $\delta(S)$ is the set of edges with exactly one endpoint in the set $S$ and $x(\delta(S))$ is the shorthand for $\sum_{e\in \delta(S)} x_e$.
+Prove that the above is a relaxation to the problem. Describe a {\em separation oracle} for the problem, that is, given any $x_e$'s 
+describe an efficient algorithm which either proves $x$ is feasible, or demonstrates a set $S$ violating the inequality.
+
+\item 
+Prove that for any $x_e$'s, and any subset $A,B \subseteq V$, we have 
+\[
+x(\delta(A \cup B))  + x(\delta(A \cap B)) \leq x(\delta(A)) + x(\delta(B))
+\]
+{\bf and}
+\[
+x(\delta(A\setminus B)) + x(\delta(B\setminus A)) \leq x(\delta(A)) + x(\delta(B))
+\]
+Note the change in the inequality directions as opposed to (1).
+Furthermore, show the following. Given subset $S\subseteq V$, let $\chi_S$ be the row corresponding to the constraint $S$ in the LP above.
+Then the above inequalities hold with equality only if  $\chi_A + \chi_B = \chi_{A\cup B} + \chi_{A\cap B}$ for the first inequality and 
+$\chi_A + \chi_B = \chi_{A\setminus B} + \chi_{B\setminus A}$.
+\item 
+\def\cF{\mathcal{F}}
+\def\cL{\mathcal{L}}
+Let $x$ be a basic feasible solution to the above LP. Call a set $S$ {\bf tight} if and only if $\sum_{e\in \delta(S)} x_e = r(S)$.
+Let $\cF$ be the collection of tight sets. Prove that if $S,T\in \cF$, then either $S\cup T,S\cap T$ are in $\cF${\bf and} $\chi_S + \chi_T = \chi_{S\cup T} + \chi_{S\cap T}$ , or 
+$S\setminus T, T\setminus S$ are in $\cF$ and $\chi_S +\chi_T = \chi_{S\setminus T} + \chi_{T\setminus S}$.
+You may assume (1),(3) for this.
+
+\item
+A collection $\cL$ of subsets of $V$ is laminar if for any two sets $S,T \in \cL$, either $S\cap T = \emptyset$, or $S\subseteq T$ or $T\subseteq S$.
+Show that there exists a laminar family $\cL$ in $\cF$ such that for any $T\in \cF$, $\chi_T$ can be expressed as a linear combination of 
+the rows $\{\chi_S: S\in \cL\}$.
+This shows that the rank of the submatrix of tight equalities corresponding to $x$ is at most $|\cL|$.\\
+\noindent
+{\bf Hint:}  Consider a maximal laminar subcollection of $\cF$, that is, a laminar family $\cL$ such that for every set $S\in \cF\setminus \cL$, there exists $T\in \cL$ with 
+$S\cap T \neq \emptyset$ and is a  strict  of $S$ and $T$.
+
+\item 
+Use the proof technique from the tree augmentation problem done in class, to prove that some $x_e \geq 1/2$.  Can you see the similarity between laminar families and rooted trees? \\
+\noindent
+{\bf Hint:} For every edge $e\in E$, put at most one unit of charge on certain sets in $\cL$. In particular, for $e = (u,v)$, consider the minimal set which contains just $u$, just $v$, and both $u$ and $v$.
+
+
+
+\end{enumerate}
+\end{exercise}
+
+\end{document}

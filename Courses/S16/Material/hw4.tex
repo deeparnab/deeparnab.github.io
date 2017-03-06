@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\def\Poi{{\sf Poi}}
+
+\begin{document}
+
+\title{E0234: Assignment 4}
+\author{}
+\date{Due: Monday, 8th Feb 2016.}
+\maketitle
+It is highly recommended you do not google for the answers to the questions below. You can discuss with your friends, but then mention that in your submission.
+The writing should solely be your own.
+
+\begin{enumerate}
+\item  {\bf (Filling up the gaps from class presentation.)}
+\begin{enumerate}
+\item For $X \sim \Poi(\lambda)$, prove $\mathbf{Exp}[X] = \mathbf{Var}[X] = \lambda$. Given $X\sim\Poi(\lambda)$ and $Y\sim \Poi(\mu)$ which are independent, prove
+$X+Y \sim \Poi(\lambda+\mu)$.
+
+\item  Let $\calE$ be an event in the balls-and-bins experiment whose probability is either monotonically increasing or decreasing with the number of balls thrown. 
+Let $\calE'$ be the corresponding event when each bin independently has $Y_i \sim \Poi(m/n)$ many balls.
+
+Prove that $\Pr[\calE] \leq 2\Pr[\calE']$. {\bf Hint:} You can use without proof that for $X\sim \Poi(\lambda)$, when $\lambda$ is a positive integer, $\mathbf{Med}(X) = \lambda$.
+
+\item Recall some notation from class: $Y_i \sim \Poi(m/n)$ and $Z = \sum_i Y_i$. Let $\calE$ be an event which is monotonically decreasing with $Z$; that is, $\Pr[\calE~|Z=k] \geq \Pr[\calE~|Z=k']$ if $k < k'$. Suppose $\Pr[\calE|Z=a] - \Pr[\calE|Z=b] \leq \delta$ for some non-negative integers $a < b$. 
+
+Prove
+\[
+\Big| \Pr[\calE~|a \leq Z \leq b ]  - \Pr[\calE~|Z = c] \Big| \leq \delta, ~~~~~\forall a\leq c\leq b.
+\]
+\end{enumerate}
+
+
+\item Consider the coupon collector setting. Let $\tau$ be the (random) time when you observe $k$ copies of every coupon where $k$ is a fixed integer $> 1$.
+Prove that for any real constant $c$,
+\[\lim_{n\to \infty} \Pr[\tau > n\left(\ln n + (k-1)\ln\ln n + c\right)] = 1 - e^{-e^{-c}}\]
+
+\item Consider $n$ balls thrown into $n$ bins. What can you say about the $k$th largest load?
+More precisely if the load profile is $(X_1,\ldots,X_n)$, define
+$L_k := \textrm{$k$th-largest}(X_1,\ldots,X_n).$
+Express the function $f(n,k)$ such that $L_k = \Theta(f(n,k))$ whp. %From what we did in class, we get $p(n,1) = \log n/\log\log n$.
+Start with $k=2$. 
+
+\item
+Consider a counter that receives packets arriving on a stream. The counter is initialized to $0$. If the counter is currently at $i$ and a new packet arrives, then the counter is incremented with probability $2^{-i}$ (and otherwise remains unchanged). Suppose $n$ packets arrive in total, and let $X_n$ be the random variable denoting the counter value at the end of the stream.
+\begin{enumerate}
+\item[(a)]
+Show that $\mathbf{Exp}[2^{X_n}] = n+1$. 
+\item[(b)]
+Show that $\mathbf{Var}[2^{X_n}] = \frac{n(n-1)}{2}$.
+\end{enumerate}
+
+\noindent \textbf{Hint}: Use induction on $n$.
+\end{enumerate}
+
+\end{document}

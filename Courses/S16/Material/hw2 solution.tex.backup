@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+\input{preamble}
+
+\begin{document}
+
+\title{E0234: Solution Sketch of Assignment 2}
+\author{}
+% \date{Due: Monday, 25th Jan 2016.}
+\maketitle
+In this assignment sheet (and life in general), you may find it useful to know Stirling's approximation which states
+\[
+	\text{For any integer $n$,}~~~~~~ \sqrt{2\pi}\cdot  n^{n+\frac{1}{2}} e^{-n} \leq n! \leq e\cdot n^{n+\frac{1}{2}} e^{-n} 
+\]
+where $e$ and $\pi$ are the famous constants.
+\begin{enumerate}
+\item Every evening, a man either visits his parents, who live northwards, or his friend, who lives southwards (but not both). In order to be fair, he goes to the bus stop every evening at a random time and takes either the northward or southward bus, whichever comes first. The two kinds of buses stop at the bus stop every 30 minutes with perfect regularity. Yet, he visits his parents only three times per month. Why?
+
+\Sol Because the bus to parents is scheduled to come $3$ minutes after the arrival of bus to friend \smiley{}.
+
+	
+			\item Let $n$ be an even integer and assume $n > 10$. Let $G_k$ be the (multi)-graph on $n$ vertices formed by taking the union of $k$ perfect matchings which are chosen uniformly at random 
+	          from the set of all perfect matchings among $n$ points. What is the smallest $k$ for which $G_k$ is connected with high probability? (Recall, whp implies that this probability should approach $1$
+	          as $n$ tends to infinity.) 
+	          
+	          \Sol Mapping perfect matchings to permutations of vertices and then applying union bound over all cuts shows that $k= \omega(n/\log n)$ suffices. But can this be improved?
+	          
+	 \item $n$ people queue up to attend a movie which has $n$ seats. However, the first person has lost his ticket and sits in one of the empty seats uniformly at random. Subsequently, each person (and no one else has lost a ticket) sits either in his assigned seat, or if that seat is already taken sits in an empty seat uniformly at random. What is the expected number of people {\em not} sitting in their correct seats?
+	 
+	 \Sol Let $T(n)$ denote the random variable denoting the number of people not sitting in their correct seat. Then we have the following recurrence:
+	 
+	 \[T(n) = 1 + \frac{1}{n}\sum_{i=2}^n T(n-i+1)\]
+	 
+	 Solving we have $T(n) = H_n = \Theta(\log n)$
+\ignore{
+	 \item Let $\pi$ be a random permutation of the numbers $\{1,2,\ldots,n\}$ chosen uniformly at random. Define $Z(\pi) := \sum_{i=1}^n |\pi(i)-i|$ as the expected ``movement'' of the permutation. Calculate $\Exp[Z(\pi)]$.
+}	         
+	         
+	  \item Given a permutation $\pi$ of $\{1,2,\ldots,n\}$, let $L(\pi)$ denote the length of the longest increasing subsequence in $\pi$. Note that a subsequence may not be contiguous; for instanct in the permutation $\pi = (1,6,4,5,2,7,3)$ for $n=7$, the longest subsequence is $(1,4,5,7)$ and so $L(\pi) = 4$. In this exercise, you need to prove $\Exp[L(\pi)] = \Theta(\sqrt{n})$. 
+	  \begin{enumerate}
+	  	\item Prove that $\Exp[L(\pi)] = O(\sqrt{n})$. {\bf Hint:} For a fixed $k$, calculate (an upper bound) probability on the probability that $L(\pi) \geq k$. 
+	  	
+	  	\Sol
+	  	
+	  	\item Prove that $\Exp[L(\pi)] = \Omega(\sqrt{n})$. {\bf Hint:} Assume $n$ is a perfect square. 
+	  	For $i = 1,\ldots, \sqrt{n}$, define the indicator random variable $X_i$ which takes the value $1$ if and only if some entry in $(i-1)\sqrt{n}+1 \leq j \leq i\sqrt{n}$ satisfies 
+	  	$(i-1)\sqrt{n}+1 \leq \pi(j) \leq i\sqrt{n}$. Can you relate these $\sqrt{n}$ variables with $L(\pi)$?
+	  	
+	  	\Sol
+	  \end{enumerate}
+	  
+	  \Sol
+
+\ignore{
+\item
+In this problem, you'll explore some of the subtleties of properly defining probability measures. We want to define the intuitively obvious notion of a ``random integer'' so that an integer is even with probability $1/2$, divisible by $3$ with probability $1/3$, and so on. Also, a random integer should be divisible by $pq$ for distinct primes $p$ and $q$  with probability $1/pq$. How do we make this formal? Let $\Omega$ be the sample space of positive integers.
+
+\begin{enumerate}
+\item
+The most direct approach is the notion of {\em arithmetic density}. For an event $A \subseteq \Omega$, define:
+$$d(A) = \lim_{n \to \infty} \frac{|\{1, 2, \dots, n\} \cap A|}{n}$$
+Indeed, if $D_p = \{p, 2p, 3p, \dots\}$ is the event of being divisible by $p$, then $d(D_p) = 1/p$ and $d(D_p \cap D_q) = 1/pq$ as desired.
+
+However, there are some fundamental problems with this definition. Show that $d$ does not satisfy the definition of probability measure. Moreover, show that if $F_1$ is the event of having the first digit equal to $1$, then $d(F_1)$ is not even well defined!
+
+\item
+A more sophisticated notion is that of {\em Dirichlet density}. Let $\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$; it is defined when $s > 1$ and diverges for $s \leq 1$. For an event $A \subseteq \Omega$, define the Dirichlet density of of $A$ with parameter $s$ to be:
+$$P_s(A) = \frac{1}{\zeta(s)} \sum_{n \in A} \frac{1}{n^s}$$
+Show that $P_s$ is a probability measure. Show that for $D_p$ as in part a, $P_s(D_p) = 1/p^s$ and $P_s(D_p \cap D_q) = P_s(D_p)\cdot P_s(D_q)$. 
+\end{enumerate}
+
+The problem with Dirichlet density is that $P_s(D_p) = 1/p^s$, not $1/p$ as desired. This can be fixed by considering $\lim_{s \to 1} P_s(A)$ where the limit is taken from above. It is possible (although quite difficult) to show that $d(A) = \lim_{s \to 1} P_s(A)$ if $d(A)$ is well-defined.}
+
+\end{enumerate}
+
+
+\end{document}

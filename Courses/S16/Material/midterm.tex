@@ -1,0 +1,114 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\def\Pr{\mathbf{Pr}}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+ 
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\setlength{\algobox}{6.5in}
+\newcommand{\supp}{{\tt supp}}
+\newcommand{\rank}{{\tt rank}}
+\def\Pr{\mathbf{Pr}}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+
+\begin{document}
+
+\title{E0234 Randomized Algorithms}
+\author{\bf Midterm}
+\date{29th Feb, 2016. 1:30pm to 4:30pm.}
+\maketitle
+\thispagestyle{empty}
+\def\poly{{\tt poly}}
+%You are allowed one A4 sheet of paper in your own handwriting which needs to be submitted with your answer sheet. 
+\begin{center}
+{\small 
+Good luck!
+}
+
+
+\end{center}
+%\hline
+
+\begin{enumerate}
+	
+
+\item 
+\begin{enumerate}
+\item[(a)] Prove: for any two random variables $X,Y$, $\Exp[X+Y] = \Exp[X] + \Exp[Y]$.
+\item[(b)]
+Prove or disprove: for independent random variables $X,Y$, \mbox{$\Var[XY] = \Var[X]\cdot \Var[Y]$.}
+%\item[(b)] Prove or disprove: for any two random variables $X$ and $Y$ (not necessarily independent), \\ $\Exp[XY] \leq \sqrt{\Exp[X^2]}\sqrt{\Exp[Y^2]}$.
+%\item[(b)]Let $X$ and $Y$ be random variables (not necessarily independent), and let $E(X,Y)$ be an event. Suppose $\Pr_{X,Y}[E(X,Y)] \geq \beta$. Then, show that $\Pr_X[\Pr_Y[E(X,Y)] \geq \beta/2] \geq \beta/2$.  
+
+\end{enumerate}
+\vspace{0.5ex}
+
+\item 
+Consider a set system where each set has exactly $10$ elements and every element is present in exactly $10$ sets. 
+Can you colour the elements red or blue such that every set has elements of both colours?
+%
+%\item A hypergraph is $k$-uniform if each hyperedge has exactly $k$ vertices, and is called
+%$k$-regular if every vertex is in exactly $k$ different hyperedges. A hypergraph is $2$-colorable if every vertex can be coloured either red or blue such that there are no monochromatic hyperedges. Prove that for $k>10$, every $k$-uniform, $k$-regular hypergraph is $2$-colourable.
+\vspace{0.5ex}
+
+\item Consider the random graph $G_{n,p}$ when $p = cn^{-2/3}$, and let $X$ be the number of $4$-cliques in the graph. 
+\begin{enumerate}
+	\item  What is $\Exp[X]$?
+	\item  What is an upper bound on $\Var[X]$?
+	\item  What is $\lim_{n\to \infty} \Pr[X = 0]$? 
+\end{enumerate}
+\vspace{0.5ex}
+
+%\item Prove that for any two random variables $X$ and $Y$ (not necessarily independent), \\ $\Exp[XY] \leq \sqrt{\Exp[X^2]}\sqrt{\Exp[Y^2]}$.
+%Assume $X$ and $Y$ are discrete.
+%\item 
+%$X$ is a random variable with expectation $\mu > 0$ and standard deviation $\sigma$. 
+%Prove $\Pr[X > 0] \geq \frac{\mu^2}{\sigma^2 + \mu^2}$. You are allowed to use the statement from the previous question without proof.
+%\vspace{0.5ex}
+%\item Define  $S_n := |X_1 + \cdots + X_n|$ where each $X_i$'s are independent random variables which are  $\pm 1$ with probability $1/2$.
+%Prove $\Exp[S_n] = \Theta(\sqrt{n})$.
+%\vspace{0.5ex}
+\item
+Suppose you can draw independent samples of a real random variable $X$ that has expectation $0$ and standard deviation $\sigma$. Explain how to use only $O(\log n)$ samples from this source to generate a random variable $Y$ with expectation $\mu$ such that $\Pr[|Y-\mu| > 2 \sigma] < 1/n$. 
+\vspace{0.5ex}
+\item 
+Consider the following algorithm for the independent set problem on an $n$-node graph. Sample a random permutation $\sigma$ of $\{1,2,\ldots,n\}$. Initialize $I$ to $\emptyset$.
+For $i=1$ to $n$, place $\sigma(i)$ in $I$ if it doesn't have an edge to any vertex in $I$.  In expectation, how large an independent set do you pick?
+\vspace{0.5ex}
+
+
+
+
+\item  In $d$-dimensions, there can be at most $d$ unit vectors which are orthogonal to each other.
+Call a pair of unit vectors $\eps$-orthogonal if $|u^\top v|\leq \eps$. How large (in cardinality) a set of pairwise $\eps$-orthogonal unit vectors can you construct in $d$-dimensions?
+
+
+\end{enumerate}
+
+\end{document}

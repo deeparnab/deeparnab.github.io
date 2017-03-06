@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="test-course.css" id="styleId" text-decoration="none"/>
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
+<title>CIS800: Techniques in Approximation Algorithms, Fall 2010</title> </head>
+
+<body>
+<h2>
+<font color="black">
+CIS800: Techniques in Approximation Algorithms, Fall 2010</font> <br>
+</h2>
+
+<b>Instructor: <a href="./../../index.htm"><font color="black"> Deeparnab Chakrabarty </font></a></b><br>
+<b>Time:</b> Thrusday, noon - 2:50pm<br>
+<b>Location:</b> Levine 612 <br>
+<br>
+<hr>  
+
+<br>
+<b> Course Description </b> <br>
+Most optimization problems turn out to be NP-hard and this
+has led to the study of algorithms which return an approximate
+solution in polynomial time. Over the past three decades, 
+many techniques have been developed for the design and analysis
+of approximation algorithms. In this course, we will survey these
+techniques illustrating their applications on various optimization problems. <br>
+<br>
+<b> Recommended Material </b> <br>
+<font color="red"><b>Update:</b></font> A non-printable copy of the book is available now at the book's <a href=http://www.designofapproxalgs.com>website</a>! <br>
+Course packet: "The Design of Approximation Algorithms" by David Shmoys and David Williamson. Available at Levine 166, IKON copy centre.
+<br>
+<br>
+<b>Problem Sets</b><br>
+<font size="-1">
+There will be 3 to 4 problem sets. Usually, I'll post problems
+and keep on adding it till I put a due date (which'll be 2 to 3 weeks
+from the posted date). There will be starred problems (possibly more difficult) which need not
+be submitted. All submissions have to be texed+pdffed+emailed. Proofs, when needed,
+need not be detailed; an idea will suffice.</font> <br>
+<a href=./Problems/prob1.pdf>(Set 1)</a> &nbsp <a href=./Problems/prob2.pdf>(Set 2)</a> 
+
+
+</font>
+<br>
+<br>
+<div id="leclist">
+  <b> Lectures</b><br>
+<font size="-1">
+For some of the lectures, I will provide a pdf of my rough notes that I use to prepare for it.
+Later on, if and when time constraints prevent me from latexing my rough notes (very likely),
+I would require a scribe for that lecture. I don't read the notes I write more than twice,
+and it is more likely than not that they contain errors. Please point these out to me via email
+and I'll make the necessary changes. Three major errors may make up for a problem in the problem set. </font><br>
+
+<ul>
+  <li>
+  <b>Lecture 1 (Sep 9)</b>: Greedy Algorithms.  <a href="./Notes/lec1.pdf">(my notes)</a> 
+   <div id="blurb"> <p> The greedy algorithm for facility location is by <a href= http://www.cc.gatech.edu/~vazirani/fac.ps> Jain, Mahdian, Markakis, Saberi, and Vazirani.</a> The greedy augmentation step that I mentioned in the class and write about in the notes is by <a href=http://mahdian.org/myz.pdf>Mahdian, Ye and Zhang</a>  based on work by <a href=http://www.cis.upenn.edu/~sudipto/mypapers/greedy_back.pdf>Guha and Khuller</a>. </div>
+  
+  </li>
+
+
+
+    <li>
+<b>Lecture 2 (Sep 16)</b>: Local Search.  <a href="./Notes/lec2.pdf">(my notes)</a> 
+      <div id="blurb"> <p> The max-cut algorithms are probably folk lore. We will see better algorithms later in the course using semidefinite programming.
+Better combinatorial algorithms for maximum directed cut can be found in this paper by <a href=http://www.math.tau.ac.il/~heran/cozygene/publications/papers/comb-dicut-soda.ps> Halperin and Zwick. </a>
+The local search algorithms for facility location and k-median problems were studied first by <a href= http://www.ccs.neu.edu/home/rraj/Pubs/fac.html> Korupolu, Plaxton and Rajaraman. </a> The factor 5 algorithm (and the factor (3+2/p) algorithm indicated in the notes, but not done in class, currently the best algorithm) for k-Median today, is due to <a href=http://www.cse.iitd.ernet.in/~pandit/lsearchSICOMP.pdf>Arya, Garg, Khandekar, Meyerson, Munagala and Pandit.</a> Our presentation is influenced by a paper of <a href= http://arxiv.org/abs/0809.2554> Gupta and Tangwongsan.</a> </div>
+ 
+  </li>
+
+
+    <li>
+  <b> Lecture 3 (Sep 23)</b>: Linear Programs Relaxations and Rounding  <a href="./Notes/lec3.pdf">(my notes)</a> 
+    <div id="blurb"> <p> My favorite reference for linear programming is the book
+	 <a href=http://www.amazon.com/Introduction-Linear-Optimization-Scientific-Computation/dp/1886529191> Introduction to Linear Optimization </a> by Bertsimas and Tsitsiklis. The ellipsoid method in all its gory details is given in <a href=http://www.scribd.com/doc/5710463/Geometric-Algorithms-And-Combinatorial-Optimization> this book</a>, but I don't recommend it as bedside reading. The facility location algorithm done today is due to <a href= http://www.cs.cornell.edu/home/eva/facility.ps> Shmoys, Tardos, and Aardal </a>, and is the first constant factor approximation for it. The algorithm for generalized assignment problem (GAP) we did in class is due to <a href = http://www.springerlink.com/content/v3jl8wwl33k1q052/ >Shmoys and Tardos </a>, although they
+	 look at a minimization problem; the fact that this implies 2-approximation for the maximization version, the part which we couldn't complete due to the fire, is due to <a href= http://repository.upenn.edu/cgi/viewcontent.cgi?article=1215&context=cis_papers> Chekuri and Khanna </a>.
+       </div>
+  
+  </li>
+
+ <li>
+ <b> Lecture 4 (Sep 30)</b>: Pipage Rounding  <a href="./Notes/lec4.pdf">(my notes)</a> 
+       <div id="blurb"> <p> Pipage rounding was introduced by <a href= http://www.springerlink.com/content/r37k4302n7m17427/> Ageev and Sviridenko </a> and the example of max-k-coverage problem is from that paper.
+	 The algorithm to maximize submodular functions over matroid constraints can be found in full in the journal paper of
+	 <a href= http://www.math.princeton.edu/~jvondrak/data/submod-matroid.pdf> Calinescu, Chekuri, Pal and Vondrak </a>.
+       </div>
+  </li>
+
+   <li>
+ <b>  Lecture 5 (Oct 7)</b>: Iterated Rounding  <a href="./Notes/lec5.pdf">(my notes)</a> 
+       <div id="blurb"> <p> The SNDP result is due to <a href="http://www.springerlink.com/content/xaptbjdk2qf5an8d/"> Jain </a>, although the proof of the charging argument is due to
+	 <a href="http://www.andrew.cmu.edu/user/viswanat/papers/sndp.pdf"> Nagarajan, Ravi, and Singh.</a> The maximum cardinality matching in hypergraphs result, which we didn't do in class, is due to
+	 <a href=" On the fractional matching polytope of a hypergraph,"> Furedi, Kahn and Seymour.</a> This was generalized by <a href="http://www.cse.cuhk.edu.hk/~chi/papers/hypergraph.pdf"> Chan and Lau </a> for the weighted case using an extra
+	 idea of local ratio - which we might not cover in the course. Finally, there is a monograph being written on iterative relaxations in
+	 combinatorial optimization by <a href="http://www.cs.mcgill.ca/~mohit/COMP760A/notes_iterative_methods.pdf"> Lau, Ravi and Singh.</a>
+       </div>
+  
+  </li>
+ <li>
+ <b> Lecture 6 (Oct 14)</b>: Primal Dual Algorithms  <a href="./Notes/lec6.pdf">(my notes)</a>
+       <div id="blurb"> <p> Both the 3-approximation for metric UFL and 6-approximation for k-median are from the paper
+	 by <a href="http://www.cc.gatech.edu/~vazirani/k-median.ps"> Jain and Vazirani.</a> Primal-dual algorithms
+	 have also had a great success in network design problems - notable are the 2-approximation algorithmsfor the Steiner forest
+	 problem due to <a href="http://portal.acm.org/citation.cfm?id=103437&dl=GUIDE&coll=GUIDE&CFID=107238991&CFTOKEN=78120389">Agarwal, Klein and Ravi,</a> and by <a href="http://portal.acm.org/citation.cfm?id=139404.139468">Goemans and Williamson.</a>
+       </div>
+  
+  </li>
+
+  <li>
+ <b> Lecture 7 (Oct 21)</b>: Randomized Rounding  <a href="./Notes/lec7.pdf">(my notes)</a> 
+       <div id="blurb"> <p> The technique of using the fractional solution as probabilistic guide to an integral solution
+	 was made concrete in the paper by <a href="http://www.springerlink.com/content/n16347864k45367w/"> Raghavan and Thomson.</a>
+	 The facility location algorithm done in class is due to <a href="http://people.orie.cornell.edu/~shmoys/ChudakShmoys.ps">Chudak and Shmoys.</a> The group Steiner tree algorithm
+	 done in class is due to <a href="http://www2.tepper.cmu.edu/andrew/ravi/public/gst.ps"> Garg, Konjevod, and Ravi.</a>
+       </div>
+  
+  </li>
+
+
+   <li>
+<b>   Lecture 8 (Oct 28)</b>: Cuts and Distances  <a href="./Notes/lec8.pdf">(my notes)</a> 
+       <div id="blurb"> <p> The first 2(1-1/k) approximation for multiway cut is due to <a href="http://www2.research.att.com/~dsj/papers/3way.pdf">Dalhaus, Johnson, Papadimitriou, Seymour, and Yannakakis.</a> The first O(log k) approximation for multicut is the region growing algorithm die to <a href="http://www.cc.gatech.edu/~vazirani/multicut.ps"> Garg, Vazirani and Yannakakis.</a> The randomized technique for multicut was first used by <a href="http://www.cs.iit.edu/~calinesc/zeroext.ps">Calinescu, Karloff, and Rabani.</a> In fact, the same idea was present in
+	 an <a href="http://www.cs.iit.edu/~calinesc/mwc.ps"> earlier paper</a> of the authors which gave a 3/2 approximation for multiway cut. This ratio was improved to 1.35 by
+	 <a href="http://www.columbia.edu/~cs2035/papers/MultiCut.ps">Karger, Klein, Stein, Thorrup, and Young </a>.
+	 
+       </div> 
+  
+  </li>
+  
+ <li>
+<b> Lecture 9 (Nov 4)</b>: Sparsest Cut and Metric Embeddings <a href="./Notes/lec9.pdf">(my notes)</a> 
+      <div id="blurb"> <p> The first nontrivial algorithm for sparsest cut is by <a href="http://portal.acm.org/citation.cfm?id=331526"> Leighton and Rao </a> (with a gap of 10
+	 years between conference and journal version) who gave a O(log n) approximation. This paper introduced the region growing
+	 procedure which was refined in GVY. The relation between sparsest cut and multicut is due to <a href="http://dimacs.rutgers.edu/TechnicalReports/abstracts/1993/93-78.html"> Kahale </a>.
+	 The metric embedding connection to algorithm design is made explicit in the paper by <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.54.190&rep=rep1&type=pdf"> Linial, London and Rabinovich.</a>
+	 
+       </div> 
+  
+  </li>
+  
+</ul>
+</div>
+
+
+<hr>
+
+

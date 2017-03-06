@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+\title{{\bf Approximation Algorithms} \\ 
+{\normalsize EO249}}
+\date{(Problem Set 3) Due: Feb 27th, 2015}
+\maketitle
+{\small 
+Solutions need to be submitted by email to eo249iisc@gmail.com. We prefer latexed solution. 
+Before giving the solutions, you should write how many problems you have attempted and how many you think you have solved.
+Starred problems are optional and (possibly) more fun.
+}
+\vspace{1ex}
+\def\poly{\mathrm{poly}}
+
+\begin{exercise}
+In the {\sc Knapsack} problem, we are given a bound $B$ which is an integer, a set of $n$ items with each item $j$ having an integer  weight $w_j$ and an integer profit $p_j$.
+The goal is to choose a subset $S$ of items such that $\sum_{j\in S} w_j \leq B$ and $\sum_{j\in S} p_j$ is maximized.
+\begin{enumerate}
+\item Consider the greedy algorithm: order the items in decreasing order of $p_j/w_j$ and pick items in this order till you fill the knapsack. 
+         What is the approximation factor of this algorithm?
+\item Design a polynomial time algorithm for this problem if  $p_j \leq n$ for all $j$. \\
+(Hint: Dynamic programming.)
+\item Design a polynomial time approximation scheme (PTAS) for the knapsack problem. \\
+(Hint: Scale each $p_j$ by a factor such that the new $p'_j$s are all less than $n/\eps$. Then argue that
+the optimum value of the scaled instance can't be too much smaller than that of the original instance.)
+\end{enumerate}
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+Describe an {\bf exact} algorithm for TSP on $n$-points running in time $O(2^n\poly(n))$.
+\end{exercise}
+\vspace{1ex}
+
+
+\begin{exercise}
+Describe a PTAS for Euclidean TSP in $d$-dimensions (we did $d=2$ in class).
+What is the dependence on $d$?
+\end{exercise}
+
+\end{document}

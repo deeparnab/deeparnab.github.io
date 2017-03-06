@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{algorithm,algorithmic}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+        {\hspace*{\fill}$\Box$\par}
+
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+
+\begin{document}
+\title{{\bf Approximation Algorithms} \\ 
+{\normalsize EO249}}
+\date{(Problem Set 4) Due: Mar 6th, 2015}
+\maketitle
+{\small 
+Solutions need to be submitted by email to eo249iisc@gmail.com. We prefer latexed solution. 
+Before giving the solutions, you should write how many problems you have attempted and how many you think you have solved.
+Starred problems are optional and (possibly) more fun.
+}
+\vspace{1ex}
+\def\poly{\mathrm{poly}}
+\begin{exercise}
+Design a $4$-approximation for the metric facility location problem by modifying the algorithm done in class.
+\end{exercise}
+\vspace{1ex}
+
+
+\begin{exercise}
+(Integrality gap of Set cover LP)
+Fix a positive integer $f$. Design an instance of the set cover problem where the frequency of each element is $\leq f$,
+but the optimal set cover is at least $(f - \eps)$ times the value of the LP-solution for any $\eps > 0$.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}
+(Integrality gap of GAP)
+Recall the LP relaxation of GAP done in class. We proved that the integrality gap is $\geq 1/2$. That is, given any instance, the profit obtained by our algorithm was at least $\frac{1}{2}\cdot LP_{GAP}$.
+Prove that the integrality gap is $\leq 1/2  + \eps$ for any $\eps> 0$. Caution: you are not allowed to construct an instance with $w_{ij} > B_i$ for any $i,j$.\\
+Hint: First try to prove integrality gap $\leq 2/3$. Then try $\leq 3/5$. Then ... 
+\end{exercise}
+\vspace{1ex}
+
+
+\begin{exercise}
+(Integrality gap for matchings)
+In class, we proved that the maximum profit {\bf bipartite} matching LP has integrality gap $1$, that is, for any LP solution we can find a matching of profit more than the LP value.
+Write an IP and LP relaxation for the maximum profit matching in a {\bf general} graph. Discuss the intergrality gap of the relaxation.
+\end{exercise}
+\vspace{1ex}
+
+\begin{exercise}(*)
+Design an $O(\log n)$-approximation algorithm for the general facility location problem (where the costs may not form a metric).
+\end{exercise}
+
+
+\end{document}

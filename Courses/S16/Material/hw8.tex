@@ -1,0 +1,47 @@
+\documentclass[11pt]{article}
+\input{preamble}
+\def\Poi{{\sf Poi}}
+
+\begin{document}
+\def\Exp{\mathbf{Exp}}
+\def\Var{\mathbf{Var}}
+\title{E0234: Assignment 8}
+\author{}
+\date{Due: Monday, March 21, 2016.}
+\maketitle
+It is highly recommended you do not google for the answers to the questions below. You can discuss with your friends, but then mention that in your submission.
+The writing should solely be your own.
+
+\begin{enumerate}
+\item 
+Show that if $\mu$ and $\nu$ are two distributions, $\|\mu-\nu\|_{\text{TV}} = \frac{1}{2} \|\mu - \nu\|_1$. 
+
+
+\item
+Do Exercise 11.6 of Motwani-Raghavan. You can assume that you have an algorithm that samples exactly from the uniform distribution of matchings in a graph. 
+
+\item
+Show that the Markov chain for $C$-coloring graphs of maximum degree $\Delta$ discussed in class is irreducible, if $C \geq \Delta + 2$. Moreover, prove that the stationary distribution of the Markov chain is the uniform distribution on $C$-colorings.
+
+Recall that each move in the Markov chain is to pick a random vertex $v$ from the graph, a random color $c \in [C]$, and to color $v$ with $c$ if permitted and to otherwise leave the coloring unchanged.
+
+
+\item
+Consider the following random walk on the hypercube $\{0,1\}^n$: with probability $1/(n+1)$, stay at current vertex; otherwise, with probability $1/(n+1)$ for each of the $n$ neighbors, go to one of the neighbors. Note that the self-loop probability is $1/(n+1)$.  
+
+An alternative way to view the walk is that for current state $x$,  a random $i \in \{0,1, \dots, n\}$ is picked uniformly at random. If $i=0$, $x$ doesn't change; otherwise, $x_i$ is flipped.
+
+Consider the following coupling $(X_t, Y_t)$.
+\begin{itemize}
+\item
+  Suppose $X_t$ and $Y_t$ differ at only one coordinate $i_0$. Then, if $X_t$ picks $i=0$, $Y_t$ picks $i_0$; if $X_t$ picks $i_0$, then $Y_t$ picks $i=0$; else, both $X_t$ and $Y_t$ pick the same $i$.
+
+\item
+Suppose $X_t$ and $Y_t$ differ at the subset of coordinates $S \subseteq [n]$, where $|S| > 1$. Fix a bijection $\pi: S \to S$ such that $\pi(i) \neq i$ for all $i \in S$. Then, if $X_t$ picks $i=0$, then $Y_t$ also picks $i=0$; if $X_t$ picks $i \not \in S$, then $Y_t$ also picks $i$; if $X_t$ picks $i \in S$, then $Y_t$ picks $\pi(i)$.
+\end{itemize}
+
+Observe that the distance between $X_t$ and $Y_t$ never increases. Analyze separately the expected time needed for the distance to decrease to $1$ and then the expected time for the distance to go from $1$ to $0$. Use this to give a bound on the expected coupling time and, hence, the mixing time for this Markov chain.
+
+\end{enumerate}
+
+\end{document}
