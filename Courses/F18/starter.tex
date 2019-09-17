@@ -1,0 +1,71 @@
+\usepackage{ifthen}
+\usepackage{soul}
+\usepackage{fullpage, prettyref}
+\usepackage{fancyhdr}
+\usepackage{palatino}
+\usepackage{graphicx}
+\usepackage{marvosym}
+\usepackage{ifthen}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\algrenewcomment[1]{\(\triangleright\) {\tiny{#1}}}
+\algnewcommand{\LineComment}[1]{\State \(\triangleright\) \emph{\color{blue} #1}}
+\newcommand{\Lim}{\lim}
+\newcommand{\Exp}{\mathbf{Exp}}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{fullpage, prettyref}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\usepackage{mdframed}
+\usepackage{color,xcolor}
+\usepackage{transparent}
+\usepackage{enumitem}
+\usepackage{varwidth}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Problem}
+\newtheorem{drill}{Exercise}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\def\bv{\mathbf{v}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+{\hspace*{\fill}$\Box$\par}
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}

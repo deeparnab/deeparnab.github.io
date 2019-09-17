@@ -1,0 +1,179 @@
+\documentclass[11pt]{article}
+\input{starter}
+
+
+%make one of the 1's into 0 to hide solutions
+
+\begin{document}
+	\begin{center}
+		{\bf \Large CS 49/149: 21st Century Algorithms (Fall 2018): Lecture 14}\\ 
+		Date: 30th October, 2018 \\
+		Topic: Streaming. Estimating the second moment -- two algorithms \\
+		Scribe: Chao Chen \\
+		{\em Disclaimer: These notes have not gone through scrutiny and in all probability contain errors. Please email errors to chao.chen.gr@dartmouth.edu.}
+	\end{center}
+\hrule height 2pt
+\vspace{3ex}
+\def\loss{\mathsf{loss}}
+\section{Recap}
+\subsection{Frequency Moment Estimation}
+Think of we have a really large array A[1...n] coming in as a stream. Once an element leaves the stream, it is gone. Elements of the array are selected from the set ranging from 1 to m. Thus, A[i]$\in$\{1, 2, ..., m\}. And $f_j$ is the number of occurrences of j in the stream for j$\in$\{1, 2, ..., m\}. \\
+We want to estimate $K^{th}$ moment:$$F_k = \sum_{j=1}^{m}f_j^k$$
+\subsection{Estimation Algorithm}
+We want to develop an algorithm which returns a random variable \textbf{Z} such that
+\begin{itemize}
+    \item 
+    Unbiased:\\
+    \centerline{$\mathbb{E}(Z)$ = "what we want"}
+    \item 
+    Error:\\
+    \centerline{Additive Error:\ \ \ \ \  $\Pr[|Z-\mathbb{E}(Z)|\geq\epsilon]\leq \delta$\ \ \ \ \ \ \ \  (1)}
+    \centerline{Multiplicative Error:\ \ \ \ \  
+    $\Pr[Z\notin \mathbb{E}(Z)(1+\epsilon)]\leq \delta$\ \ \ \ \ \ \ \  (2)} 
+\end{itemize}
+From last class, we know if we want (1), we need $\mathrm{Var}(Z)\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}}$ samples. If we want (2), we need $\frac{\mathrm{Var}(Z)}{\mathbb{E}(Z)^2}\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}} \leq \frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2}\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}} $ samples.
+
+\section{Estimate $F_2$}
+\subsection{Problem}
+We want to estimate $F_2 = \sum_{j=1}^m f_j^2$ under the assumption that $n\approx m$. Consider this two cases:
+\begin{enumerate}
+    \item The elements have approximate equal frequency, i.e. for each j, $f_j \approx \frac{n}{m}$: $$F_2 = m\cdot(\frac{n}{m})^2 = \frac{n^2}{m} \approx n$$
+    \item Some elements have large frequency while others are small, i.e for some j, $f_j$ is really large (we call this a "surprise factor"), $F_2$ will be really large.
+\end{enumerate}
+
+\subsection{Algorithm 1 -- Try 1}
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\underline{\sc Try 1}
+	\begin{itemize}
+		\item Sample a j$\in$\{1, 2, ..., m\} u.a.r
+		\item Count/Evaluate $f_j$
+		\item return $Z=mf_j^2$
+	\end{itemize}
+\end{mdframed}
+\textbf{Analysis:} We need to evaluate the bound of the number of samples Try1 need. Remember that it's bound by $\frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2}\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}} $.\\
+Calculate $\mathbb{E}(Z)$:
+$$\mathbb{E}{(Z)} = \sum_{j=1}^m\Pr[j\ is\ sampled]\cdot mf_j^2$$
+$$= \sum_{j=1}^m \frac{1}{m} \cdot mf_j^2$$
+$$= \sum_{j=1}^m f_j^2$$
+Calculate $\mathbb{E}(Z^2)$:
+$$\mathbb{E}(Z^2)=\sum_{j=1}^m\Pr[j\ is\ sampled]\cdot (mf_j^2)^2$$
+$$=\sum_{j=1}^m \frac{1}{m} \cdot (mf_j^2)^2$$
+$$=m\sum_{j=1}^m f_j^4$$
+Consider two cases:
+\begin{itemize}
+    \item For each j, $j =\frac{n}{m}$:
+    $$\frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2} = \frac{m\sum_{j=1}^m f_j^4}{(\sum_{j=1}^m f_j^2)^2} = \frac{m(\frac{n}{m})^4m}{((\frac{n}{m})^2 m)^2} = 1$$
+    This is good, since the bound of the number of samples is $\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}} $.
+    
+    \item $f_1=n$ and for all j$\in$\{2, ..., m\}, $f_j=0$:
+    $$\frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2} = \frac{mn^4}{n^4} = m $$
+    This is not good, since the bound of number of samples is $m\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}} $. If m is large, it's going to be large.
+\end{itemize}
+\newpage
+\subsection{Algorithm 1 -- Try 2}
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\underline{\sc Try 2}
+	\begin{itemize}
+		\item Sample a j$\in$\{1, 2, ..., m\} $\propto f_j$ i.e. $\frac{f_j}{n}$ (suppose we know $\frac{f_j}{n}$)
+		\item Count/Evaluate $f_j$
+		\item return $Z=nf_j$
+	\end{itemize}
+\end{mdframed}
+\textbf{Analysis:} Again, we need to evaluate the bound of the number of samples Try2 need.\\
+Calculate $\mathbb{E}(Z)$:
+$$\mathbb{E}{(Z)} = \sum_{j=1}^m\Pr[j\ is\ sampled]\cdot nf_j$$
+$$= \sum_{j=1}^m \frac{f_j}{n}\cdot nf_j$$
+$$= \sum_{j=1}^m f_j^2$$
+Calculate $\mathbb{E}(Z^2)$:
+$$\mathbb{E}(Z^2)=\sum_{j=1}^m\Pr[j\ is\ sampled]\cdot (nf_j)^2$$
+$$= \sum_{j=1}^m \frac{f_j}{n} \cdot (nf_j)^2$$
+$$=n\sum_{j=1}^m f_j^3$$
+Consider four cases:
+\begin{itemize}
+    \item For each j, $j =\frac{n}{m}$:
+    $$\frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2} = \frac{n\sum_{j=1}^m f_j^3}{(\sum_{j=1}^m f_j^2)^2} = \frac{n(\frac{n}{m})^3m}{((\frac{n}{m})^2 m)^2} = 1$$
+    This is good, since the bound of the number of samples is $\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}} $.
+    
+    \item $f_1=n$ and for all j$\in$\{2, ..., m\}, $f_j=0$:
+    $$\frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2} = \frac{n\sum_{j=1}^m f_j^3}{(\sum_{j=1}^m f_j^2)^2} = \frac{n(n)^3}{((n)^2)^2} = 1$$
+    This is good as well.
+    
+    \item $f_1=\frac{n}{2}$, for all j$\in$\{2, ..., n/2\}, $f_j=1$ and for others $f_j=0$:
+    $$\frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2} = \frac{n\sum_{j=1}^m f_j^3}{(\sum_{j=1}^m f_j^2)^2} = \frac{\frac{n^4}{8}+\frac{n^2}{2}}{(\frac{n^2}{4}+\frac{n}{2})^2} \approx constant$$
+    This is good as well.
+    
+    \item $f_1=\sqrt{n}$, for other j, some $f_j=1$ and some $f_j=0$ s.t. $\sum_{j=1}^m f_j = n$:
+    $$\frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2} = \frac{n\sum_{j=1}^m f_j^3}{(\sum_{j=1}^m f_j^2)^2} \approx \frac{n^{\frac{5}{2}}}{n^2} \approx \sqrt{n}$$
+    This is not that good, but it's good enough, since the bound of number of samples is approximately $\sqrt{n}\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}} $.
+\end{itemize}
+Try 2 is an acceptable good approach, but the problem is that we don't know $\frac{f_j}{n}$. So Try 3 will propose an approach that give us $\sqrt{n}$ bounds without the knowledge of $\frac{f_j}{n}$.
+
+\subsection{Algorithm 1 -- Try 3}
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\underline{\sc Try 3}
+	\begin{itemize}
+		\item Sample a coordinate r$\in$ A[1...n] u.a.r
+		\item j = A[r]
+		\item $n_j \equiv$ \# of occurrence of j in A[r...n]
+		\item return $Z=(2n_j - 1)n$
+	\end{itemize}
+\end{mdframed}
+\textbf{Analysis:}\\
+Calculate $\mathbb{E}(n_j|j)$:\\
+Given that we sampled j, we are equally likely to sample any of the $f_j$ occuerence. 
+$$\mathbb{E}(n_j|j) = \frac{f_j+(f_j-1)+(f_j-2)+...+1}{f_j}$$
+$$=\frac{f_j(f_j+1)}{2f_j}$$
+$$=\frac{f_j+1}{2}$$
+Calculate $\mathbb{E}(Z|j)$:\\
+$$\mathbb{E}(Z|j) = (2\mathbb{E}(n_j|j)-1)n$$
+$$=n f_j$$
+Calculate $\mathbb{E}(Z)$:\\
+$$\mathbb{E}(Z) = \sum_{j=1}^m \Pr[sample\ j]\cdot\mathbb{E}(Z|j)$$
+$$=\sum_{j=1}^m \frac{f_j}{n}\cdot nf_j$$
+$$=\sum_{j=1}^m f_j^2$$
+Calculate $\mathbb{E}(Z^2)$:\\
+Given that we sampled j, $Z\leq 2nf_j$.
+$$\mathbb{E}(Z^2) = \sum_{j=1}^m \Pr[sample\ j]\cdot\mathbb{E}(Z^2|j)$$
+$$\leq \sum_{j=1}^m \frac{f_j}{n}\cdot (2nf_j)^2$$
+$$= 4n\sum_{j=1}^m f_j^3$$
+$$\leq 4\sqrt{n}(\sum_{j=1}^m f_j^2)^2$$
+$$= 4\sqrt{n}\mathbb{E}(Z)^2$$
+So $\frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2} \leq 4\sqrt{n}$, this is good, it give us the bound of the number of samples to be $4\sqrt{n}\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}}$ 
+
+\subsection{Algorithm 2}
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\underline{\sc Algorithm 2}
+	\begin{itemize}
+		\item C = 0
+		\item Sample a g:\ \ [m]$\longrightarrow$ \{1, -1\} from a 4-wise independent hash family. 
+		\item When element a arrives:\\ 
+		      \centerline{C = C + g(a)}
+		\item return $Z=C^2$
+	\end{itemize}
+\end{mdframed}
+\textbf{Analysis:}\\
+From the algorithm, we know that $$C = \sum_{a} f_a\cdot g(a)$$
+Calculate $\mathbb{E}(Z)$:\\
+$$\mathbb{E}(Z) = \mathbb{E}(C^2)$$
+$$= \mathbb{E}[\sum_{a=1}^m f_a\cdot g(a))^2]$$
+$$= \mathbb{E}[\sum_{a=1}^m f_a^2 + (\sum_{a\neq b}f_af_bg(a)g(b)]$$
+$$=F_2 + \sum_{a\neq b}f_af_b \mathbb{E}[g(a)g(b)]$$
+Since g is from 4-wise independent hash family, the second term is 0.
+$$=F_2$$
+Calculate $\mathbb{E}(Z^2)$:\\
+$$\mathbb{E}(Z^2) = \mathbb{E}(C^4)$$
+$$= \mathbb{E}[\sum_{a=1}^m (f_a\cdot g(a))^4]$$
+$$= \mathbb{E}[\sum_{a=1}^m f_a^4 + \sum_{a\neq b}f_a^2f_b^2 + \sum_{a,b,c,d}f_af_bf_cf_dg(a)g(b)g(c)g(d)]$$
+$$= \sum_{a=1}^m f_a^4 + \sum_{a\neq b}f_a^2f_b^2 + \sum_{a,b,c,d}f_af_bf_cf_d\mathbb{E}[g(a)g(b)g(c)g(d)]$$
+Since g is from 4-wise independent hash family, the third term is 0.
+$$=\sum_{a=1}^m f_a^4 + \sum_{a\neq b}f_a^2f_b^2$$
+$$=(\sum_{a=1}^m f_j^2)^2$$
+$$=F_2^2$$
+So $\frac{\mathbb{E}(Z^2)}{\mathbb{E}(Z)^2} = 1$, this is good, since it give us the bound of the number of samples to be $\frac{1}{\epsilon^2}\ln{\frac{1}{\delta}} $
+
+\todo{
+Can algorithm 2 be modified to estimate $F_3$?
+}
+
+\end{document}
+

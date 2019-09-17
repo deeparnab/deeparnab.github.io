@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="test-course.css" id="styleId" text-decoration="none"/>
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
+<title>CS 31: Algorithms, Spring 2018</title> </head>
+
+<body>
+<h2>
+<font color="black">
+CS 31: Algorithms, Spring 2018</font> <br>
+</h2>
+<br>
+<hr>
+<table style="width:100%" font="small">
+  <tr>
+    <th><a href = "#schedule"> Schedule </a> </th> 
+ 	<th> <a href = "#policies"> Policies </a> </th>
+  </tr>
+</table>
+<hr>
+<br> 
+<b> Course Description and Goals: </b> <br>
+Algorithms are step-by-step instructions for a computation problem. 
+Although this sounds like a cooking recipe, good algorithms is what makes the modern world run.<br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  In this course, we will study algorithms rigorously. At the end of the course, the student should be able to 
+<u>design</u> algorithms for problems, <u>reason</u> about these algorithms, and <u>communicate</u> the algorithm and its analysis.
+
+
+<p><b> Background Assumed: </b><br>
+Students should have basic knowledge about programming <i> and </i> should be able to read and write mathematical proofs.  
+If you have taken CS 1, CS 10, CS 30 or equivalents, you should be fine. In case you haven't, then see 
+<a href="./ps/ps0.pdf"> this </a>.<hr> 
+<br>
+<b> Class Times:</b> 10A (TR: 10:10am - 12noon), X-hours (W: 3:30pm - 4:20pm) <br> 
+<b> Venue: </b> Filene, Moore <br> 
+<b> Discussions: </b> <a href="https://piazza.com/configure-classes/spring2018/cosc31"> Piazza </a><br>
+<b> Problem Sets: </b> Canvas <br>
+
+<b> Personnel and Office Hours:</b> 
+<ul>
+<li> <a style="color:inherit" href="./../../index.htm"> Deeparnab Chakrabarty</a> (Instructor), <br>
+	Wed (12:15pm - 1:15pm) @Sudi216, Thurs (1pm - 2pm) @Sudi213, Fri (1pm - 2pm) @Sudi212 </li>
+<li> Maryam Negahbani (Head TA) Fridays (3pm - 4pm) @Sudi213 </li> 
+<li> Prantar Ghosh (TA) Thursdays (6pm - 7pm) @Sudi213 </li>
+<li> Yining Chen (TA) Fridays (4:30pm - 5:30pm)  @Sudi213 </li>
+<li> Christina Long (TA)  Sundays (1:30pm - 2:30pm) @Sudi115, Mondays (4:15pm - 5:15pm) @Sudi115 </li>
+<li> Paul DeSupinski (TA) Mondays (3:15pm - 4:15pm) @Sudi115 </li>
+<li> Larissa Chen (TA) Mondays (11:30am - 12:30pm) @Sudi115 </li> 
+</ul>
+
+<p>
+<b> Text Books: </b> <br>
+I will not follow one single textbook but most material will come from the following two. 
+<ul>
+<li> (DPV) <i> Algorithms </i> by Dasgupta, Papadimitriou, Vazirani </li>
+<li> (CLRS) <i> Introduction to Algorithms </i> by Cormen, Leiserson, Rivest, Stein </li>
+</li>
+</ul>
+<p><b> Evaluation </b> <br>
+<ul>
+<li> Drill Exercises: 10% </li>
+<li> Problem Sets : 35% </li>
+<li> Midterm : 20% </li>
+<li> Endterm : 35% </li>
+</ul>
+After <b> every </b> class there will be a drill exercise of 1 or 2 problems with a 36 hour deadline.
+There will be weekly problem sets. There is one Midterm and Endterm Examination which are in-class and closed-book.
+<hr>
+<hr>  
+
+
+
+<!--
+<p> <b> Tentative Topics Covered: </b> Big Oh Notation, Divide and Conquer Algorithms, Randomized Algorithms, Dynamic Programming, Greedy Algorithms, Graph Algorithms, 
+Graph Traversal, Shortest Path, Maximum Flow Problems, Matching. <br>
+ Detailed schedule will be available when the class starts. -->
+<a name="schedule"></a>
+<h2> Tentative Weekly Schedule </h2> 
+
+<font face="inherit" size="1" color="lightgrey">
+<table style="width:100%" font="small">
+  <tr style="color:black">
+    <th>Date</th>
+    <th>Topics</th> 
+    <th>Further Reading</th>
+	<th>Announcements</th>
+  </tr>
+  
+  <tr style="color:black">
+    <td> 27 Mar (Tue):</td>
+    <td> Introduction + Logistics. Algorithms for numbers. </td> 
+    <td> [DPV 1.1] </td>
+	<td>  </td>
+  </tr>
+  <tr style="color:black">
+    <td> 29 Mar (Thu): </td>
+    <td> Big-Oh Notation, Time complexity of Algorithms </td> 
+    <td> [DPV 0.3, CLRS 3.1] </td>
+	<td> </td>
+  </tr>
+
+<tr style="color:black" >
+    <td> 3 Apr (Tue): </td>
+    <td> Divide and Conquer 1 : Merge Sort, Recurrences, Counting Inversions</td> 
+    <td> [DPV 2.2, 2.3; CLRS 2.3.1] </td>
+	<td> There will be X-hours tomorrow (4/4) </td>
+ </tr>
+
+  
+  <tr style="color:black">
+    <td> 5 Apr (Thu) </td>
+    <td> Divide and Conquer 2 : Maximum Range/Sum Subarray, Karatsuba Magic  </td> 
+    <td> [CLRS 4.1, DPV 2.1]</td>
+	<td> CLRS4.1 has a weaker result than what we did in class; DPV attributes Karatsuba to Gauss.
+		 DPV also has the Fast Fourier Transform in case I never get to it. </td>
+  </tr>
+
+
+  
+  <tr style="color:black">
+    <td> 10 Apr (Tue)  </td>
+    <td> Divide and Conquer 3 : Closest Pair of Points; Recursion with Memory </td> 
+    <td> [CLRS 33.4] </td>
+	<td> There will be X-hours tomorrow </td>
+  </tr>
+
+  <tr style="color:black">
+    <td> 12 Apr (Thu)  </td>
+    <td> Dynamic Programming 1 : Subset Sum and the Knapsack Problem </td> 
+    <td> [DPV 6.4] </td>
+	<td> </td>
+  </tr>
+  
+<tr style="color:black">
+    <td> 17 Apr (Tue) </td>
+    <td> Dynamic Programming 2 : Longest Common Subsequence, Longest Increasing Subsequence</td> 
+    <td> [CLRS 15.4, DPV 6.3] </td>
+	<td> </td>
+</tr>
+  
+<tr style="color:black">
+    <td> 19 Apr (Thu)  </td>
+    <td> Dynamic Programming 3: Weighted Interval Packing, Weighted Independent Set on Trees </td> 
+    <td> [DPV 6.7] </td>
+	<td> </td>
+  </tr>
+  
+  
+<tr style="color:black">
+    <td> 24 Apr (Tue) </td>
+    <td> Randomized Algorithms 1: Checking Matrix Multiplication </td> 
+    <td> </td>
+	<td> </td>
+  </tr>
+ 
+ <tr>
+    <td><b> <font color="red"> 25 April (X) </font> </b> </td>
+    <td>   </td> 
+    <td>  </td>
+	<td> <font color="red"><b> Midterm [3:30p to 5:30pm, Filene] </b> </font></td>
+  </tr>
+  
+ <tr style="color:black">
+    <td> 26 Apr (Thu) </td>
+    <td> Randomized Algorithms 2: QuickSort, Hashing, Fingerprinting </td> 
+    <td> </td>
+	<td> </td>
+  </tr>
+
+<tr style="color:black">
+    <td> 1 May (Tue) </td>
+    <td> Graph Algorithms: Depth First Search  </td> 
+    <td> </td>
+	<td> There will be X-hour tomorrow. </td>
+  </tr>
+
+<tr >
+    <td> 3 May (Thu)  </td>
+    <td> Graph Algorithms: Depth First Search </td> 
+    <td> </td>
+	<td> </td>
+  </tr>
+<tr>
+
+<tr >
+    <td> 8 May (Tue)  </td>
+    <td> Graph Algorithms: BFS, Shortest Paths  </td> 
+    <td>  </td>
+	<td>  </td>
+  </tr>
+  
+<tr >
+    <td> 10 May (Thu) </td>
+    <td> Graph Algorithms: Shortest Paths </td> 
+    <td> </td>
+	<td> </td>
+  </tr>
+
+ <tr >
+    <td> 15 May (Tue) </td>
+    <td> Graph Algorithms: Flows and Cuts </td> 
+    <td> </td>
+	<td> </td>
+  </tr>
+<tr>
+<tr >
+    <td> 17 May (Thu)  </td>
+    <td> Graph Algorithms: Flows and Cuts </td> 
+    <td> </td>
+	<td> </td>
+  </tr>
+<tr>
+<tr >
+    <td> 22 May (Tue) </td>
+    <td> TBA </td> 
+    <td>  </td>
+	<td>  </td>
+  </tr>
+
+<tr >
+    <td> 24 May (Thu) </td>
+    <td> TBA </td> 
+    <td> </td>
+	<td> <font color="red"><b> No Class: Instructor Out-of-Town </b> </font> </td>
+  </tr>
+<tr>
+
+<tr >
+    <td> 29 May (Tue)  </td>
+    <td> TBA  </td> 
+    <td>  </td>
+	<td>  </td>
+</tr>
+
+<tr >
+    <td> 30 May (X-hour)  </td>
+    <td> TBA  </td> 
+    <td>  </td>
+	<td>  </td>
+</tr>
+
+</table>
+</font>
+
+<hr><hr>
+
+
+<a name="policies"></a>
+<h2> Policies  </h2>
+
+<p>
+<b> Lectures, X-hours, Attendence Policy</b><br>
+Attend <b> all </b> classes. Posted slides are for review not first-view,
+and I don't make any guarantee that they contain everything I say in class.
+I will be using many of the X-hours and it is <u> extremely critical </u> you keep yourself free for these hours. 
+
+
+
+
+
+<p>
+<b> Regrading Policy</b><br>
+If there is a totalling error, please see any of the TAs and they will fix it rightaway. <br>
+On the other hand, if you feel that the grader has not graded accurately then you should clearly write down which problem <u> and </u> your reason why you think the grading is 
+incorrect, staple it with your answer-sheet and hand it to the Head TA during his or her office hour <br>
+If even after this you feel unsatisfied, then you can email the instructor for a <u> full regrade </u>.
+I will look at the entire problem set and re-grade it completely.
+
+
+
+<p>
+<b> Late Exercises and Problem Sets</b><br>
+Problem Sets are submitted via Canvas. Each student has a <u> total of two late days </u> available. 
+Note that even a minute late in canvas is a day late. 
+I will be <b> extremely strict </b> on this: any late submissions after the two late days will be straight given a zero.
+No excuses shall be entertained. <b> Drill Problem Sets</b> have no late days available.
+
+
+<p>
+<b> Laptops and Phone Policy </b><br>
+We encourage students not to use devices in class. If they have to, then they need to seat themselves on the fringes of the classroom 
+so as to not distract other students. <br>
+During office hours, there are <b>no devices and no notes allowed</b>. Period. If you need to discuss a problem set, then please have it printed out.
+Please don't make me repeat these policies aloud in class and office hours.
+
+
+
+<p>
+<b> Academic Integrity / Honor Code </b><br>
+<u> All work submitted for credit must be your own.</u> 
+This means what you put down on paper for submission cannot be in any way copied from a black/white board, a computer screen, or even your notes from class.
+<br>
+
+You <b> cannot </b> discuss the drill problem sets with anyone. 
+You may discuss the problem sets with your classmates (taking the course with you), the TAs, and the instructor. No one else. 
+You are also not allowed to give away solutions to your classmates.
+Clarification questions about problems should be asked on Piazza. <br>
+&nbsp &nbsp &nbsp &nbsp 
+At the beginning of each problem you must write who you discussed with, and what way did the person help you or you help them. This is important.
+If you did not talk with anyone about any of the problems, mention this at the beginning of the homework.
+Any written sources used (apart from the text, your lecture notes and any homework solutions that I distribute) must also be acknowledged; 
+however, you may not consult any solutions on the Internet or from previous years' assignments, whether they are student- or faculty-generated. <br>
+&nbsp &nbsp &nbsp &nbsp 
+Dartmouth's Academic Honor Principle applies to this course. Please be sure to read the principle, which you can find <a href="http://www.dartmouth.edu/judicialaffairs/honor/"> here </a>.
+Please ask me if you have any questions about the honor code as it applies to CS 31. Better safe than sorry!
+<hr>
+</div>
+
+
+<hr>
+
+

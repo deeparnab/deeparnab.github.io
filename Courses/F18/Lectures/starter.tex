@@ -1,0 +1,116 @@
+\usepackage{ifthen}
+\usepackage{soul}
+\usepackage{fullpage, prettyref}
+\usepackage{fancyhdr}
+\usepackage{palatino}
+\usepackage{graphicx}
+\usepackage{marvosym}
+\usepackage{ifthen}
+\usepackage{algorithm}
+
+\usepackage[noend]{algpseudocode}
+\algrenewcomment[1]{\(\triangleright\) {\small{\color{blue} #1}}}
+\algnewcommand{\LineComment}[1]{\State \(\triangleright\) \emph{\color{blue} #1}}
+\newcommand{\Lim}{\lim}
+
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{url}
+\usepackage{pstricks,pst-node,pst-text}
+\usepackage{boxedminipage}
+%\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\usepackage{color,xcolor}
+\usepackage{transparent}
+
+\usepackage{varwidth}
+
+\usepackage{a4,geometry}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{paralist}
+\usepackage{bm}
+\usepackage{xspace}
+\usepackage{url}
+%\usepackage{fullpage, prettyref}
+\usepackage{boxedminipage}
+\usepackage{wrapfig}
+\usepackage{ifthen}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{framed}
+\usepackage{mdframed}
+\usepackage[pagebackref,colorlinks=true,pdfpagemode=none,urlcolor=blue,linkcolor=blue,citecolor=violet,pdfstartview=FitH]{hyperref}
+\usepackage{fullpage}
+\usepackage{enumitem}
+
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{fact}{Fact}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{example}{Example}
+\newtheorem{question}{Question}
+\newtheorem{exercise}{Problem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{observation}{Observation}
+
+\newcommand{\comment}[1]{\textsl{\small[#1]}\marginpar{\tiny\textsc{To Do!}}}
+\newcommand{\ignore}[1]{}
+
+\def\eps{\varepsilon}
+\def\bar{\overline}
+\def\floor#1{\lfloor {#1} \rfloor}
+\def\ceil#1{\lceil {#1} \rceil}
+\def\script#1{\mathcal{#1}}
+
+\def\plus{{\tt (+)}}
+\def\2plus{{\tt (++)}}
+\def\3plus{{\tt (+++)}}
+\def\4plus{{\tt (++++)}}
+\def\5plus{{\tt (+++++)}}
+
+\def\opt{{\tt opt}}
+\def\alg{{\tt alg}}
+
+\def\bv{\mathbf{v}}
+
+\newenvironment{proofof}[1]{\smallskip\noindent{\bf Proof of #1:}}%
+{\hspace*{\fill}$\Box$\par}
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\newlength{\algobox}
+\setlength{\algobox}{6.5in}
+
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cA}{\mathcal{A}}
+
+\newcommand{\Exp}{\mathbf{Exp}}
+\renewcommand{\Pr}{\mathbf{Pr}}
+
+\colorlet{shadecolor}{blue!10}
+\newcommand{\remark}[1]{\begin{mdframed}[backgroundcolor=yellow!10,topline=false,bottomline=false,leftline=false,rightline=false] 
+		{\bf Remark: }{\em #1} 
+\end{mdframed}}
+
+\newcommand{\todo}[1]{\marginpar{\Large \WritingHand} \begin{mdframed}[backgroundcolor=teal!10,topline=false,bottomline=false,leftline=false,rightline=false] 
+		{\bf Question:}{\em #1}
+\end{mdframed}}
+
+\newcommand{\problem}[2]{\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+		{\underline{{\sc #1}}} \\
+		#2 
+\end{mdframed}}
+
+\newcommand{\thingstoadd}[1]{\begin{mdframed}[backgroundcolor=red!10,topline=false,bottomline=false,leftline=false,rightline=false] 
+		{\bf Things to add: }{\em #1} 
+\end{mdframed}}

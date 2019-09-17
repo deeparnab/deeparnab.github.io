@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+\input{starter}
+
+%make one of the 1's into 0 to hide solutions
+
+\begin{document}
+	\begin{center}
+		{\bf \Large CS 49/149: 21st Century Algorithms (Fall 2018): Lecture 5}\\ 
+		Date: 13th September, 2018 \\
+		Topic: Gradient Descent, Online Convex Optimization, Perceptron.
+		\\
+		Scribe: Chongyang Bai \\
+		{\em Disclaimer: These notes have not gone through scrutiny and in all probability contain errors. Please email errors to cy@cs.dartmouth.edu.}
+	\end{center}
+\hrule height 2pt
+\vspace{3ex}
+\def\loss{\mathsf{loss}}
+\newcommand{\norm}[1]{||#1||}
+\section{Gradient Descent in Convex Optimization}
+Convex Optimization can be described as follows:
+\begin{equation}
+\begin{aligned}
+& \min & & f(x) \\
+& \text{s.t.} & & x \in S \\
+& \text{where} & & f(x) \text{ is a convex function, } S \text{ is a convex set.} \\
+\end{aligned}
+\label{equ:cvx_opt}
+\end{equation}
+Let $x_*$ be the optimal solution of Problem~\ref{equ:cvx_opt}, then our goal is to get $\hat{x}$ and a small $\epsilon$, s.t. 
+\begin{equation} 
+f(\hat{x}) \leq f(x_*)+\epsilon
+\end{equation}
+\paragraph{Unconstrained Convex Optimization.}
+When $S = \mathbb{R}^n$, Problem \ref{equ:cvx_opt} becomes unconstrained convex optimization (UCO), the whole gradient descent algorithm is simply as follows.
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\underline{\sc UCO Gradient Descent}
+	\begin{itemize}
+		\item $x_1 = $ "an arbitrary point" .
+		\item $x_{t+1} = x_t - \eta_{t}\nabla f(x_t)$
+	\end{itemize}
+\end{mdframed}
+\remark{$\eta_{t}$ is the "step size" that can change according to time $t$. If $f$ is not differentiable, $\nabla f$ can be replaced by a subgradient of $f$ at $x$.}
+\paragraph{Projected Gradient Descent}
+When $S \neq \mathbb{R}^n$，we need to "project" the updated $x$ to $S$ if $x \not\in S$. 
+Let the updated point be $z$, we replace $z$ by the nearest point in $S$ to $z$. The algorithm is as follows.
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\underline{\sc Projected Gradient Descent}
+	\begin{itemize}
+		\item $x_1 = $ "an arbitrary point" 
+		\item $z_{t+1} = x_t - \eta_{t}\nabla f(x_t)$
+		\item $x_{t+1} = \pi_{s}(z_{t+1}) := \arg \min_{p\in S} \norm{z_{t+1}-p}_2  $
+	\end{itemize}
+\end{mdframed}
+Let's look at some examples of projections.
+
+\begin{enumerate}
+    \item $S \equiv \text{unit ball} \equiv \{v: \sum_j v_j^2 \leq 1\}, \pi_S(x) = \frac{x}{\norm{x}^2}$
+    \item $S = [-1,1]^n, \text{for example: } n=3, x= (\frac{1}{2}, 3, -1) \Rightarrow \pi_S(x) = (\frac{1}{2}, 1, -1)$. Basically, $\forall x_i, x_i \notin [-1,1]$, $\pi_S(x)_i = \underset{u \in [-1,1]}{\text{argmin}} |x_i - u|$.
+    \item $S = \{\Vec{p}: p_i \geq 0 \text{ for } \forall i \text{, and } \sum_i p_{i}=1 \}, \pi(x) = \frac{x}{\sum_i x} $ is not true in Euclidean distance, but is easy to compute.
+\end{enumerate}
+\comment{Comments}{
+\begin{enumerate}
+    \item Why choosing the closest point $\pi(x)$? We will show 2 good properties it holds and use them to do error analysis of gradient descent.
+    \item Projection may not be easy to compute.
+\end{enumerate}
+}
+
+\fact{ $\forall v \not\in S, u \in S, \norm{v-\pi_S(v)}_2 \leq \norm{v-u}_2 $ (by definition of projection)}
+\fact{ $\forall u \in S, (v - \pi_S(v))^T(u-\pi_S(v)) \leq 0 $}
+\\
+\proofof{Fact 2} Denote $p = \pi_S(v)$, if Fact 2 is not correct, i.e., $\exists u \in S, (v-p)^T(u-p) > 0$, and let $q = p + \epsilon(u-p)$, we have \\
+\begin{alignat}{2}
+\norm{q-v}_2^2 \qquad && = &~ \norm{(p-v) + \epsilon(u-p)}_2^2 \notag \\
+               && = &~ \norm{p-v}_2^2 + \epsilon^2\norm{u-p}_2^2 - 2\epsilon(v-p)^T(u-p) \notag 
+\end{alignat}
+when $\epsilon < \frac{2(v-p)^T(u-p)}{\norm{u-p}_2^2}$, we get
+\begin{equation}
+    \epsilon^2\norm{u-p}_2^2 - 2\epsilon(v-p)^T(u-p)  < 0
+\end{equation}
+so $\norm{q-v}_2^2 < \norm{p-v}_2^2$, but when $\epsilon$ is very small, $q$ can be in $S$, this contradicts with Fact 1!
+
+\subsection{Error Analysis of Gradient Descent}
+If $f$ is convex, according to definition of subgradient, for any $y$, we get 
+\begin{equation}
+    f(y) \geq f(x) + (y-x)^T \nabla f(x)
+\end{equation}
+Let $y = x_*, x = x_t$, denote $err(t) := f(x_t) - f(x_*)$,we get
+\begin{alignat}{2}
+    f(y) && \geq &~ f(x) + (y-x)^T \nabla f(x) \notag \\
+    \Rightarrow (x_t-x_*)^T\nabla f(x_t) && \geq &~ f(x_t) - f(x_*) \geq 0 
+\label{equ:acute}
+\end{alignat}
+\remark{ Equation~\ref{equ:acute} indicates that the angle between gradient direction $\nabla f(x_t)$ and optimal moving direction $x_* - x_t$ is acute.}
+Denote $D_t := \norm{x_t - x_*}_2^2$ to be the square of distance between point at time t and the optimal point. We put two useful equations here (cosine rules) for later use.
+
+\begin{equation}
+    \norm{u-v}_2^2 = \norm{u}_2^2 + \norm{v}_2^2 - 2u^t v
+\label{equ:square_diff}
+\end{equation}
+\begin{equation}
+    \norm{u+v}_2^2 = \norm{u}_2^2 + \norm{v}_2^2 + 2u^t v
+\label{equ:square_sum}
+\end{equation}
+Besides, we give two reasonable assumptions.
+\assumption{$\norm{x_1 - x_*}_2 \leq D$}
+\assumption{$\norm{\nabla f(x)}_2 \leq \rho$}\\
+Now let's jump into the case of unconstrained gradient descent
+\paragraph{Unconstrained Gradient Descent}
+
+\begin{alignat}{4}
+err(t) && \leq &~(x_t-x_*)^T\nabla f(x_t) \notag\\
+       && = &~\frac{1}{\eta_t}(x_t-x_*)^T(x_t-x_{t+1}) \notag \\
+       && = &~\frac{1}{2\eta_t}(\norm{x_t - x_*}_2^2 + \norm{x_t - x_{t+1}}_2^2 - \norm{x_{t+1}-x_*}_2^2) \label{equ:inner}\\
+       && = &~\frac{1}{2\eta_t}(D_t^2 - D_{t+1}^2) + \frac{\eta_t}{2}\norm{\nabla f(x_t)}_2^2 \label{equ:cvx_grad_uc}\\
+       && \leq &~ \frac{1}{2\eta_t}(D_t^2 - D_{t+1}^2) + \frac{\eta_t}{2}\rho^2
+\end{alignat}
+
+where the first line is by Equation~\ref{equ:acute}, the second line is by replacing $\nabla f(x_t)$ according to the gradient descent update rule, Equation~\ref{equ:inner} is by applying $x_t - x_*$ to $u$ and $x_t - x_{t+1}$ to $v$ in Equation ~\ref{equ:square_diff}, the last equality is by replacing $x_t - x_{t+1}$ according to gradient update rule, and the last line is by assumption 2.\\
+
+Sum over $t$ from 1 to $T$, we get \\
+
+
+\begin{alignat}{2}
+\sum_{t=1}^T err(t) && \leq &~  \frac{1}{2\eta_t}
+(D_1^2 - D_{T+1}^2) + \frac{\eta_t}{2}\rho^2 T \notag \\
+                     && \leq &~ \frac{1}{2\eta_t}D^2 + \frac{\eta_t}{2}\rho^2 T \notag \\
+\text{divided by } T \Rightarrow \frac{1}{T}\sum_{t=1}^T err(t) && \leq &~ \frac{1}{2\eta_t T}D^2 + \frac{\eta_t}{2}\rho^2 \label{equ:uco_last}
+\end{alignat}
+Set $\eta_t = \eta = \frac{D}{\rho}\frac{1}{\sqrt{T}}$, RHS of Equation~\ref{equ:uco_last} reaches the min value of $\frac{D\rho}{\sqrt{T}}$. Since we want $\frac{D\rho}{\sqrt{T}} \leq \epsilon $, when $T=\frac{D^2\rho^2}{\epsilon^2}$,$\eta = \frac{D}{\rho}\frac{1}{\sqrt{T}} = \frac{\epsilon}{\rho^2}$, we finally get 
+\begin{equation}
+    \frac{1}{T}\sum_{t=1}^T f(x_t) \leq f(x_*) +\epsilon
+\label{equ:err_final}
+\end{equation}
+Finally, the algorithm can return 
+\begin{itemize}
+    \item $\hat{x} = \underset{t}{\text{argmin}}f(x_t)$
+    \item $\hat{x} = \frac{1}{T}\sum_{t=1}^T x_t$
+\end{itemize}
+In both cases, we have $f(\hat{x}) \leq  \frac{1}{T}\sum_{t=1}^T f(x_t) \leq f(x_*) +\epsilon$ \\
+
+\paragraph{Projected Gradient Descent}
+We'll show how to get to Equation~\ref{equ:cvx_grad_uc}, and the rest analysis are eactly the same as Unconstrained case.
+\begin{alignat}{3}
+err(t) && \leq &~(x_t-x_*)^T\nabla f(x_t) \notag\\
+       && = &~\frac{1}{\eta_t}(x_t-x_*)^T(x_t-z_{t+1}) \notag \\
+       && = &~\frac{1}{2\eta_t}(\norm{x_t - x_*}_2^2 + \norm{x_t - z_{t+1}}_2^2 - \norm{z_{t+1}-x_*}_2^2) \label{equ:pgd_inner}
+    %   && = &~\frac{1}{2\eta_t}(D_t^2 - D_{t+1}^2) + \frac{\eta_t}{2}\norm{\nabla f(x_t)}_2^2 \label{equ:cvx_grad_pgd}\\
+    %   && \leq &~ \frac{1}{2\eta_t}(D_t^2 - D_{t+1}^2) + \frac{\eta_t}{2}\rho^2 \notag
+\end{alignat}
+The reasons for the first two lines are the same as Unconstrained Gradient Descent. 
+According to the algorithm, $x_t - z_{t+1} = \eta \nabla f(x_t)$.
+Since $x_{t+1}$ is the projection of $z_{t+1}$, $\norm{z_{t+1} - x_*} \geq \norm{x_{t+1}-x_*} = D_{t+1}$, so Equation~\ref{equ:pgd_inner} $\leq$ Equation~\ref{equ:cvx_grad_uc}. 
+
+\todo{ How to prove $\norm{z_{t+1} - x_*}_2 \geq \norm{x_{t+1}-x_*}_2$ ?}
+\paragraph{proof:}
+\begin{alignat}{3}
+ \norm{z_{t+1} - x_*}_2^2 && = &~ \norm{(z_{t+1}-x_{t+1})-(x_* - x_{t+1})}_2^2 \notag \\
+                        && = &~ \norm{z_{t+1}-x_{t+1}}_2^2 + \norm{x_*-x_{t+1}}_2^2 - 2(x_*-x_{t+1})^T(z_{t+1}-x_{t+1}) \notag \\
+                        && \geq &~ \norm{x_{t+1}-x_*}_2^2 \notag
+\end{alignat}
+Due to Fact 2, $(x_*-x_{t+1})^T(z_{t+1}-x_{t+1}) \leq 0$, so the last inequality holds.
+\\
+
+\subsection{Online Convex Optimization (OCO)}
+The setting is as follows.
+\begin{itemize}
+    \item Space: Convex set $S$
+    \item At every time $t$, you play $x_t \in S$
+    \item A convex loss function $f_t: \mathbb{R}^n \mapsto \mathbb{R}$ is fed, so your loss when playing at time $t$ is $f_t(x_t)$
+    \item $\norm{\nabla f_t(z)} \leq \rho, \forall z \in S, \forall t = 1,...,T $
+\end{itemize}
+Since $\alg = \sum_{t=1}^T f_t(x_t)$, $\opt = \underset{S}{\text{min}} \sum_{t=1}^T f_t(x)$. Denote $x_* = \underset{x \in S}{\text{argmin}}\sum_{t=1}^T f_t(x)$. In the error analysis of gradient descent, replace $f(x)$ by $f_t(x)$, everything still holds. Particularly, if $T=\frac{D^2\rho^2}{\epsilon^2}$ and $\eta=\frac{\epsilon}{\rho^2}$,
+\begin{equation}
+    \text{REGRET} = \frac{1}{T}\sum_{t=1}^T(f_t(x_t)-f_t(x_*)) \leq \epsilon
+    \label{equ:oco_err}
+\end{equation}
+\paragraph{Application: Linear Classification}
+Suppose we have data $\{(a_1, b_1), (a_2,b_T),...,(a_t,b_T)\}$, where $a_t \in \mathbb{R}^n, b_t \in \{-1,1\}$. We promise that $\exists  x_* \in \mathbb{R}^n$, $\norm{x_*}_2=1$, s.t. $\forall t$, $\frac{b_t(x_*^Ta_t)}{\norm{a_t}_2} \geq \gamma$. That is, the dataset is linear separable.
+At everytime t, we 'play' a hyperplane $x_t \ \text{in} \mathbb{R}^n$. we make a mistake $\iff \exists (a_t,b_t) \in$ data, s.t. $\frac{b_t(x_t^Ta_t)}{\norm{a_t}} \leq 0$. 
+We want to update $x_t$ to $x_{t+1}$.
+
+Define $f_t(z) = - \frac{b_t(z_t^T a_t)}{\norm{a_t}_2}$, then we have
+\begin{itemize}
+    \item $f_t(x_t) \geq 0$
+    \item $f_t(x_*) \leq -\gamma$
+\end{itemize}
+We update $x_t$ by projected gradient descent,
+\begin{equation}
+    x_{t+1} = \pi_S(x_t - \eta \nabla f_t(x_t)) \notag
+\end{equation}
+where $S \equiv \{v: \sum_j v_j^2 \leq 1\}$ is the unit ball. Since $\norm{x_1 - x_*}_2^2 \leq \norm{x_1}_2^2 + \norm{x_*}_2^2 = 2$ and $\norm{\nabla f_t(z)} = \norm{\nabla(-\frac{b_t(z^T a_t)}{\norm{ a_t}_2})}_2 = \norm{-\frac{b_t a_t}{\norm{a_t}_2}}_2 = 1$, we have $\rho = 1$ and $D=2$. According to projected gradient descent's error analysis, when $T=\frac{4}{\epsilon^2}$, $\eta=\epsilon$, we get Equation~\ref{equ:oco_err}.
+
+Since $f_t(x_t) \geq 0$ and $-f_t(x_*) \geq \gamma$, from Equation~\ref{equ:oco_err}, we have $\gamma \leq$ REGRET  $\leq \epsilon$ after making $T=\frac{4}{\epsilon^2}$ classification mistakes. $\gamma \leq \epsilon \Rightarrow T \leq \frac{4}{\gamma^2}$, we get
+\begin{theorem}
+    The algorithm above cannot bake more than $\frac{4}{\gamma^2}$ mistakes. (PERCEPTRON)
+\end{theorem}
+We showed that PERCEPTRON algorithm is an instantiate of online gradient descent.
+\\
+\end{document}

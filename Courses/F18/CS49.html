@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="test-course.css" id="styleId" text-decoration="none"/>
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
+<title>CS 49/149: 21st Century Algorithms, Fall 2018</title> </head>
+
+<body>
+<h2>
+<font color="black">
+CS 49/149: 21st Century Algorithms, Fall 2018</font> <br>
+</h2>
+<br>
+<hr>
+<table style="width:100%" font="small">
+  <tr>
+    <th><a href = "#schedule"> Schedule </a> </th> 
+ 	<th> <a href = "#policies"> Policies </a> </th>
+  </tr>
+</table>
+<hr>
+<br> 
+<b> Course Description and Goals: </b> <br>
+
+The goal of the course is to introduce students to algorithmic ideas relevant for modern day computation problems which are not covered in a typical undergraduate 
+algorithms course (like CS 31). These would include ideas from continuous optimization (like gradient descent), random sampling, sketching, etc. 
+The thrust of the course will be on <b> provable </b> algorithms, and as often happens, the analysis will go hand-in-hand with the design of the algorithms. 
+At the end of the course, the student should be able to read a present-day algorithms publication.
+
+
+
+
+<p><b> Background Assumed: </b><br>
+
+Students should have mathematical maturity -- they should be able to read and write proofs, should have a basic understanding of probability, and should be comfortable 
+doing a little analysis (calculus). Please try the problems <a href="./Problems/ps0.pdf"> here </a> to get an idea.
+It will also help to have taken an algorithms course before for context's sake. <br>
+<!--
+Students should have basic knowledge about programming <i> and </i> should be able to read and write mathematical proofs.  
+If you have taken CS 1, CS 10, CS 30 or equivalents, you should be fine. In case you haven't, then see 
+<a href="./ps/ps0.pdf"> this </a>.<hr> -->
+
+<br>
+<b> Class Times:</b> 10A (TR: 10:10am - 12noon), X-hours (W: 3:30pm - 4:20pm) <br> 
+<b> Venue: </b> Sudikoff 115 <br> 
+<b> Discussions: </b> <a href="https://piazza.com/class/jlxosxfdrlvnx"> Piazza </a> <br>
+<b> Office Hours:</b> Wednesdays, 12:30 - 1:30. Thursdays, 1pm - 2pm, or by email at Sudikoff 216.
+
+<p>
+<b> Text Books: </b> <br> There is no textbook, although I will often point out links to material.
+<br>
+For Lectures 1 to 7, most of the material is from (with slight modifications at times)
+<ul>
+	<li> <a href="https://www.satyenkale.com/papers/mw-survey.pdf"> The Multiplicative Weights Update Method:
+A Meta-Algorithm and Applications.</a> by Sanjeev Arora, Elad Hazan, and Satyen Kale. </li>
+	<li> <a href="https://arxiv.org/pdf/1405.4980.pdf"> Convex Optimization: Algorithms and
+Complexity. </a> by Sebastien Bubeck </li> 
+</ul>
+
+
+
+<p><b> Evaluation: </b> 
+<ul>
+	<li> Project (50%). See details <a href="./projects.html"> here </a> </li>
+	<li> Assignments (30%). See details <a href="./problem set.pdf"> here </a> </li>
+	<li> Scribing (10%). </li>
+	<li> Participation (10%) </li>
+</ul>
+<hr>
+<hr>  
+
+
+
+<!--
+<p> <b> Tentative Topics Covered: </b> Big Oh Notation, Divide and Conquer Algorithms, Randomized Algorithms, Dynamic Programming, Greedy Algorithms, Graph Algorithms, 
+Graph Traversal, Shortest Path, Maximum Flow Problems, Matching. <br>
+ Detailed schedule will be available when the class starts. -->
+
+<a name="schedule"></a>
+<h2> Tentative Weekly Schedule </h2> 
+
+The notes below are put on the webpage as is handed in by the scribe. They may contain errors; please let me or the scribe know of any errors.
+
+<ul>
+
+<li> <b> 13th September, 2018: </b> The Experts Problem and the Randomized Weighted Majority Algorithm. Scribe: Deeparnab
+<a href="./Lectures/lec1.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 18th September, 2018: </b> Multiplicative Weight Update algorithm; Application: Winnow. Scribe: Kevin.
+<a href="./Lectures/lec2.pdf"> Notes </a> <br>
+</li>
+
+
+<li> <b> 20th September, 2018: </b> Application: Solving Linear Programs Approximately. Scribe: Rui.
+<a href="./Lectures/lec3.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 25th September, 2018: </b> A quick introduction to convex sets and functions. Scribe: Devina.
+<a href="./Lectures/lec4.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 27th September, 2018: </b> Analysis of (Projected) Gradient Descent. Online Convex Optimization. Perceptron. Scribe: Chongyang.
+<a href="./Lectures/lec5.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 2nd October, 2018: </b>  Analysis of Gradient Descent for Smooth Convex Functions. Strongly Convex and Smooth Convex Functions. Scribe: Edward.
+<a href="./Lectures/lec6.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 4th October, 2018: </b>  Mirror Descent. Scribe: Roger.
+<a href="./Lectures/lec7.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 9th October, 2018: </b>  Stochastic Gradient Descent. Scribe: Zephyr.
+<a href="./Lectures/lec8.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 11th October, 2018: </b>  Review of Mirror Descent.
+</li>
+
+<li> <b> 16th October, 2018: </b>  Randomized Estimation Algorithms. Median-of-Average trick. Scribe: Maryam.
+<a href="./Lectures/lec10.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 18th October, 2018: </b> Approximating DNF solutions. Hashing basics. Scribe: Benedikt.
+<a href="./Lectures/lec11.pdf"> Notes </a> <br>
+</li>
+
+
+<li> <b> 23rd October, 2018: </b> Approximate Near(est) Neighbors. Locality Sensitive Hashing. Scribe: Prantar.
+<a href="./Lectures/lec12.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 25th October, 2018: </b> Streaming. Frequency Moments. Heavy Hitters. Scribe: Barry.
+<a href="./Lectures/lec13.pdf"> Notes </a> <br>
+</li>
+
+
+<li> <b> 30th October, 2018: </b> Streaming. Estimating the second moment -- two algorithms. Scribe: Chao.
+<a href="./Lectures/lec14.pdf"> Notes </a> <br>
+</li>
+
+
+
+<li> <b> 1st November, 2018: </b> Streaming. Probabilistic Counting. Scribe: Sungil
+<a href="./Lectures/lec15.pdf"> Notes </a> <br>
+</li>
+
+<li> <b> 6th November, 2018: </b> Streaming. More Probabilistic Counting. Scribe: Almas
+<a href="./Lectures/lec16.pdf"> Notes </a> <br>
+</li>
+
+</ul>
+
+
+<hr><hr>
+
+<a name="policies"></a>
+<h2> Policies  </h2>
+
+<p>
+<b> Lectures, X-hours, Attendence Policy</b><br>
+Please try to attend all lectures; the material covered is advanced and it is easy to fall behind. 
+
+
+<p>
+<b> Academic Integrity / Honor Code </b><br>
+<u> All work submitted for credit must be your own.</u> 
+This means what you put down on paper for submission cannot be in any way copied from a black/white board, a computer screen, or even your notes from class.
+<br>
+
+You <b> cannot </b> discuss the drill problem sets with anyone. 
+You may discuss the problem sets with your classmates (taking the course with you), the TAs, and the instructor. No one else. 
+You are also not allowed to give away solutions to your classmates.
+Clarification questions about problems should be asked on Piazza. <br>
+&nbsp &nbsp &nbsp &nbsp 
+At the beginning of each problem you must write who you discussed with, and what way did the person help you or you help them. This is important.
+If you did not talk with anyone about any of the problems, mention this at the beginning of the homework.
+Any written sources used (apart from the text, your lecture notes and any homework solutions that I distribute) must also be acknowledged; 
+however, you may not consult any solutions on the Internet or from previous years' assignments, whether they are student- or faculty-generated. <br>
+&nbsp &nbsp &nbsp &nbsp 
+Dartmouth's Academic Honor Principle applies to this course. Please be sure to read the principle, which you can find <a href="http://www.dartmouth.edu/judicialaffairs/honor/"> here </a>.
+Please ask me if you have any questions about the honor code as it applies to CS 49/149. Better safe than sorry!
+<hr>
+</div>
+
+
+<hr>
+
+

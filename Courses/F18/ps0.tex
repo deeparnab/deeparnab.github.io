@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\input{starter}
+%make one of the 1's into 0 to hide solutions
+\ifthenelse{\equal{0}{1}}
+{
+	\newcommand{\solution}[1]{\noindent {\color{blue} {\bf Solution:}} {\color{gray} {#1}}}
+	\newcommand{\rubric}[1]{\ignore{#1}}%{\noindent {\color{red} {\bf Rubric:}} {\texttransparent{0.5} {\bf #1}}}
+	\newcommand{\hint}[1]{\ignore{#1}}
+	\newcommand{\announce}[1]{}
+}
+{
+	\newcommand{\solution}[1]{\ignore{#1}}
+	\newcommand{\rubric}[1]{\ignore{#1}}
+	\newcommand{\announce}[1]{\ignore{#1}}
+	\newcommand{\hint}[1]{\noindent   {\texttransparent{0.5}{Hint: #1}}}
+}
+
+\begin{document}
+	\begin{center}
+		{\bf \Large CS 49/149: 21st Century Algorithms (Fall 2018): Problem Set 0}
+	\end{center}
+\small{
+The problems below are not for submission. Rather, it indicates the mathematical maturity that a student should be comfortable with.
+That is, if a student feels that they can {\em tackle} these problems and is confident that given enough time can either solve or make considerable progress, then they should have no problems in the math that they will face in CS 49/149. 
+
+Also, we will be using some facts established below throughout the course.
+}
+\vspace{1ex}
+\hrule height 1pt
+\vspace{1ex}
+%\input{instr}
+\begin{exercise}
+	Prove the following inequalities
+	\begin{enumerate}
+		\item (\Coffeecup )
+		For any real $x$,  prove $e^x \geq 1 + x$.
+		
+		\solution{
+		There are many ways to prove this. One way is to define a function $g(x) = e^x - (1+x)$ and to prove this is $\geq 0$.
+		We see that $\dot{g}(x) = e^x - 1$ which is $\geq 0$ when $x \geq 0$ and $< 0$ when $x < 0$. 
+		Thus, $g(x)$ is increasing when $x\geq 0$ implying $g(x) \geq g(0) =0$ for all $x\geq 0$; and that 
+		$g(x)$ is decreasing when $x < 0$ implying $g(x) \geq g(0) = 0$ for all $x < 0$. 
+		}
+		
+		\item (\Coffeecup ) 
+		For any real $x$, prove $\frac{e^x + e^{-x}}{2} \leq e^{x^2}$.
+		
+		\solution{
+		By definition of $e^x$, the LHS is 
+		\[
+		1 + x^2/2! + x^4/4! + x^6/6! + \cdots
+		\]
+		while the RHS is
+		\[
+		1 + x^2 + x^4/2! + x^6/3! + \cdots 
+		\]
+		Term by term the RHS is bigger (with equality at $x = 0$).
+		}
+		
+		\item (\Coffeecup \Coffeecup)
+		For any real $x < 0.5$,  $e^x \leq 1 + x + x^2$.
+		
+		\solution{
+		Similar idea to the one above: define $h(x) = e^x - (1 + x + x^2)$.
+		Observe $\dot{h}(x) = e^x - (1+ 2x)$. 
+		}
+		
+	\end{enumerate}
+\end{exercise}
+
+\vspace{2ex}
+
+\begin{exercise}
+	Prove the following
+	\begin{enumerate}
+		\item (\Coffeecup\Coffeecup) For any $n > 0$, $\sum_{i=1}^n 1/i = \Theta(\log n)$.
+		
+		\solution{
+			The trick is to compare with the integration $\int_{1}^{n} dx/x$.
+			Define the function defined for $x\geq 0$:
+			\[
+			f(x) := 1/i \textrm{ for all $x\in (i-1,i]$ }, ~~~ \textrm{integer $i \geq 1$}
+			\]
+
+			First, observe
+			\[
+			\textrm{For all $x\ge 0$,} \qquad\frac{1}{x+1} \leq f(x) \leq \frac{1}{x}
+			\]
+			Second, observe that for any $1 \leq  m < n$, $\sum_{i=m}^n 1/i = \int_{m-1}^n f(x) dx$. 
+			Thus, the first inequality above implies
+			\[
+			\sum_{i=1}^n 1/i = \int_{0}^n f(x)dx \geq \int_{0}^{n} \frac{dx}{x+1} = \ln(n+1)
+			\]
+			while the second inequality implies
+			\[
+			\sum_{i=1}^n 1/i = 1 + \sum_{i=2}^n 1/i = 1 + \int_{1}^n f(x)dx \leq 1 + \int_{1}^{n} \frac{dx}{x} = 1 + \ln n
+			\]
+			This finishes the proof.
+			}
+		
+		\item (\Coffeecup) For any $n > 0$, $\sum_{i=1}^n 1/i^2 = \Theta(1)$.
+		
+			\solution{
+				Similar ideas as above. Clearly the LHS is $\ge 1$; for the upper bound define $f(x) := 1/i^2$ for $x \in (i-1,i]$, and observe $f(x) \leq 1/x^2$ for all $x \geq 0$.
+				Then use
+				\[
+				\sum_{i=1}^n 1/i^2 = 1 + \int_{1}^n f(x)dx \leq 1 + \int_{1}^n dx/x^2 \leq 2
+				\]
+				In fact, one can do better than above ... the answer is well known to converge to $\pi^2/6$.
+				
+			}
+		
+	\end{enumerate}
+\end{exercise}
+
+\vspace{2ex}
+
+\begin{exercise} 
+	
+Stirling's approximation states that for any natural number $n$,
+\[
+\sqrt{2\pi}\cdot  \left(n^{n + \frac{1}{2}} e^{-n}\right) ~\leq n! ~\leq e \cdot \left(n^{n + \frac{1}{2}} e^{-n} \right)
+\]	
+
+(\Coffeecup \Coffeecup) Use this to prove  ${n \choose n/2}/2^n = \Theta(1/\sqrt{n})$ (assume $n$ is even).
+	
+	\solution{
+		The LHS, by definition, is $\frac{n!}{(n/2)!(n/2)!2^n}$. For an upper bound, we can use Stirling's approximation to get that the LHS is at most
+		\[
+		\frac{e\cdot \left(n^{n + \frac{1}{2}} e^{-n} \right)}{2\pi \cdot \left((n/2)^{(n/2) + \frac{1}{2}} e^{-(n/2)}\right)^2 \cdot 2^n  } 
+		= \frac{e\cdot \left(n^{n + \frac{1}{2}} \right)}{2\pi \cdot \left((n/2)^{n + 1} \right) \cdot 2^n  }  
+		= \frac{e}{\pi \sqrt{n}}  
+		\]
+		The RHS is similar.
+	}
+	
+(\Coffeecup \Coffeecup \Coffeecup) ({\bf Extra Credit:}) In fact prove that for any constant $c$, 
+	\[
+	{n \choose \frac{n}{2} \pm c\sqrt{n}}/2^n = \Theta(1/\sqrt{n})
+	\]
+
+
+\end{exercise}
+
+\vspace{2ex}
+\begin{exercise}(Probability Basics)
+	\begin{enumerate}
+		\item (\Coffeecup) Prove for any {\em non-negative} random variable $Z$ and $t > 0$,
+		\[
+		\Pr[Z > t] \quad < \quad \frac{\Exp[Z]}{t}
+		\]
+		This is called Markov's inequality, or sometimes an {\em averaging argument}.
+		
+		\solution{
+			\[
+			\Exp[Z] = \sum_{z} z\cdot \Pr[Z = z] =  \sum_{z > t} z\cdot \Pr[Z = z] + \sum_{0\leq z \le t}  z\cdot \Pr[Z = z] 
+			\]
+			The first summand is $\geq t\cdot \Pr[Z \geq t]$ and the second summand is $\geq 0$. This proves the inequality.
+		}
+	
+		\item (\Coffeecup) Prove for any random variable $Z$ and $t > 0$, 
+		\[
+		\Pr[|Z - \Exp[Z]| > t] \quad \leq \quad \frac{\mathbf{Var}[Z]}{t^2}
+		\]
+		This is called Chebyshev's inequality or the second-moment inequality.
+		
+		\solution{
+			Simply apply Markov's inequality on the positive random variable $(Z - \Exp[Z])^2$.
+			Observe,
+			\[
+\Pr[|Z - \Exp[Z]| > t] = \Pr[(Z - \Exp[Z])^2 > t^2] \leq \Exp((Z - \Exp Z)^2)/t^2 = \mathbf{Var}Z/t^2
+			\]
+		}
+	
+		\item 
+		Now we establish a much stronger inequality for sums of {\em independent variables}. This is {\em super important} and such bounds are called Chernoff-Hoeffding-Azuma bounds. Knowing the result is important, but is also important to know how things are proved. We do this in steps.
+		
+		For $1\leq i\leq n$, let $X_i$ be a random variable which is $+1$ with probability $1/2$ and $-1$ with probability $1/2$.
+		These are mutually {\em independent} random variables (recall what this is). Let $Z = X_1 + \cdots + X_n$ be the sum of these random variable.
+		
+		\begin{enumerate}
+			\item (\Coffeecup) What is $\Exp[Z]$?
+			
+			\solution{$0$ since $\Exp[X_i] = 0$}
+			
+			\item (\Coffeecup) What is $\mathbf{Var}[Z]$? What upper bound does the Chebyshev inequality say about $\Pr[Z > t]$ for $t > 0$?
+			
+			\solution{
+				$\mathbf{Var}[Z] = \sum_{i=1}^n \mathbf{Var}[X_i]$ since the $X_i$'s are independent.
+				Now, the variance of each $X_i$ is $1$. Thus, Chebyshev tells us
+				\[
+				\Pr[Z > t] \leq \Pr[|Z - \Exp[Z]| > t] \leq n/t^2
+				\]
+			}
+			
+			\item (\Coffeecup)  Now note that $\Pr[Z > t]$ is at most $\Pr[e^{\lambda Z} > e^{\lambda t}]$ for any $\lambda \ge 0$. 
+			Also note that $e^{\lambda Z}$ is a positive random variable.
+			Apply Markov's inequality on it.
+			
+			\solution{
+			We get 
+			\[
+			\Pr[Z > t] \leq e^{-\lambda t} \Exp[e^{\lambda Z}] 
+			\]	
+		}
+			
+			\item (\Coffeecup \Coffeecup) What is $\Exp[e^{\lambda Z}]$? Recall what $Z$ is, and recall that the $X_i$'s are independent. 
+			Recall the relation between $\Exp[f(X)g(Y)]$ and $\Exp[f(X)]\cdot \Exp[g(Y)]$ for deterministic function $f$ and $g$.
+		
+		\solution{
+		\[
+		\Exp[e^{\lambda Z}] = \Exp[e^{\lambda(\sum_{i=1}^n X_i)}] = \Exp[\prod_{i=1}^n e^{\lambda X_i}] = \prod_{i=1}^n \Exp[e^{\lambda X_i}]
+		\]
+		where the last equality follows from the independence of $X_i$'s.
+		Finally, we note that $\Exp[e^{\lambda X_i}] = \frac{e^\lambda + e^{-\lambda}}{2}$. Thus, we get
+		\[
+		\Exp[e^{\lambda Z}] = \left(\frac{e^\lambda + e^{-\lambda}}{2}\right)^n
+		\]
+}
+			
+			
+			\item (\Coffeecup \Coffeecup) Now can you optimize $\lambda$ so that the RHS of what you get from part 3 (and putting in part 4's calculations) is minimized? What is the final answer you get?
+			
+	\solution{
+	Putting in part 4's calculation into part 3 gives (and also using problem 1, part 2)
+	\[
+	\Pr[Z > t] \quad \leq e^{-\lambda t} \cdot e^{\lambda^2 n}
+	\]
+	To minimize the RHS, we must choose $\lambda$ such that $-\lambda t + \lambda^2 n$ is minimized. This occurs at $\lambda = t/2n$ giving
+	\[
+	\Pr[Z > t] \quad \leq e^{-t^2 / 4n}
+	\]
+	}		
+		\end{enumerate}
+	
+%\item 
+%\begin{enumerate}
+%	\item (\Coffeecup)
+%	Prove for any random variable $Y$ that $\Exp[Y^2] \geq (\Exp[Y])^2$.
+%	\solution{
+%Indeed the difference between LHS and RHS is the variance, which is $\Exp[(Y - \Exp[Y])^2]$ which is $\geq 0$.
+%	}
+%	\item (\Coffeecup) Let  $X_i \in \{\pm 1\}$ with probability $1/2$ and let $Z = \sum_{i=1}^n X_i$. 
+%	Prove that $\Exp[|Z|] \leq \sqrt{n}$.
+%\end{enumerate}
+	\end{enumerate}
+\end{exercise}
+
+\end{document}

@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\input{starter}
+
+\newcommand{\ltnorm} [1] {
+  \left| \left| #1 \right| \right|_{2}
+}
+
+%make one of the 1's into 0 to hide solutions
+
+\begin{document}
+	\begin{center}
+		{\bf \Large CS 49/149: 21st Century Algorithms (Fall 2018): Lecture 8}\\ 
+		Date: 11th October, 2018 \\
+		Topic: Stochastic Gradient Descent \\
+		Scribe: Zephyr Lucas \\
+		{\em Disclaimer: These notes have not gone through scrutiny and in all probability contain errors. Please email errors to deeparnab@dartmouth.edu.}
+	\end{center}
+\hrule height 2pt
+\vspace{3ex}
+\def\loss{\mathsf{loss}}
+\section{Motivation}
+
+Consider the following typical convex optimization problem in Machine Learning:
+\begin{equation}
+\min_{x \in S} \left( f(x) \right) = \min_{x \in S} \left( \sum_{t = 1}^{T} \left( f_{i} (x) \right) \right)
+\end{equation}
+
+\subsection{Least Squares}
+Finding the line which best represents a set of input points in $\mathbb{R}^{n}$.  Given some set of $T$ ``data points" ${\bf a}_{t}$  (each of which is an element of $\mathbb{R}^{n}$), we want to find the ${\bf x}$ and ${\bf b}$ which minimizes:
+\begin{equation}
+\sum_{t = 1}^{T} \left( \ltnorm{{\bf a}_{t}^{T} {\bf x} - {\bf b}} \right)
+\end{equation}
+Note that each of the $\left( \ltnorm{{\bf a}_{t}^{T} {\bf x} - {\bf b}}^{2} \right)$ in the sum are convex functions (because they are linear).
+
+\subsection{Support Vector Machine}
+Classification problem to find the hyper plane that best divides the data.
+\begin{itemize}
+\item Input: data in the form: $ \left\lbrace ({\bf a}_{t}, b_{t}) | {\bf a}_{t} \in \mathbb{R}^{n} ,\, b_{t} \in \lbrace -1, 1, \rbrace \right\rbrace$
+\item Goal: Find a hyper plane that separates the points with $b_{t}$ positive and the points with $b_{t}$ negative.
+\end{itemize}
+This problem we have already solved using MWU.  But what happens if no plane exists?  Well, then we would like to minimize the number of mistakes.  That is we find a hyper plane given by ${\bf x}$ such that the number of ordered pairs $({\bf a}_{t}, b_{t})$ such that $b_{t} \neq \text{sign} ({\bf a}_{t} \cdot {\bf x})$ is minimized.  This is an NP-problem, so most likely we can't find an efficient solution.  So instead we introduce a ``Proxy" which captures the properties we would like:
+
+\subsubsection{Proxy Problem}
+In a perfect world we want try to find a hyper plane ${\bf x}$ which minimizes:
+\[ \sum_{t = 1}^{T} \left( \Pi (t) \right) \,\,\,\,,\hspace*{3cm} \Pi (t) = \left\lbrace \begin{array}{rr} 1 & \text{If } b_{t} \neq \text{sign} \left( {\bf a}_{t} \cdot {\bf x} \right) \\ 0 & \text{Otherwise} \end{array} \right. \]
+So instead we find a hyper plane ${\bf x} \in \mathbb{R}^{n}$ which minimizes:
+\[ \sum_{t = 1}^{T} \left( \max (0, 1 - b_{t} ({\bf a}_{t} \cdot {\bf x})) \right) \]
+This new function is convex (It is the \emph{convexification} of the perfect goal) which is a nice property to have, but it is still not perfect because as we scale ${\bf x}$ up, then this becomes uniformly zero around the origin, and minimizing a constant is fairly uninteresting.  So instead we minimize:
+\[ \sum_{t = 1}^{T} \left( \max (0, 1 - b_{t} ({\bf a}_{t} \cdot {\bf x})) \right) + \frac{\lambda}{2} \ltnorm{\bf x}^{2} \]
+Which is still a convex function, so we can run gradient decent and our problem is solved?  Not quite.
+
+\subsubsection{Gradient Decent on the Support Vector Machine Problem}
+We have our function:
+\[ f({\bf x}) = \frac{1}{m} \sum_{i = 1}^{m} \left( f_{i} ({\bf x}) \right) \hspace*{3cm} \nabla f({\bf x}) = \frac{1}{m} \sum_{i = 1}^{m} \left( \nabla f_{i} ({\bf x}) \right) \]
+But calculating this gradient is very computationally expensive.  Is there any way we can approximate this, and run gradient descent on the approximation?  It turns out that gradient decent is very robust, and therefore an approximate gradient is good enough.
+
+
+\section{Stochastic Gradient Descent}
+Like in regular (unbounded) gradient descent, we are trying to minimize some convex function.  There we approached the minimum by iterating with the rule:
+\begin{equation}
+{\bf x}_{t + 1} = {\bf x}_{t} - \eta_{t} \nabla f({\bf x}_{t})
+\end{equation}
+The high level idea of stochastic gradient descent is, instead of following the gradient we follow an (randomized) estimate of the gradient.
+
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\underline{\sc Stochastic Gradient Descent}
+	\begin{itemize}
+		\item Assume there exists and estimator ${\bf E} : \mathbb{R}^{n} \rightarrow \mathbb{R}^{n}$ (${\bf E}$ is a randomized algorithm) with:
+		\begin{itemize}
+		  \item ${\bf E} : {\bf z} \mapsto {\bf g}({\bf z})$ where ${\bf g}({\bf z})$ is a random vector.
+		  \item The expectation: $\mathbb{E} \left( {\bf g}({\bf z}) \middle| {\bf z} \right)$ is a sub-gradient of $f$.  In particular, if $f$ is differentiable, then this should give $\nabla f$).
+		\end{itemize}
+		\item Suppose $f({\bf x}) = \frac{1}{m} \sum_{i = 1}^{m} \left( f_{i} ({\bf x}) \right)$.  Then we can sample $i \in \left\lbrace 1, 2, \,...\, m \right\rbrace$ uniformly at random and set $g({\bf x}) = \nabla f_{i} ({\bf x})$ as out estimator for this iteration.
+		\item Do regular gradient descent but update with ${\bf x}_{t + 1} = {\bf x}_{t} - \eta_{t} g({\bf x}_{t})$.
+	\end{itemize}
+\end{mdframed}
+We need to see if this is a good estimator:
+\[ \mathbb{E} \left[ g({\bf x}) | {\bf x} \right] = \sum_{i = 1}^{m} \left( \frac{1}{m} \nabla f_{i} ({\bf x}) \right) \]
+Notice this is the gradient!! and $g$ is much easier to calculate as you don't need to evaluate the whole sum each iteration.
+
+
+\subsection{Analysis (in the unconstrained case)}
+In normal gradient decent we have the following steps:
+\begin{proof}
+\begin{alignat}{2}
+\textsl{err} (t) &\leq ({\bf x}_{t} - {\bf x}_{\ast})^{T} \nabla f ({\bf x}_{t}) \notag \\
+&\leq \frac{1}{\eta} ({\bf x}_{t} - {\bf x}_{\ast})^{T} ({\bf x}_{t} - {\bf x}_{t + 1}) \notag \\
+&\leq \frac{1}{2\eta} \left( \ltnorm{{\bf x}_{t} - {\bf x}_{\ast}}^{2} - \ltnorm{{\bf x}_{t + 1} - {\bf x}_{\ast}}^{2} + \ltnorm{{\bf x}_{t + 1} - {\bf x}_{t}}^{2} \right) \notag \\
+&\leq \frac{1}{2\eta} \left( D_{t}^{2} - D_{t + 1}^{2} \right) + \frac{\eta}{2} \ltnorm{\nabla f({\bf x}_{t})}^{2} \notag \\[4mm]
+\therefore \sum_{t = 1}^{T} \left( \textsl{err}(t) \right) &\leq \frac{1}{2 \eta} D_{1}^{2} + \frac{\eta}{2} \sum_{t = 1}^{T} \left( \ltnorm{\nabla f({\bf x}_{t})}^{2} \right)
+\notag \end{alignat}
+\end{proof}
+But if we are no longer using the gradient as our function that takes us from ${\bf x}_{t}$ to ${\bf x}_{t + 1}$, then the first inequality is no longer true.  Instead we find (regardless of our choice of ${\bf g}$)
+\[ \sum_{t = 1}^{T} \left( \left( {\bf x}_{t} - {\bf x}_{\ast} \right)^{T} {\bf g}_{t} \right)  \leq \frac{1}{2\eta} \ltnorm{{\bf x}_{1} - {\bf x}_{\ast}}^{2} + \frac{\eta}{2} \sum_{t = 1}^{T} \ltnorm{{\bf g}_{t}}^{2} \]
+Because we know the expected value of ${\bf g}_{t}$ is the gradient we can take expectations:
+\[ \mathbb{E} \left( \text{LHS} \right) = \sum_{t = 1}^{T} \left( \left( {\bf x}_{t} - {\bf x}_{\ast} \right)^{T} \nabla f({\bf x}_{t}) \right) \]
+\[ \mathbb{E} \left( \text{RHS} \right) = \frac{1}{2 \eta} \ltnorm{{\bf x}_{1} - {\bf x}_{\ast}}^{2} + \frac{\eta}{2} \sum_{t = 1}^{T} \left( \mathbb{E} \left( \ltnorm{{\bf g}_{t}}^{2} \right) \right) \]
+
+\subsubsection*{Stochastic Gradient Descent}
+For \emph{any} $\left\lbrace {\bf g}_{1}, {\bf g}_{2}, \,...\, {\bf g}_{T} \right\rbrace$, running gradient descent with $x_{t + 1} = x_{t} - \eta g_{t}$, then we know:
+\[ \sum_{t = 1}^{T} \left( {\bf x}_{t} - {\bf x}_{\ast} \right)^{T} {\bf g}_{t} \leq \frac{1}{2 \eta} \ltnorm{{\bf x}_{1} - {\bf x}_{\ast}}^{2} + \frac{\eta}{2} \cdot \sum_{t = 1}^{T} \left( \ltnorm{{\bf g}_{t}}^{2} \right) \]
+When we are doing Stochastic gradient descent, our ${\bf g}_{t}$ is a random vector with an additional property, namely that ${\bf g} = g({\bf x}_{t})$ with $\mathbb{E} ( {\bf g}_{t} | {\bf x}_{t} ) = \nabla f ({\bf x}_{t})$.  Further we find that at the end of the algorithm,
+\[ \mathbb{E}_{\text{final}} ({\bf g}_{t}) = \mathbb{E}_{t +1} ({\bf g}_{t}) = \mathbb{E}_{t} ( \mathbb{E} ({\bf g}_{t} | {\bf x}_{1}, {\bf x}_{2}, \,...\, {\bf x}_{t} ) \]
+
+Therefore we find:
+\[ \mathbb{E}_{t} \left[ \nabla f({\bf x}_{t}) \right] = \mathbb{E} \left[ \nabla f({\bf x}_{t}) \right] \]
+
+Which gives us:
+\begin{align*}
+\mathbb{E} \left[ \sum_{t = 1}^{T} \left( ({\bf x}_{t} - {\bf x}_{\ast})^{T} {\bf g}_{t} \right) \right] &= \sum_{t = 1}^{T} \left(  \mathbb{E} \left[  ({\bf x}_{t} - {\bf x}_{\ast})^{T} {\bf g}_{t} \right] \right) \\
+&= \sum_{t = 1}^{T} \left(  \mathbb{E}_{{\bf x}_{1}, \,...\, {\bf x}_{t}} \left[ \mathbb{E}_{t + 1} \left[  ({\bf x}_{t} - {\bf x}_{\ast})^{T} {\bf g}_{t} \right] \right] \right) \\
+\end{align*}
+
+Now, $\mathbb{E}_{t + 1} \left[  ({\bf x}_{t} - {\bf x}_{\ast})^{T} {\bf g}_{t} \right]$ is a random variable, but when we calculate it we get to fix the choices for ${\bf x}_{1}, \,...\, {\bf x}_{t}$.  So this becomes:
+
+\[ \sum_{t = 1}^{T} \left(  \mathbb{E}_{{\bf x}_{1}, \,...\, {\bf x}_{t}} \left[ \mathbb{E} \left[  ({\bf x}_{t} - {\bf x}_{\ast})^{T} {\bf g}_{t} | {\bf x}_{t} \right] \right] \right) \]
+
+Now we observe that fixing ${\bf x}_{t}$ causes this to become deterministic.
+
+\begin{align*}
+\mathbb{E}_{\text{final}} \left[ \sum_{t = 1}^{T} \left( \left( {\bf x}_{t} - {\bf x}_{\ast} \right)^{T} {\bf g}_{t} \right) \right] &= \sum_{t = 1}^{T} \left( \mathbb{E}_{{\bf x}_{1}, {\bf x}_{2}, \,...\, {\bf x}_{t}} \left[ ({\bf x}_{t} - {\bf x}_{\ast})^{T} \mathbb{E} \left( {\bf g}_{t} | {\bf x}_{t} \right) \right] \right) \\
+&= \sum_{t = 1}^{T} \left( \mathbb{E}_{{\bf x}_{1}, {\bf x}_{2}, \,...\, {\bf x}_{t}} \left[ ({\bf x}_{t} - {\bf x}_{\ast})^{T} \nabla f ( {\bf x}_{t} ) \right] \right) \\
+&\geq \sum_{t = 1}^{T} \left( \mathbb{E}_{{\bf x}_{1}, {\bf x}_{2}, \,...\, {\bf x}_{t}} \left[ f({\bf x}_{t}) - f({\bf x}_{\ast}) \right] \right) \\
+&\geq \sum_{t = 1}^{T} \left( \mathbb{E} \left[ f({\bf x}_{t}) \right] \right) - T f({\bf x}_{\ast}) \\
+\mathbb{E}_{\text{final}} \left[ \sum_{t = 1}^{T} \left( \frac{1}{T} \left( {\bf x}_{t} - {\bf x}_{\ast} \right)^{T} {\bf g}_{t} \right) \right] &\geq \frac{1}{T} \sum_{t = 1}^{T} \left( \mathbb{E} \left[ f({\bf x}_{t}) \right] \right) - f({\bf x}_{\ast}) \\
+&\geq  \mathbb{E} \left[ \sum_{t = 1}^{T} \left( \frac{f({\bf x}_{t})}{T} \right) \right] - f({\bf x}_{\ast}) \\
+\end{align*}
+Because $f$ is convex, we know:
+\[ \frac{1}{T} \sum_{t = 1}^{T} \left( f({\bf x}_{t} \right) \geq f\left( \frac{1}{T} \sum_{t = 1}^{T} \left( {\bf x}_{t} \right) \right) \]
+Therefore we have:
+%Therefore if we define the random variable $\bar{\bf x}$ to be $\frac{1}{T} \sum \left( {\bf x}_{t} \right)$ we get:
+\begin{align*}
+\mathbb{E}_{\text{final}} \left[ \sum_{t = 1}^{T} \left( \frac{1}{T} \left( {\bf x}_{t} - {\bf x}_{\ast} \right)^{T} {\bf g}_{t} \right) \right] &\leq \frac{1}{T} \mathbb{E} \left[ \frac{1}{2 \eta} \ltnorm{{\bf x}_{1} - {\bf x}_{\ast}}^{2} + \frac{\eta}{2} \frac{\eta}{2} \sum_{t = 1}^{T} \left( \ltnorm{{\bf g}_{t}}^{2} \right) \right] \\
+&\leq \frac{1}{2 \eta T} \ltnorm{{\bf x}_{1} - {\bf x}_{\ast}}^{2} + \frac{\eta}{2T} \sum_{t = 1}^{T} \left( \mathbb{E}_{\text{final}} \left[ \ltnorm{\nabla f ({\bf x}_{t} )}^{2} \right] \right) \\
+\end{align*}
+
+\subsection*{Quality of an Estimator}
+The \emph{quality of an estimator} for stochastic gradient descent is given by $\rho$, where
+\[ \mathbb{E} \left[ \ltnorm{{\bf g} ({\bf z})}^{2} \right] \leq \rho^{2} \]
+
+\subsubsection*{Example}
+If we let:
+\[ f({\bf x}) =\frac{1}{2m} \ltnorm{A {\bf x} - {\bf b}}^{2} = \frac{1}{2m} \sum_{i = 1}^{m} \left( ({\bf a}_{i}^{T} {\bf x} - b_{i})^{2} \right) \]
+and we let ${\bf g}$ be given by sampling $i$ from $\lbrace 1, 2, \,...\, m \rbrace$ and return ${\bf a}_{i}^{T} {\bf x} - b_{i}$.  This means:
+\[ \mathbb{E} \left[ \ltnorm{\bf g}^{2} \right] = \frac{1}{m} \cdot \sum_{i = 1}^{m} \left( \ltnorm{a_{i}}^{2} \cdot ({\bf a}_{i}^{T}{\bf x} - b_{i})^{2} \right) = \frac{1}{m} \left| \left| A \right| \right|_{F}\]
+Where $\left| \left| A \right| \right|_{F}$ denotes the Frobemius norm of $A$, which is simply the sum of the squares of the matrix entries.  The Frobemius norm is always larger than the largest eigenvector, but they are generally fairly similar.  So even if you have to run slightly longer, you get huge savings.  Here the quality of the estimator is actually given by $\rho = \left| \left| A \right| \right|_{F}$!
+
+
+\subsection{Stochastic Gradient Descent Theorem with Minimal Assumptions}
+If we have an estimator with a high enough quality then Stochastic Gradient Descent can guarantee:
+\[ \mathbb{E} \left[ f({\bf x}_{(T)}) \right] - f({\bf x}_{\ast}) \leq \frac{D^{2}}{2 \eta T} + \frac{\eta \rho^{2}}{2} \]
+In particular this means if we want the right hand side to be less than $\epsilon$, then we must set $\eta$ and run for iterations given by:
+\[ \eta = \frac{\epsilon}{2 \rho} \,\,\,,\hspace*{1cm} T = \frac{D^{2}\rho^{2}}{\epsilon^{2}} \]
+
+Instead of sampling just one $i$, we can sample a bunch of different $i$s to construct our approximation of the gradient.  This procedure is called Batch Stochastic Gradient Descent and reduces the variance without changing the expectation.  In theory, batching doesn't change anything, but in practice it tends to perform much better, particularly in distributed computing environment where we get to ``reuse" previous gradients.
+
+\subsubsection{Other forms of Stochastic Gradient Descent}
+What happens when our function is some other really complicated (non-sum based) function, that was really expensive to evaluate.  We can instead pick one dimension and walk only in that direction based only off that coordinate's gradient.  This means we only have to consider one dimension of our gradient each iteration and not the whole thing.  In particular this means we have:
+\[ \left[ {\bf x}_{t + 1} \right]_{i} = {\bf x}_{t} - \eta \cdot n \cdot \left[ \nabla f ({\bf x}) \right]_{i} \]
+Which still has:
+\[ \mathbb{E} \left[ {\bf x}_{t + 1} - {\bf x}_{t} \right] = - \eta \nabla f ({\bf x}_{t}) \]
+In practice, we don't chose our dimension ($i$) uniformly at random, but instead proportion the probabilities based off the smoothness of the function.
+
+
+\end{document}
+

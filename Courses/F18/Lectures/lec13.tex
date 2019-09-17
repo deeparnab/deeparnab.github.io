@@ -1,0 +1,351 @@
+\documentclass[11pt]{article}
+\input{starter}
+\usepackage{cancel}
+
+%make one of the 1's into 0 to hide solutions
+
+\begin{document}
+	\begin{center}
+		{\bf \Large CS 49/149: 21st Century Algorithms (Fall 2018): Lecture 13}\\ 
+		Date: 25th October, 2018 \\
+		Topic: Streaming. Frequency Moments. Heavy Hitters. \\
+		Scribe: Barry Yang \\
+		{\em Disclaimer: These notes have not gone through scrutiny and in all probability contain errors. Please email errors to barry.a.yang.gr@dartmouth.edu.}
+	\end{center}
+\hrule height 2pt
+\vspace{3ex}
+\def\loss{\mathsf{loss}}
+\section*{Streaming Algorithms}
+
+\begin{itemize}
+
+	\item Think of data as a very large array. Elements of an array come in as a stream. Once an element leaves the stream, it is gone.
+
+	\item The stream can be thought of as an array of $n$ things. Thus, we have $Array[1...n]$.
+
+	\item Elements of the array are selected from the set ranging from 1 to $m$. Thus, $A[i] \in \{1, 2, ... , m\}$.
+	
+	\item Both $n$ and $m$ are very large.
+
+\end{itemize}
+
+\paragraph{Motivation}
+
+We have an array for IP addresses. In this case, both $m$ and $n$ are very large. For example, $m$ may be the number of IP addresses, and $n$ represents $m$ websites. The amount of memory available to us is much much smaller than n nor m. (memory $<< n, m$). If we had $m$ space, then these problems would be trivial, but here we assume we have $< m $ space to count.
+
+\subsection*{Frequency Moments}
+
+Suppose we are interested in how many times people are looking at a website. For each $i \in \{1, 2, ..., m\}, f_i$ is the number of occurrences of $i$ in $A$. In this case, frequency is the number of times a number appears in a stream. 
+
+\smallskip
+
+As a check, we know that the sum of frequencies must equal to $n$, or
+
+\[ \sum_{i = 1}^m f_i = n \]
+
+\smallskip
+
+Here is a question: suppose we fix $i$, what is $f_i$? Suppose we have $O(\log n), O(\log m)$ memory. For any fixed $i$, $f_i$ can be exactly found in $O(\log n)$ bits for any fixed $i$. 
+
+\todo{
+Find the frequencies of all elements in this trivial algorithm. This is $m\log n$ counters. How would you estimate, calculate the frequencies?
+}
+
+\smallskip
+
+Here are the kind of questions that we're interested in:
+
+\begin{itemize}
+
+	\item Evaluation/estimating $f_i$ for all $i$
+	
+	\item Maybe we don't want to estimate each $f_i$, instead we might want a broader statistic!
+
+\end{itemize}
+
+\smallskip
+
+What are the settings of $f_i$ that minimize the following? These indicate how balanced the frequency statistic is (for example, if $f_x^2$ is smaller, then the frequencies are more balanced). 
+
+\begin{itemize}
+
+	\item $\sum_{i = 1}^m f_i^2 = F_2 = || \vec{f}||_2^2, \text{ where } \vec{f} = \{f_1, f_2, ..., f_m\}$
+
+	\item $\sum_{i = 1}^m f_i^k = F_k = || \vec{f}||_k^k$
+
+	\item 0-norm: $F_0$ Count the number of distinct entries in $A$.
+	
+	\item $F_\infty = \max_{i = 1}^m f_1$ = Frequency of the most frequent item
+
+\end{itemize}
+
+\paragraph{Problem:} We have an array, and we want to find the frequent elements.
+
+Suppose in array, one element appears appears strictly more than $\frac{n}{2}$ times. Suppose this is element $x$. At some point in the sequence within the stream, there has to be two $x$s that are next to each other (pigeonhole principle). 
+
+\smallskip
+
+For example, suppose we have the sequence \{31145117\}. In this case there is not one element that appears strictly more than $\frac{n}{2}$ times. In this case, we have divide the pairs into \{31\}, \{14\}, \{51\}, and \{17\}. Here, it is plain to see we do not have a pairing in which there are two $1$s, which is the element that appears the most.
+
+\smallskip
+
+To find the element appearing more than $\frac{n}{2}$ times, we can divide and conquer, assuming the element exists. This can be done by finding all the elements that are paired, and then recursing on the subsequent sequences. 
+
+\smallskip
+
+This type of algorithm is more formalized in the \textbf{Bayer-Moore Algorithm}.
+
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\underline{\sc Bayer-Moore Algorithm}:
+	For finding elements appearing $> \frac{n}{2}$ times.
+	\begin{itemize}
+		\item initialize an empty ``box'' $B$
+		\item while there are elements in the stream
+		\begin{itemize}
+    			\item $A \rightarrow$ step j: ($A[j]$ arrives)
+    				\item if $B \neq 0$:
+    				\begin{itemize}
+    					\item Put ($A[j]$, 1) in it
+    				\end{itemize}
+    			\item else if ($B = A[j]$):
+    				\begin{itemize}
+    					\item Increment counter of $B$
+    				\end{itemize}
+    			\item else
+    				\begin{itemize}
+    					\item decrement counter of $B$
+    					\item if counter = 0, delete from $B$
+    				\end{itemize}	
+		\end{itemize}
+		\item return just the number (the key in the dictionary)
+	\end{itemize}
+\end{mdframed}
+
+However, this algorithm does not always necessarily find the majority element. What if there is no majority element? Then the number returned is not empty. For example, suppose we have the stream \{4151617\}. Here 7 is returned.
+
+\smallskip
+
+Why would the frequent element not be in the box?
+\begin{itemize}
+
+	\item It cancels out another element
+	
+	\item It was kicked out by another element
+
+\end{itemize}
+
+In both cases, these are not added to the box. It is important to note that the majority element will never kick out its own element. We also note that for every element that has been kicked out, that element is paired with a different number responsible for kicking the element out.
+
+\todo{
+How would you modify the algorithm to find elements appearing at least $\frac{n}{10}$ times? Or more broadly, $\frac{n}{k}$ times, where $k$ is a non-negative integer?
+}
+
+For $\frac{n}{2}$, we need 1 box. So, for $\frac{n}{k}$, we need $k - 1$ boxes. In this case, when a number kicks another number out of the box, then it empties every box as well. For example, suppose $k = 3$ and we have the stream \{41316321912\}. In this case, as the stream begins 4 and 1 fill seperate boxes. 
+
+\smallskip
+
+Anything with appears more than $\frac{n}{3}$ cannot be grouped up.
+
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\underline{\sc Misra-Gries 1982 Algorithm}:
+	For finding elements appearing $> \frac{n}{k}$ times, it remains in the same box.
+	\begin{itemize}
+		\item initialize $k-1$ empty boxes
+		\item while there are elements in the stream
+		\begin{itemize}
+    			\item $A \rightarrow$ step j: ($A[j]$ arrives)
+    				\item check if $A[j]$ is in any box:
+    				\begin{itemize}
+    					\item if so, increment counter
+    				\end{itemize}
+    			\item check if any box is empty
+    				\begin{itemize}
+    					\item if so put $(A[j], 1)$ in that box
+    				\end{itemize}
+    			\item decrement count of all boxes
+			\item if some count = 0 empty that box
+		\end{itemize}
+		\item return just the number (the key in the dictionary)
+	\end{itemize}
+\end{mdframed}
+
+Boxes have distinct elements that are kicked or is kicked out. However, take note there are cases in the algorithm where there is junk that remains in the box (two numbers may be returned, and only one represents the frequent number). 
+
+\paragraph{Corollary:} For each element $a \in$ box, $\hat{f_a}$ = estimate of count in the box.
+
+\[ \hat{f_a} \leq f_a \leq \hat{f_a} + \frac{n}{k} \]
+
+Note that the above does not make any assumptions. If we want the estimate to satisfy $\hat{f_a} \leq f_a \leq \hat{f_a} + \varepsilon k$, we can set $k = \frac{1}{\varepsilon}$. This algorithm is deterministic and takes up $O(\frac{1}{\varepsilon} \log(n + m))$ space.
+
+\smallskip
+
+\paragraph{How to do better?} $\varepsilon$ is the $l_1$-norm of the frequencies.
+
+\[\hat{f_a} \leq f_a \leq \hat{f_a} + \varepsilon ||\vec{f}||\]
+
+\smallskip
+
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+	\textbf{An Aside}
+	For any vector, which is bigger? $l_1$-norm or $l_2$-norm?
+	\begin{itemize}
+	
+		\item $||v||_1 = \sum v_i$
+		
+		\item $||v||_2 = \sqrt{\sum v_i}$
+	
+	\end{itemize}
+	
+	$l_1$-norm in 2 dimensions is larger than $l_2$. In general, $||v||_1 \geq ||v||_2$. 
+	
+\end{mdframed}
+
+Thus, we would like to find a randomized algorithm where $\varepsilon$ is $l_2$-norm instead of $l_1$-norm.
+
+\section*{Hashing}
+We have numbers between 1 and $m$. Suppose we have a hash function $h: [m] \rightarrow [k]$, where $[m] = \{1...m\}$ and $[n] = \{1...k\}$.
+
+\smallskip
+
+An algorithm is:
+\begin{itemize}
+
+	\item maintain $k$ counters
+	
+	\item $a$ arrives, increment $h(a)$'s counter
+	
+	\item $\hat{f_a} =$ counter($h([a])$
+
+\end{itemize}
+
+Here, we note that for all $a$, will has to $h(a)$. Also note that $\hat{f_a} > f_a$, as two distinct elements $a \neq b$ may hash such that $h(a)= h(b)$. 
+
+\smallskip
+
+Formally, $\forall a: \hat{f_a} = f_a + \sum_{b: h(a) = h(b), b\neq a} f_b$, where $\sum f_b$ represents an extra term. For a better estimate, we want to minimize $\sum f_b$. Thus, what is the chance of $h(a) = h(b)$?
+
+\smallskip
+
+If $h$ is chosen from $H$, which is a universal hash function, $Pr_{h \in H \text{ for } a \neq b}[h(a) = h(b)] \leq \frac{1}{k}$. 
+
+\smallskip
+
+\[E[\hat{a}] = f_a + E_h[\sum_{b: h(a) = h(b)} f_b]\]
+
+\[= f_a + \sum_{b \neq a} f_b \cdot Pr[h(a) = h(b)]\]
+
+\[\leq f_a + \frac{1}{k} \sum_{b \neq a} f_b \]
+
+What we want: $E_h[\hat{f_a}] \leq f_a + \varepsilon n$
+
+\smallskip
+
+If $k = \frac{1}{\varepsilon},$
+
+\[E_h[\hat{f_a}] \leq f_a + \varepsilon \sum_{b \neq a} f_a\]
+
+\paragraph{Idea 2}
+
+\begin{itemize}
+
+	\item h: $[m] \rightarrow [k]$
+	
+	\item when $a$ arrived in stream
+		
+		counter [h(a)] = counter [h(a)] + 1
+	
+	\item $\hat{f_a}$ = counter [h(a)]
+	
+\end{itemize}
+
+Let's say we decrement counter. When $a$ arrived in stream. counter $[h(a)]$ = counter($h(a)$) - 1 and return negative.
+
+\smallskip
+
+$\hat{f_a}$ = -counter ($h(a)$)
+
+\smallskip
+
+Suppose for some counter do +1 and others do -1.
+
+\paragraph{New Idea vs. Old Idea} If I have collisions that pile up. To remove, have a +1, -1 in counter.
+
+How to set +/- 1 for each $a$.
+
+\begin{itemize}
+
+	\item $g : [m] \rightarrow \{-1, 1\}$
+
+	\item When $a$ arrives in stream, count [$h(a)$] = count($h(a))$ + g(a)
+
+	\item $\hat{f_a} = g(a) \cdot \text{count}[h(a)]$
+
+\end{itemize}
+
+\paragraph{Algorithm Summary}
+
+\begin{itemize}
+
+	\item Instead of $m$ counters, maintain $k$ counters
+	
+	\item Maintain sign:
+		$[m] \rightarrow \{-1, 1\}$
+		
+	\item count[h(a)] = count[h(a)] + g(a)
+	
+	\item $\hat{f_a} = g(a) \cdot \text{count}[h(a)]$
+
+\end{itemize}
+
+Note: can get negative number. Will be within +/- of two frequencies.
+
+\paragraph{Count-Sketch Algorithm}
+
+Claim: 
+
+\[E_{h \in H, g \in G} [\hat{f_a}] = f_a\]
+
+\[p_f: E_{h, g} [g(a) \cdot \text{count}[h(a)]]\]
+
+\[ = E_{h, g} [g(a) \cdot (g(a) \cdot f_a + \sum_{b \neq a, h(a) = h(b)} g(b) \cdot f_b)] \]
+
+\[ = E_{h, g} [f_a + \sum_{b \neq a, h(a) = h(b)} g(a) g(b) \cdot f_b ]\]
+
+\[ = f_a + \sum_{b \neq a, h(a) \neq h(b)} f_b \cdot E_{g,h} [g(a) g(b)] \]
+
+$E_{g,h} [g(a) g(b)]$ is \textbf{not independent}. Instead it is 0, because $g(a) g(b)$ is +1 half the time and -1 half the time.
+
+\[= f_a\]
+
+Thus, this is an unbiased estimator!
+
+When we have an unbiased estimator,
+
+\[Pr[ |\hat{f_a} - f_a| \geq \varepsilon || \vec{f}||_2] \leq \delta \]
+
+\[\text{Var}(\hat{f_a}) \cdot \frac{1}{\varepsilon^2 ||\vec{f}||^2_2} \cdot \ln(\frac{1}{\delta})\]
+
+Note that $\text{Var}(\hat{f_a}) = E[\hat{f_a}^2] - (E[\hat{f_a}])^2 = E_{h, g} [\text{count}(h(a))^2]$
+
+\[= E_{h,g} [((g(a) \cdot f_a + \sum_{a \neq b, h(a) = h(b)} g(b) \cdot f_b)^2] \]
+
+\[= E_{h,g} [f^2 + \sum_{a \neq b, h(a) = h(b)} f^2_b + \sum g(b) g(b') f_b f_{b'}]\]
+
+Here, we note that $\sum g(b) g(b') f_b f_{b'} = 0$
+
+\[= E_{h,g} [f_a^2 + \sum_{a \neq b, h(a) = h(b)} f^2_b] \]
+
+\[ \leq \sum_{j = 1}^m f_i^2\]
+
+\[\implies \text{Var}(\hat{f_a}) \leq ||\vec{f}||_2^2\]
+
+Remember
+
+\[ \cancel{\text{Var}(\hat{f_a})} \cdot \frac{1}{\varepsilon^2 \cancel{||\vec{f}||^2_2}} \cdot \ln(\frac{1}{\delta})\]
+
+\[ = \frac{1}{\varepsilon^2} \cdot \ln(\frac{1}{\delta})\]
+
+This represents ``parallel runs.'' However, the catch is that space is $\frac{1}{\varepsilon^2}$, not $\frac{1}{\varepsilon}$.
+
+\end{document}
+

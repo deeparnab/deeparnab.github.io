@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="test-course.css" id="styleId" text-decoration="none"/>
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
+<title>CS 31: Algorithms, Spring 2019</title> </head>
+
+<body>
+<h2>
+<font color="black">
+CS 31: Algorithms, Spring 2019</font> <br>
+</h2>
+<br>
+<hr>
+<table style="width:100%" font="small">
+  <tr>
+    <th><a href = "#schedule"> Schedule </a> </th> 
+ 	<th> <a href = "#policies"> Policies </a> </th>
+  </tr>
+</table>
+<hr>
+<br> 
+<b> Course Description and Goals: </b> <br>
+Algorithms are step-by-step instructions for a computation problem. 
+Although this sounds like a cooking recipe, good algorithms is what makes the modern world run.<br>
+&nbsp &nbsp &nbsp &nbsp &nbsp  In this course, we will study algorithms rigorously. At the end of the course, the student should be able to 
+<u>design</u> algorithms for problems, <u>reason</u> about these algorithms, and <u>communicate</u> the algorithm and its analysis.
+
+
+<p><b> Background Assumed: </b><br>
+Students should have basic knowledge about programming <i> and </i> should be able to read and write math proofs.  
+If you have taken CS 1, CS 10, and CS 30, you should be fine. In case you haven't, then please see the instructor.
+See <a href="https://www.cs.dartmouth.edu/~deepc/Courses/W19/lecs/TLDR.pdf"> this </a> for what I teach in CS30.
+<!-- Also see <a href="./ps/ps0.pdf"> this </a>.--><hr> 
+<br>
+<b> Class Times:</b> 10A (TR: 10:10am - 12noon), X-hours (W: 3:30pm - 4:20pm) <br> 
+<b> Venue: </b> Filene, Moore <br> 
+<b> Discussions: </b>  Piazza (via Canvas) <br>
+<b> Problem Sets: </b> Canvas <br>
+
+<b> Personnel and Office Hours:</b> 
+<ul>
+<li> <a style="color:inherit" href="./../../index.htm"> Deeparnab Chakrabarty</a> (Instructor)<br>
+		&nbsp &nbsp Monday 4:30p - 5:30p @Sudi 214, Wednesday (4:30pm - 5:30pm) @Sudi 212 <br> 
+		&nbsp &nbsp Thursday (4:30pm - 5:30pm) "individual" office hours @Sudi 216<br> </li>
+<li> Prantar Ghosh (Head TA):  Monday 1pm - 2pm @Sudi 212, Wednesday 1pm - 2pm @Sudi 214</li> 
+<li> Sean Paulsen (TA):  Monday 3:00pm - 4:00pm @Sudi 212, &nbsp Wednesday, 2:30pm - 3:30pm @Sudi 114</li>
+<li> Sunbir Chawla (TA): Friday, 5:30pm - 6:30pm  @Sudi 114</li>
+<li> Christina Lu (TA) : Tuesday, 2pm - 3pm @Sudi 212 </li>
+<li> Linda Xiao (TA): Tuesday, 7:30pm - 8:30pm  @Sudi 115</li> 
+<li> Richard Yang (TA) :  Sundays, 1pm - 3pm @Sudi 114</li>
+<li> Edward Yao (TA):  Tuesday, 1pm - 2pm @Sudi 212 </li>
+</ul>
+
+<p>
+<b> Text Books </b> 
+<br>
+There is <b> no required </b> textbook. Lecture notes will be posted after every lecture.
+However, the material is mostly going to be from the following two books, and I will give pointers to them as well.
+<ul>
+<li> (DPV) <i> Algorithms </i> by Dasgupta, Papadimitriou, Vazirani </li>
+<li> (CLRS) <i> Introduction to Algorithms </i> by Cormen, Leiserson, Rivest, Stein </li>
+</li>
+</ul>
+Students <i> don't </i> have to buy any of the above books. Indeed, if you Google, you may find pdf copies on the web.
+You are, however, <b> not allowed </b> to look at or refer to the solutions manuals for these books.
+
+
+<p><b> Evaluation </b> <br>
+<ul>
+<li> Drills: 30% </li>
+<li> Weekly Problem Sets : 25% </li>
+<li> Midterm : 12 + 12% </li>
+<li> Endterm : 21% </li>
+</ul>
+More details <a href = "#policies"> here</a>.
+
+
+<hr>
+<hr>  
+
+
+
+<!--
+<p> <b> Tentative Topics Covered: </b> Big Oh Notation, Divide and Conquer Algorithms, Randomized Algorithms, Dynamic Programming, Greedy Algorithms, Graph Algorithms, 
+Graph Traversal, Shortest Path, Maximum Flow Problems, Matching. <br>
+ Detailed schedule will be available when the class starts. -->
+<a name="schedule"></a>
+<h2> Tentative Weekly Schedule </h2> 
+
+<font face="inherit" size="1" color="lightgrey">
+<table style="width:100%" font="small">
+  <tr style="color:black">
+    <th>Date</th>
+    <th>Topics</th> 
+    <th>Notes</th>
+	<th>Other Reference</th>
+  </tr>
+ 
+  <tr style="color:black">
+    <td> 26 Mar (Tue):</td>
+    <td> Algorithms with Numbers </td> 
+    <td> <a href="./lecs/lec1.pdf"> Lec</a>, <a href="./lecs/lec1supp.pdf"> Supp</a>  </td>
+	<td> [DPV 1.1] </td>
+  </tr>
+  
+  <tr style="color:black">
+    <td> 27 Mar (X):</td>
+    <td> Big-Oh notation  </td> 
+    <td> <a href="./lecs/lec2.pdf"> Lec</a></td>
+	<td> [DPV 0.3, CLRS 3.1]  </td>
+  </tr>
+  
+  <tr style="color:black">
+    <td> 28 Mar (Thu): </td>
+    <td> Divide and Conquer 1: Merge Sort, Counting Inversions </td> 
+    <td> <a href="./lecs/lec3.pdf"> Lec</a>, <a href="./lecs/lec3supp.pdf"> Supp</a> </td>
+	<td> [DPV 2.3, CLRS 2.3]</td>
+  </tr>
+
+<tr style="color:black" >
+    <td> 2 Apr (Tue): </td>
+    <td> Divide and Conquer 2 : Maximum Range Sub-Array, Multiplying Polynomials Fast </td> 
+    <td> <a href="./lecs/lec4.pdf"> Lec</a> </td>
+	<td> [CLRS 4.1], [DPV 2.1]</td>
+ </tr>
+
+  <tr style="color:black">
+    <td> 3 Apr (X):</td>
+    <td> Prantar Proves Master Theorem </td> 
+    <td> <a href="./lecs/lec3supp.pdf"> Notes </a> </td>
+	<td> </td>
+  </tr>
+  
+  <tr style="color:black">
+    <td> 4 Apr (Thu) </td>
+    <td> Divide and Conquer 3: Closest Pair of Points; Dynamic Programming 0: Recursion with Memory</td> 
+    <td> <a href="./lecs/lec5.pdf"> Lec</a> </td>
+	<td> [CLRS 33.4] </td>
+  </tr>
+
+
+  
+  <tr style="color:black">
+    <td> 9 Apr (Tue)  </td>
+    <td> Dynamic Programming 1 : Subset Sum Problem  </td> 
+    <td> <a href="./lecs/lec6.pdf"> Lec</a> </td>
+	<td>  </td>
+  </tr>
+
+   <tr style="color:black">
+    <td> 10 Apr (X):</td>
+    <td> Dynamic Programming 2: Knapsack problem </td> 
+    <td> <a href="./lecs/lec7.pdf"> Lec</a> </td>
+	<td> </td>
+  </tr>
+	
+  <tr style="color:black">
+    <td> 11 Apr (Thu)  </td>
+    <td> Dynamic Programming 3: Longest Common Subsequence, Edit Distance </td> 
+    <td> <a href="./lecs/lec8.pdf"> Lec</a> </td>
+	<td>  </td>
+  </tr>
+  
+<tr style="color:lightgrey">
+    <td> 16 Apr (Tue) </td>
+    <td> </td> 
+    <td> </td>
+	<td> <font color="red"> Instructor Out-of-Town </font> </td>
+</tr>
+  
+<tr style="color:lightgrey">
+    <td> <font color="red">  18 Apr (Thu) </font>  </td>
+    <td> <font color="red">  <b> In-class Midterm 1: 10A hour, Filene </b> </font> </td> 
+    <td> </td>
+	<td> <font color="red"> Instructor Out-of-Town  </font> </td>
+  </tr>
+  
+  
+<tr style="color:black">
+    <td> 23 Apr (Tue) </td>
+    <td> Randomized Algorithms 1: Frievald, QuickSort </td> 
+    <td> <a href="./lecs/lec9.pdf"> Lec</a> </td>
+	<td> </td>
+  </tr>
+ 
+ <!-- <tr>
+    <td><b> <font color="red"> 25 April (X) </font> </b> </td>
+    <td>   </td> 
+    <td>  </td>
+	<td> <font color="red"><b> Midterm [3:30p to 5:30pm, Filene] </b> </font></td>
+  </tr>
+  --> 
+ <tr style="color:black">
+    <td> 25 Apr (Thu) </td>
+    <td> Randomized Algorithms 2: Hashing </td> 
+    <td> <a href="./lecs/lec10.pdf"> Lec </a> </td>
+	<td> </td>
+  </tr>
+
+<tr style="color:black">
+    <td> 30 Apr (Tue) </td>
+    <td> Graph Algorithms 1: Depth First Search  </td> 
+    <td>  <a href="./lecs/lec11.pdf"> Lec </a> </td>
+	<td>  </td>
+  </tr>
+
+<tr style="color:black">
+    <td> 1 May (X) </td>
+    <td> Graph Algorithms 1.5: Depth First Search (some proofs)  </td> 
+    <td>  </td>
+	<td>  </td>
+  </tr>
+  
+<tr style="color:black">
+    <td> 2 May (Thu)  </td>
+    <td> Graph Algorithms 2: Applications of Depth First Search </td> 
+    <td> <a href="./lecs/lec12.pdf"> Lec </a></td>
+	<td> </td>
+  </tr>
+<tr>
+
+<tr style="color:black">
+    <td> 7 May (Tue)  </td>
+    <td> Graph Algorithms 3: BFS, Shortest Paths  </td> 
+    <td> <a href="./lecs/lec13.pdf"> Lec </a> </td>
+	<td>  </td>
+  </tr>
+  
+<tr style="color:black">
+    <td> 9 May (Thu) </td>
+    <td> Graph Algorithms 4: Dealing with Negative Costs </td> 
+    <td> <a href="./lecs/lec14.pdf"> Lec </a></td>
+	<td> </td>
+  </tr>
+
+ <-- <tr>
+    <td>  <font color="red"> 10th May (Fri) </font>  </td>
+    <td>  <font color="red"><b> In-class Midterm 2, [3:30p to 6:00p, LSC100] </td> 
+    <td>  </td>
+	<td>  </b> </font></td>
+  </tr>
+  
+ <tr style="color:black">
+    <td> 14 May (Tue) </td>
+    <td> Graph Algorithms 5: Flows and Cuts </td> 
+    <td> <a href="./lecs/lec15.pdf"> Lec </a></td>
+	<td> </td>
+  </tr>
+<tr>
+<tr style="color:black">
+    <td> 16 May (Thu)  </td>
+    <td> Graph Algorithms 6: The Ford-Fulkerson Algorithm </td> 
+    <td> <a href="./lecs/lec16.pdf"> Lec </a></td></td>
+	<td> </td>
+  </tr>
+<tr>
+<tr style="color:black">
+    <td> 21 May (Tue) </td>
+    <td> Graph Algorithms 7: Applications of Flows  </td> 
+    <td> <a href="./lecs/lec17.pdf"> Lec </a> </td>
+	<td>  </td>
+  </tr>
+
+<tr style="color:black">
+    <td> 23 May (Thu) </td>
+    <td> Graph Algorithms 8: Faster Flows </td> 
+    <td> <a href="./lecs/lec18.pdf"> Lec </a> </td>
+	<td> </td>
+  </tr>
+<tr>
+
+<tr style="color:black">
+    <td> 28 May (Tue)  </td>
+    <td> P, NP, and all that Jazz  </td> 
+    <td> <a href="./lecs/lec19.pdf"> Lec </a>  </td>
+	<td>  </td>
+</tr>
+
+<tr style="color:black">
+    <td> 28 May (Tue)  </td>
+    <td> Review  </td> 
+    <td> <a href="./lecs/TLDR.pdf"> Lec </a>  </td>
+	<td>  </td>
+</tr>
+
+
+<tr style="color:lightgrey">
+    <td> <font color="red"> June 1 (Sat) </font> </td>
+    <td> <font color="red">  <b> In Class Finals : 3pm - 6pm </b> </font>  </td> 
+    <td>  </td>
+	<td>  </td>
+</tr>
+
+
+</table>
+</font>
+
+<hr><hr>
+
+
+<a name="policies"></a>
+<h2> Policies  </h2>
+
+<p> 
+<b> Evaluation Policies : Details</b><br>
+<ul>
+<li> After almost every  class there will be a <b> Drill </b> exercise of a few problems with a (more than) <u>48 hour</u> deadline. 
+These are supposed to make sure you understand the material taught in class that day.
+Many of the drills will involve coding the algorithms in your favorite language.
+<i> You must do these drills on your own without discussion with anyone.</i> 
+You must also write all your code on your own, and not browse the web for answers.
+Clarification questions should be asked on Piazza. Be careful not to violate the Honor Principle. <br>
+&nbsp&nbsp&nbsp&nbsp&nbsp	
+You should of course try to do every drill. I understand that the time constraint is tight, and thus there will be a 15% grace.
+So, if the total points on drills is 60, you will be graded as if the total is 51. So if you get 45/60, it will be counted as 88.4% (and not 75%). <br>
+<br>
+
+<li> There will be <b> Weekly Problem Sets </b>. These will be <i> challenging </i> problems. You will have at least a week to solve them, and will be due by Wednesday 11:59pm.
+Doing these will reinforce the algorithmic techiques you learn the previous week. <br>
+&nbsp&nbsp&nbsp&nbsp&nbsp	
+You should first try doing this problems on your own. When stuck, you are allowed to discuss ideas with your (a) fellow students, (b) TAs, and (c) instructor. 
+No one else (not even your individual Tutor, if you have one). <i> But you must write your answers in your own words </i>. 
+Also, for <i> every </i> question, you must mention who you discussed with. This is serious; if you don't you will get a 0 for that question. 
+<br>
+<br>
+
+<li> I will also be posting <b> Ungraded problem sets (UGPs) </b>. The difficulty of these problems will be somewhere between drills and the weekly problem sets.
+Doing the UGPs first may help you in solving the Weekly Problem Set.
+I will also post their solutions, usually on Sunday mornings.
+<br><br>
+
+<li> I may post <b> Extra Credit </b> problems attached with certain weekly problem sets. Students can hand in the solutions with the weekly problem set.
+These are, as the name says, extra credit. 
+They won't be counted for the final points, but it may affect my decisions for students on the border of two grades. But you should attempt these only after 
+you have finished your weekly problem set. <br><br>
+
+<li> At times, after a certain concept is covered, I may also post other <b> Supplemental Problems</b>. 
+Use these to get more practice and learn a bit more about any concept. <br><br>
+
+<li> There will be three <b> in-class, timed, closed-book </b> exams (two midterms + one final). You should think of the drills and problem sets as practice for your exams. 
+If you have sharpened your skills doing the PSets, then you will be able to do the exams well. 
+Bluntly put, if you are only using office hours to get the Psets solved, chances are you won't do well in the exams. <br>
+<br>
+
+<li> Final grades will be <b>curved</b>. However, if you get more than 92%, you will get an A. If you get more than 55%, you will pass the course.
+These are sufficient conditions, not necessary. I expect the median grade to be B+ (of course I can be surprised either way). <br> <br>
+
+<li> Most importantly, Algorithms are fun; <b>Please have fun</b>. 
+Algorithms are indeed difficult to master, and the barrage of problems that I provide from my end (although only a few are for credit) may feel stressful.
+Please don't be stressed. Algorithms, after all, are not the most important thing in life. 
+
+</ul>
+
+
+
+<p>
+<b> Regrading Policy</b><br>
+If there is a totalling error, please see any of the TAs and they will fix it rightaway. <br>
+On the other hand, if you feel that the grader has not graded accurately then you should clearly write down which problem <u> and </u> your reason why you think the grading is 
+incorrect, staple it with your answer-sheet and hand it to the Head TA during his or her office hour <br>
+If even after this you feel unsatisfied, then you can email the instructor for a <u> full regrade </u>.
+I will look at the entire problem set and re-grade it completely.
+
+
+
+<p>
+<b> Late Exercises and Problem Sets</b><br>
+Problem Sets are submitted via Canvas. Each student has a <u> total of two late days </u> available. 
+Note that even a minute late in canvas is a day late. 
+I will be <b> extremely strict </b> on this: any late submissions after the two late days will be straight given a zero.
+No excuses shall be entertained. <b> Drill Problem Sets</b> have no late days available. However, Drills will have slack, that is, even if you miss one, 
+you will have an opportunity to make up.
+
+
+<p>
+<b> Laptops and Phone Policy </b><br>
+We encourage students not to use devices in class. If they have to, then they need to seat themselves on the fringes of the classroom 
+so as to not distract other students. <br>
+
+<p> 
+<b> Office Hours Policy </b><br>
+There is <b> no laptop/cell phone allowed </b> in office hours (Instructor or TA). So if you have a specific question on a problem set, please make sure to get a print-out of that problem set.
+You are also not allowed to sit in office hours and write your assignment solutions. Remember: if you don't understand the concepts, you may suffer in the 
+in-class tests.
+
+<p>
+<b> Academic Integrity / Honor Code </b><br>
+
+<u> All work submitted for credit must be your own.</u> 
+This means what you put down on paper for submission <b> must be your own words </b> and 
+cannot be in any way copied from a black/white board, a computer screen, or even your notes from class.
+Please be <i>extremely sure</i> of this. Also, many of the problems have their solutions on the web. 
+You are <b> not allowed </b> to search or obtain and consult these solutions. 
+<br> <br>
+
+You <b> cannot </b> discuss the drill problem sets with anyone. Clarification questions can be asked on Piazza, or face-to-face.
+Piazza is preferred as the doubt may be common and the answer reaches everyone. <br><br>
+
+
+You may <i>discuss</i> the problem sets and ideas to attack them with (a) your classmates (taking the course with you), (b) the TAs, and (c) the instructor. 
+<b>No one else.</b> Not even your individual Tutor, if you have one. </br> 
+You are also not allowed to give away solutions to your classmates.
+Clarification questions about problems should be asked on Piazza. <br> <br>
+
+
+<u> <font color="red"> This is important: Please carefully read what is written below.</font></u><br>
+When you submit your weekly problem set, at the beginning of each problem you must write who all helped you and who all you helped with this problem.
+If you did not talk with anyone, mention this as well. This information forms a part of your submission.
+<b> This can't be written as a comment on your Canvas submission. </b>
+<b> If you do not follow the above, you may be awarded zero points. Seriously.</b> 
+I know many solutions are written at the last minute; spend the first 10 seconds of that minute to 
+cite people who help you. 
+ 
+ <br><br> 
+Dartmouth's Academic Honor Principle applies to this course. Please be sure to read the principle, which you can 
+find <a href="http://www.dartmouth.edu/judicialaffairs/honor/"> here </a>.
+Please ask me if you have any questions about the honor code as it applies to CS 31. Please, please don't be in a situation where you and I need to go through unpleasantries.
+<hr>
+
+</div>
+
+
+<hr>
+
+

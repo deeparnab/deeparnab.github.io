@@ -1,0 +1,194 @@
+\documentclass[11pt]{article}
+\input{starter}
+\setlength\parindent{0pt}
+
+\newcommand{\AB}{\textbf{A}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\PP}{\mathbb{P}}
+
+%make one of the 1's into 0 to hide solutions
+
+\begin{document}
+  \begin{center}
+    {\bf \Large CS 49/149: 21st Century Algorithms (Fall 2018)}\\ 
+    Date: 2nd October, 2018 \\
+    Topic: Gradient Descent on Smooth and Strongly Convex Objective Functions\\
+    Scribe: Edward Yao \\
+  \end{center}
+\hrule height 2pt
+\vspace{3ex}
+\def\loss{\mathsf{loss}}
+\section{"Smooth" functions and gradient descent}
+
+It turns out that with stronger assumptions on the objective functions we are optimizing with respect to, we can obtain stronger bounds on the rates of convergence of the gradient descent algorithm we explored last time in class. In the analysis last class, we showed that we could obtain a an error under $\varepsilon$ with gradient descent (for a reminder, see the appendix) if we ran the algorithm for $T=\frac{||x_1-x_*||_2 * \rho^2}{\varepsilon^2}$ time (where $x_1$ is the initial point the gradient descent starts at and $x_*$ is the optimum point minimizing the objective function). We will now investigate one such example where we can make a stronger assumption on  the objective function, which will enable us to obtain a faster rate of convergence for gradient descent.
+
+\paragraph{Definition:} $L$-smooth in the euclidean norm \\
+A function $f$ is $L$-smooth in the euclidean norm if for all $x,y$, $||\nabla f(x)- \nabla f(y) ||_2 < L \cdot ||x - y ||_2$. 
+
+\begin{theorem}
+If a function $f$ is $L$-smooth, $\forall x,y: f(y) \leq f(x) + (y-x)^T\nabla f(x) + \frac{L}{2}||x-y||^2_2$
+\end{theorem}
+
+\begin{proof}
+    \allowdisplaybreaks
+    Define function $g(t) = f(x + t(y-x))$ for $0\leq t \leq 1$. Observe that because of the way we have constructed this function, $g(0) = f(x)$, and $g(1) = f(y)$. Then, we can take the derivative with respect to $t$ of both sides of the equality to get
+    \[
+        \frac{dg(t)}{dt} &= (y-x)^T\nabla f(x+ t(y-x))
+    \]
+    We can then begin analysis of our function:
+    \begin{align*}
+        f(y) - f(x) &= g(1) - g(0)\\
+        &= \int_{0}^{1} g'(t) dt \\
+        &= \int_{0}^{1} (y-x)^T \nabla f(x + t(y-x)) dt\\ 
+        &= \int_{0}^{1} (y-x)^T [\nabla f(x + t(y-x)) - \nabla f(x)] dt + \int_{0}^{1} (y-x)^T \nabla f(x) dt \\ 
+        &= \int_{0}^{1} (y-x)^T [\nabla f(x + t(y-x)) - \nabla f(x)] dt + (y-x)^T \nabla f(x) \\ 
+        &\hspace{-22mm}\implies f(y) - f(x) - (y-x)^T \nabla f(x) = \int_{0}^{1} (y-x)^T \nabla f(x + t(y-x))dt\\
+        &\leq \int_{0}^{1} ||y-x||_2 \cdot ||\nabla f(x) + t(y-x)) - \nabla f(x)||_2 dt \tag{Cauchy-Shwartz}\\
+        &\leq \frac{L}{2} \int_{0}^{1} ||y-x||_2 \cdot t ||y-x||_2 dt \tag{smoothness} \\
+        &\leq \frac{L}{2} ||y-x||_2^2 \int_{0}^{1} t dt \\
+        &\leq \frac{L}{2} ||y-x||_2^2 
+    \end{align*}
+\end{proof}
+
+\todo{
+    Show that $||\nabla f(x)||_2 \leq \rho \iff |f(x) - f(y)| \leq \rho \cdot ||x-y||_2$ (known as the Lipschitz condition)
+}
+
+Understanding these properties for smooth functions, let us now turn to analyzing gradient descent in the case where our objective function is a smooth function. 
+
+\paragraph{Gradient descent for smooth functions} Recall that the update rule for gradient descent is $x_{t+1} = x_t - \eta \nabla f(x)$. Let us consider several facts that arise from our previous theorem, which shall help us in our convergence analysis. 
+\begin{enumerate}
+\item Setting $x = x_*$ (i.e. the optimal value of $x$ that minimizes the objective function) and $y = x_t$ (i.e. the value of $x$ which gradient descent holds at time $t$), we know that $f(x_t) \leq f(x_*) + \frac{L}{2}||x_t-x_*||$, written another way as $error(t) \leq \frac{L}{2} D_t^2$, where ($D_t$ is $||x_t-x_*||$, i.e. the distance from our current point to the optimum at time $t$).
+\item Setting $x = x_*$ and $y=x_{t+1}$, we get that 
+\begin{align*}
+    f(x_{t+1}) &\leq f(x_t) + (x_{t+1} - x_{t})^T\nabla f(x_t) + \frac{L}{2}||x_{t+1} - x_t||^2_2 \\
+    &= f(x_t) - \eta ||\nabla f(x_t)||^2_2 + \frac{\eta^2 \cdot L}{2} ||\nabla f(x_t)||^2_2 \\
+    &= f(x_t) - ||\nabla f(x_t)||^2_2(\eta - \frac{\eta^2 \cdot L}{2}) \\
+    &= f(x_t) - \frac{1}{2L}||\nabla f(x_t)||^2_2 \tag{setting $\eta = \frac{1}{L}$} \\
+\end{align*}
+Note that $||\nabla f(x_t)||_2^2$ is a measure of distance to a saddle point (since the gradient of a vector function being zero does not guarantee local optimality).
+\end{enumerate}
+
+With these two equations in our hands, we can now turn to analysis of of gradient descent. In particular, we would like to find how many steps are needed until our algorithm reaches a local optimum/saddle point. Adding together two equations we get from properties of convexity and smoothness,
+
+\begin{align*}
+    f(x_t) - f(x_*) = error(t) &\leq (x_t - x_*)^T \nabla(f(x_t)) \tag{convexity}\\
+    \textbf{+} \hspace{5mm}f(x_{t+1}) - f(x_t) &\leq (x_{t+1} - x_t)^T \nabla f(x_t) + \frac{L}{2} ||x_{t+1} - x_t||_2^2 \tag{smoothness}\\
+    \hline
+    err(t+1) &\leq (x_{t+1} - x_*)^T \nabla f(x_t) + \frac{L}{2} ||x_{t+1} - x_t||_2^2
+\end{align*}
+
+Now, analyzing the last equation that came from the addition of the smoothness and convexity properties,
+
+\begin{align*}
+    err(t+1) &\leq (x_{t+1} - x_*)^T \nabla f(x_t) + \frac{L}{2} ||x_{t+1} - x_t||_2^2 \\
+    &= \frac{1}{n}(x_{t+1} - x_*)^T(x_t-x_{t+1}) + \frac{L}{2} ||x_{t+1} - x_t||^2_2 \tag{gradient descent} \\
+    &= \frac{1}{2n}(||x_t-x_*||_2^2 - ||x_{t+1} - x_*||_2^2 - ||x_{t+1} - x_t||_2^2) + \frac{L}{2}(||x_{t+1} - x_t||_2^2) \tag{cosine identity} \\ 
+    &= \frac{1}{2n}(D^2_t-D^2_{t+1}) - ||x_{t+1} - x_t||^2_2 \cdot (\frac{1}{2\eta} \cdot \frac{L}{2}) \\
+    &= \frac{L}{2}(D_t^2 - D_{t+1}^2) \tag{if $\eta = \frac{1}{L}$} 
+\end{align*}
+
+If we run this algorithm for $T$ steps, then $\sum_{i=1}^T err(t+1) \leq \frac{L}{2}(D^2_1 - D_f^2) \leq \frac{LD^2}{2}$, which implies that $f(x_t) - f(x_*) \leq \frac{LD^2}{2T}$ where $D = ||x_1 - x^*||_2^2$. \\
+
+Recall that we also know for smooth functions that $f(x_{t+1}) \leq f(x_t) - \frac{1}{2L}||\nabla f(x)||^2_2$. Plugging in $T = \frac{LD^2}{2\varepsilon}$, we get that $f(x_t) - f(x_*) \leq \varepsilon$.
+
+\todo{
+    We have shown in this analysis that the value of the objective function drops to under $\varepsilon$. Show that $D_t$, i.e. $||x_t - x_*||$, is also dropping over time.
+}
+
+\todo{
+    This analysis was done in the context of unconstrained gradient descent. Show also that the same bounds hold for projected gradient descent.
+}
+
+\paragraph{Examples of smoothness: } 
+Let us examine the function $f(x) = \frac{1}{2}x^TQx$, where $Q\in \R^{n \times m}$. Then, we can see that $(\nabla f(x))_j = \frac{\partial f}{\partial j} = Q_{jj}x_j + \sum_{i \neq j} Q_{ij}x_{i} = (x^TQ)\implies \nabla f(x) = Q^T x$. \\
+How smooth is this function? \\
+\begin{align*}
+    ||Q^Tx-Q^Ty||_2 &\leq L||x-y||_2 \\
+    &\hspace{-33.5mm}\implies ||Q^T(x-y)||_2 \leq L||x-y||_2 \tag{$u = x-y$} \\
+    L &= \max_{u\neq 0, u\in \R^n} \frac{||Q^Tu||_2}{||u_2||_2} = \sqrt{\lambda_{\text{max}}(QQ^T)}\\
+\end{align*}
+
+To see this, we can expand out the numerator above:
+\[
+||Q^Tu||_2 = u^TQQ^Tu
+\]
+If $QQ^T$ had a largest value $\lambda$,
+\begin{align*}
+    \exists v, QQ^Tv &\leq \lambda v \\ 
+    v^T(QQ^Tv) &\leq \lambda v^Tv \\
+    \implies \frac{||Q^Tv||_2^2}{||v||_2^2} &\leq \lambda
+\end{align*}
+
+
+
+According to gradient descent rules, for an objective function $f(x) = \frac{1}{2}x^T Qx$, our update rule should look like $x_{t+1} = x_t - \frac{1}{\delta}x_t^T Q$, where $\delta = \sqrt{\lambda_{\text{max}}(QQ^T)}$. If we run this algorithm for about $O(\frac{1}{\varepsilon})$ iterations, we can get about $\varepsilon$-close to the global optimum (since this is a convex function).
+\todo{
+    How smooth is $f(x) = ||Ax-b||^2_2$, where $A\in \R^{m\times n}, b\in \R^{m}, x\in \R^{n}$?
+}
+
+
+
+\section{Strongly convex functions}
+
+We saw in the previous section that if we know that our objective function is not only convex but also $L-$smooth, we can run the algorithm for a time that scales linearly with $L$, instead of quadratically with $\rho$. Another way that we can guarantee faster convergence than just on normal convex function is if we know the objective function is strongly convex and it is smooth.
+
+\paragraph{Definition:} Strongly Convex \\
+A function $f: \R^n \rightarrow \R$ is $l-$strongly convex if $\forall x,y: f(y) \geq f(x) + (y-x)^T\nabla f(x) + \frac{l}{2}||y-x||_2^2$ \\
+
+The motivation for examining strong convexity is as follows: if a function $f$ is both $l-$strongly convex and $L-$smooth, we can bound it between two quantities based on the properties of the functions, i.e. 
+\[
+    f(x) + (y-x)^T \nabla f(x) + \frac{l}{2} ||x-y||^2_2 \leq f(y) \leq f(x) + (y-x)^T\nabla f(x) + \frac{L}{2}||x-y||^2_2
+\]
+which should help our analysis. \\
+
+We now move to the analysis of $f$ such that $f$ is $l-$ strongly convex and $L-$smooth. From the definition of $l-$strongly convex, $err(t) = f(x_t) - f(x_*) \leq (x_t - x_*)^T \nabla f(x_t) - \frac{l}{2}||x_t - x_*||_2^2$.
+Much the same as in the analysis of the smooth function, we add the two properties from $f$ being strongly convex and $f$ being smooth together:
+
+\begin{align*}
+    error(t) &\leq (x_t - x_*)^T \nabla f(x_t) - \frac{l}{2}D^2_t  \tag{strong convexity}\\
+    \textbf{+} \hspace{5mm}f(x_{t+1}) - f(x_t) &\leq (x_{t+1} - x_t)^T \nabla f(x_t) + \frac{L}{2} ||x_{t+1} - x_t||_2^2 \tag{smoothness}\\
+    \hline
+    err(t+1) &\leq \frac{L}{2}(D_t^2 - D_{t+1}^2) - \frac{l}{2}D^2_t
+\end{align*}
+
+We know that this above quantity is lower bounded by $0$ while the algorithm is still running. Thus, 
+\begin{align*}
+    0 &\leq err(t+1) \leq \frac{L}{2}(D_t^2 - D_{t+1}^2) - \frac{l}{2}D^2_t \\
+    &\implies \frac{L}{2} D^2_{t+1} \leq \left(\frac{L-l}{2}\right) \cdot D^2_t \\
+    &\implies D^2_{t+1} \leq (1- \frac{l}{L}) \cdot D^2_t
+\end{align*} 
+
+If we run gradient descent on this function for $T$ stepsm we can see that $D^2_T \leq (1- \frac{l}{L})^TD_1^2$. Combine this with the fact that $f(x_t) - f(x_*) \leq \frac{L}{2} D_t^2$ for $L-$ smooth functions, and we get that $err(T) = f(x_T) - f(x_*) \leq \frac{L}{2}(1-\frac{l}{L})^T \cdot D^2 = \varepsilon$. Solving this for $T$, we get $T$ scales with the $\log(\frac{1}{\varepsilon})$, which means this function has "linear convergence" (though the mathematical form has a $\log$ in it). 
+
+The results here make sense - with even stronger restrictions on the objective functions, we get an even tighter bound on the number of steps needed for gradient descent to converge to within $\varepsilon$ of the optimum objective function value.\\
+In practice, we care a lot about the quantity $\frac{l}{L}$, which we call the condition number. Also note that for these bounds to even work, $l<L$. Otherwise, intuitively, the sandwiching we are doing of the function between two quantities cannot happen because the top bound may be smaller than the bottom bound.
+
+
+\section{Appendix: Useful Reminders}
+
+Cauchy-Shwartz inequality:
+\[
+    a^Tb \leq ||a||_2 \cdot ||b||_2
+\]
+
+Cosine identity:
+\[
+    a^Tb = \frac{1}{2}(||a + b||^2_2 - ||a||_2^2 - ||b||_2^2)
+\]
+
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] \underline{\sc Unconstrained Gradient Descent}
+\begin{itemize}
+\item $x_1 := $ arbitrary point
+\item run for iterations $t=1,\ldots, T$:
+\begin{itemize}
+    \item $x_{t+1} = x_t- \eta_t\nabla f(x_t)$
+\end{itemize} 
+
+\end{itemize}
+\end{mdframed}
+
+\end{document}
+

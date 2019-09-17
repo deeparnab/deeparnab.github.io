@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\input{starter}
+
+%make one of the 1's into 0 to hide solutions
+
+\begin{document}
+\begin{center}
+    {\bf \Large CS 49/149: 21st Century Algorithms (Fall 2018): Lecture 3}\\ 
+    Date: 20th September, 2018 \\
+    Topic: MWU Application: Linear Programming \\
+    Scribe: Rui Liu \\
+    {\em Disclaimer: These notes have not gone through scrutiny and in all probability contain errors. Please email errors to rliu@cs.dartmouth.edu.}
+\end{center}
+
+\hrule height 2pt
+\vspace{3ex}
+\def\loss{\mathsf{loss}}
+
+\section{The Linear Programming}
+Linear programming is a technique for the optimization of a linear objective function, subject to linear inequality constraints, as the following equations.
+
+\begin{equation}
+\begin{aligned}
+    \text{minimize} \quad & \sum_{i=1}^m c_i x_i \\
+    \text{subject to $m$ constraints} \quad & a_i^T x \geq b_i, i=1...m \\
+    \text{where} \quad & x \in \mathbb{R}^n \text{ and } c\in \mathbb{R}^n
+\end{aligned}
+\end{equation}
+
+The goal is to minimize the linear combination of $x$ in the feasible region, subject to constrains given by inequalities.
+The feasible region is $\{ x\in \mathbb{R}^n: \text{satisfy all constraints} \}$.
+
+\todo{
+What is the largest total of corners in a $n$ dimensional space?
+}
+\textbf{Answer}: In the $n$ dimensional space, the largest total number of corners is $\binom{n}{m}$, because $m$ non-parallel hyper-plane are needed to create a corner.
+
+Instead of traversing the complete feasible region for \opt, we could approach the linear programming problem by approximation.
+We will return $\hat{x}$ within $1/\epsilon^2$ time, s.t. the following equations hold for all $i=1...m$.
+
+\begin{align*}
+c^T\hat{x} &\leq \opt \\
+a_i^T \hat{x} &\geq b_i - \epsilon
+\end{align*}
+
+\smallskip
+\paragraph{Spacial case when $m=1$.}
+When $m=1$, $x_j\in [0, 1]$, the problem becomes a variant of \emph{Knapsack problem}.
+Given a set of items, each with a weight and a value, determine the number of each item to include in a collection so that the total weight is less than or equal to a given limit and the total value is as large as possible.
+This problem could solved by a greedy algorithm.
+
+\begin{align*}
+\text{minimize} \quad   & c^T\hat{x} \\
+\text{subject to} \quad & a^T \hat{x} \geq b
+\end{align*}
+
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+    \underline{\sc Greedy algorithm for Knapsack}
+    \begin{itemize}
+        \item Order items by decreasing $\frac{v_j}{c_j}$
+        \item Keep putting $x_j=1$ until the reaching the constraint $b$
+        \item Maybe the last item $x_j < 1$
+    \end{itemize}
+\end{mdframed}
+
+The time complexity of the greedy algorithm is $O(n\log n)$.
+
+\todo{
+Is the outcome of the greedy algorithm guaranteed to be optimal?
+}
+\textbf{Answer}: Yes, the optimization is guaranteed and it could be proved by \textit{exchange argument}.
+\smallskip
+
+\subsection{Appy MWU}
+
+\paragraph{ORACLE}
+Instead of finding an $x$ satisfying all the constraints, we could find an $x \in [0, 1]$ satisfying only the following equation (by average all the constraints).
+\begin{align*}
+\text{minimize} \quad   & c^T\hat{x} \\
+\text{subject to} \quad & \frac{1}{m}\sum_i^m a_i^T x \geq \frac{1}{m}\sum_i^m b_i \\
+\end{align*}
+
+Since the feasible region of our ORACLE is the super set of the feasible region given all the $m$ constraints, we know $c^T \hat{x} \leq \opt$.
+
+With randomization, we modify the constraint to $\sum_i^m P_i a_i^T x \geq \sum_i^m P_i b_i$.
+Assume ORACLE give a distribution $\{ P_i(t)\}$ and it returns $x(t)$ subject to the following constraints.
+
+\begin{equation}
+\label{equ:oracle_definition}
+\begin{aligned}
+c^T x(t) & \leq \opt \\
+\sum_i^m P_t(t) a_i^T x(t) &\geq \sum_i^m P_i(t) b_i
+\end{aligned}
+\end{equation}
+
+We assume $a_i^T x_i - b_i$ is bounded by some value $\rho > 0$.
+That is $\forall i\in \{1, ..., m\}$, $a_i^T x_i - b_i \in [-\rho, \rho]$.
+
+% Idea
+% \begin{itemize}
+%     \item Feed $P(t)$ to oracle
+%     \item Obtain $x(t)$
+%     \item for constraints i, which are violated increase $P_i(t)$
+%     \item MWU
+% \end{itemize}
+
+We define $\loss$ function as the following equation.
+\begin{equation}
+\label{equ:loss_definition}
+\ell_i(t) := \frac{a_i^T x(t) - b_i}{\rho}
+\end{equation}
+
+\begin{mdframed}[backgroundcolor=blue!05,topline=false,bottomline=false,leftline=false,rightline=false] 
+    \underline{\sc multiplicative weight update linear programming}
+    \begin{itemize}
+        \item Maintain weights $w_i()$ for each expert with $w_i(1) = 1$ for all $i$.
+        \item On days $t=1,\ldots, T$:
+        \begin{itemize}
+            % \item $\forall$ $i$, $P_i(t)=w_i(t)/\sum_j^m w_j(t)$
+            \item Feed $P_i(t) \propto w_i(t)$ to ORACLE and get $x(t)$.
+            \item For constraints $i$ that are violated increase $w_i(t)$
+            \begin{equation}
+            \label{eq:halving}
+            w_i(t+1) = w_i(t)\cdot (1 - \eta \ell_i(t))
+            \end{equation}
+            
+        \end{itemize} 
+    \end{itemize}
+\end{mdframed}
+
+Recall Theorem~\ref{theorem:mwu_bound} in the first lecture.
+\begin{theorem}
+\label{theorem:mwu_bound}
+The expected ($\Exp[\loss]$) of the \textit{Randomized Weighted Majority} is bounded.
+\begin{equation}
+\label{equ:mwu_bound}
+\Exp[\loss_{\alg}] \leq \Exp[\loss_{\opt}] + \frac{\ln{m}}{n} + \eta \sum_t^T\sum_i\ell_i^2(t)
+\end{equation}
+\end{theorem}
+
+\begin{theorem}
+Given any $\epsilon > 0$, we could get $a_i^T \hat{x} - b_i \geq -\epsilon$ within time subject to $\epsilon$.
+\end{theorem}
+
+\begin{proof}
+With \ref{theorem:mwu_bound}, we know
+\[
+\frac{1}{\rho}\sum_t^T \sum_i^m P_i(t)(a_i^T x(t) - b_i) \leq_{i^*} \sum_t^T\ell_{i^*}(t) + \frac{\ln{m}}{\eta} + \eta*\sum_t^T|\ell_{i^*}(t)|
+\]
+
+As the ORACLE defines, we know
+\[
+\frac{1}{\rho}\sum_t^T \sum_i^m P_i(t)(a_i^T x(t) - b_i) \geq 0
+\]
+
+With the two equations above, we get
+\[
+\sum_t^T\ell_{i^*}(t) + \frac{\ln{m}}{\eta} + \eta*\sum_t^T|\ell_{i^*}(t)| \geq 0
+\]
+
+Move things around and get
+\[
+\sum_t^T (a_{i^*} x^T(t) - b_{i^*}) \geq - \Big(\frac{\ln{m}}{\eta} + \eta*\sum_t^T|\ell_{i^*}(t)| \Big)
+\]
+
+Let $\hat{x} = \frac{1}{T}\sum_t^T x(t)$, we get
+
+\begin{equation}
+C^T\hat{x} = \frac{1}{T}\sum_t^T C^T x(t) \leq \opt
+\end{equation}
+
+
+Because the definition of $\loss$ in Equation~\ref{equ:loss_definition}, the term $|\ell_{i^*}| \in [0, 1]$, s.t. we have
+
+\[
+a_{i}^T\hat{x} - b_{i} \geq -\rho (\frac{\ln{m}}{\eta T} + \eta)
+\]
+
+The equation above reaches upper bound when $\eta = \sqrt{\frac{\ln{m}}{T}}$.
+
+We will get $2\rho\sqrt{\frac{\ln{m}}{T}} = \epsilon$ by setting $T=\frac{4\rho^2 \ln{m}}{\epsilon^2}$ and $\eta=\frac{\epsilon}{2\rho}$.
+
+Total time approximated by $O\Big( \frac{4 \rho^2 n \ln{m}\ln{n}}{\epsilon^2} \Big) = \tilde{O}\Big( \frac{4 \rho^2 n}{\epsilon^2} \Big)$.
+
+\end{proof}
+
+\subsection{Linear programming example: vertex cover}
+A \textbf{vertex cover} of a graph is a set of vertices such that each edge of the graph is incident to at least one vertex of the set.
+
+We formulate this problem to the following linear programming problem.
+For a graph $G = (V, E)$, set $x_v = 1$ if placed, otherwise $x_v = 0$.
+
+\begin{alignat*}{3}
+\text{minimize} \quad   & \sum_{v \in V} c_v x_v & \\
+\text{subject to} \quad & x_u + x_v \geq 1 \quad & \forall e=(u, v) \\
+& x_v \in [0, 1] & \forall v \in V \\
+\end{alignat*}
+
+In this setting, we have $x_u + x+v \in [0, 2]$ so $\rho = 1$.
+Thus, the total time for MWU is $\tilde{O}(\frac{n}{\epsilon^2})$, where $n = |V|$.
+
+\end{document}
