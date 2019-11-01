@@ -1,0 +1,440 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="test-course.css" id="styleId" text-decoration="none"/>
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
+<title>CS 30: Discrete Mathematics in Computer Science, Winter 2020</title> </head>
+
+<body>
+<h2>
+<font color="black">
+CS 30: Discrete Mathematics in Computer Science, Winter 2020 </font> <br>
+</h2>
+<br>
+<hr>
+<table style="width:100%" font="small">
+  <tr>
+    <th><a href = "#schedule"> Schedule </a> </th> 
+ 	<th> <a href = "#policies"> Policies </a> </th>
+  </tr>
+</table>
+<hr>
+<br> 
+<b> Course Description and Goals: </b> <br>
+Discrete Mathematics is what one needs to talk about most problems in computer science which involves discrete objects such as bits, integers, files in a directory, 
+nodes in a network, etc. At the end of this course, students will be comfortable understanding and using this language. 
+The other main objective is to read, write, and understand <i> rigorous mathematical proofs </i> of propositions involving these discrete objects.
+Proofs are important not only to prove correctness of, say, your code, but also important to <i> design </i> new algorithms as well. 
+Most importantly, all of these are a lot of fun!
+
+
+<p><b> Background Assumed: </b><br>
+Students should have basic knowledge about programming (CS1) <i> and </i> should have some familiarity with basic math.
+You should know the concepts given <a href="./basics.pdf"> here </a>.
+<hr> 
+<br>
+<b> Class Times:</b> 10 (MWF: 10:10am - 11:15am), X-hours (Th: 12:15pm - 1:05pm) <br> 
+<b> Venue: </b> TBD <br> 
+<b> Discussions: </b> Piazza (via Canvas) <br>
+<b> Problem Sets: </b> Canvas <br>
+
+<b> Personnel and Office Hours:</b> 
+<ul>
+<li> <a style="color:inherit" href="./../../index.htm"> Deeparnab Chakrabarty </a> (Instructor), 
+M-F (4:30pm - 5:30 pm) </li>
+<li>  </li>
+<li> Janvi Kalra (TA) 	</li>
+<li> Linda Xiao (TA) 	</li>
+<li> Josiah Putman (TA)	</li>
+<li> Sucharitha Jayanti (TA) </li> 
+</ul>
+
+<p>
+<b> Text Book: </b> <br>
+I will be posting <b> lecture notes </b> for every class. So no text is required. However, the course will loosely follow a text by
+David Liben-Nowell, <a href="https://tinyurl.com/yafoe4yn"> Discrete Mathematics for Computer Science</a>. <i> It is not necessary to buy this text </i>
+
+<p><b> Evaluation </b> <br>
+<ul>
+<li> Drill Exercises: 30% </li>
+<li> Problem Sets : 25% </li>
+<li> Midterm : 12 + 12% </li>
+<li> Final : 20% </li>
+<li> Participation : 1% </li>
+</ul>
+After <b> almost every </b> class there will be a drill exercise of 1 or 2 problems with a 36 hour deadline.
+There will be weekly problem sets. There will be two Midterms and one Final Examination which are in-class and closed-book.
+<hr>
+<hr>  
+
+
+
+<!--
+<p> <b> Tentative Topics Covered: </b> Big Oh Notation, Divide and Conquer Algorithms, Randomized Algorithms, Dynamic Programming, Greedy Algorithms, Graph Algorithms, 
+Graph Traversal, Shortest Path, Maximum Flow Problems, Matching. <br>
+ Detailed schedule will be available when the class starts. -->
+<a name="schedule"></a>
+<h2> Tentative Weekly Schedule </h2> 
+
+Anything after today's date is tentative. 
+As seen below (marked in bold), we will be utilizing our X-hours a lot. 
+The fourth column is a reference to the text above -- once again, that is only added reading, and the text is not necessary.
+
+<br> <br>
+
+<font face="inherit" size="1" color="lightgrey">
+<table style="width:100%" font="small">
+  <tr style="color:black">
+    <th>Date</th>
+    <th>Topics</th> 
+    <th>Notes</th>
+	<th>Textbook Material</th>
+  </tr>
+  <br>
+  
+  <br>
+  
+  <tr style="color:black">
+    <td> 6th Jan (Mon):</td>
+    <td> Jargon: Introduction, Sets </td> 
+    <td> <a href="lecs/lec1.pdf"> Lec </a> </td>
+	<td> Sec 2.3 </td>
+  </tr>
+ 
+<tr style="color:black">
+    <td> 8th Jan (Wed):</td>
+    <td> Jargon: Functions </td> 
+    <td> </td>
+	<td> Sec 2.5 </td>
+</tr>
+
+<tr style="color:black">
+    <td> <b> 9th Jan (X) </b>:</td>
+    <td> Jargon: Propositional Logic</td> 
+    <td> </td>
+	<td> Sec 3.1, 3.2 </td>
+</tr>
+
+
+<tr style="color:black">
+    <td> 10th Jan (Fri):</td>
+    <td> Jargon: Predicate Logic </td> 
+    <td> </td>
+	<td>  Sec 3.4 </td>
+</tr>
+ 
+ 
+<tr style="color:black">
+    <td> 13th Jan (Mon):</td>
+    <td> Proofs: Contradiction </td> 
+    <td>  </td>
+	<td> Sec 4.3 </td>
+</tr>
+
+
+<tr style="color:black">
+    <td> 15th Jan (Wed):</td>
+    <td> Proofs: Induction (Basics) </td> 
+    <td> </td>
+	<td> Sec 5.1 </td>
+</tr>
+ 
+ 
+<tr style="color:black">
+    <td> <b> 16th Jan (X): </b> </td>
+    <td> Proofs: Induction (Strong) </td> 
+    <td>  </td>
+	<td> Sec 5.3 </td>
+</tr>
+ 
+
+<tr style="color:black">
+    <td> 17th Jan (Fri):</td>
+    <td> Proofs: Induction (Correctness of Recursive Progs) </td> 
+    <td>  </td>
+	<td>  </td>
+</tr>
+ 
+ 
+<tr style="color:black">
+    <td> 22nd Jan (Wed):</td>
+    <td> Combinatorics: Sum and Product Principles </td> 
+    <td>   </td>
+	<td> Sec 9.1, 9.2 </td>
+</tr>
+
+<tr style="color:black">
+    <td> <b> 23rd Jan (X): </b> </td>
+    <td> Catch up? </td> 
+    <td>   </td>
+	<td>  </td>
+</tr>
+
+
+
+<tr style="color:black">
+    <td> 24th Jan (Fri):</td>
+    <td> Combinatorics: Bijections, Division Principle  </td> 
+    <td>   </td>
+	<td> Sec 9.4 </td>
+</tr>
+ 
+ 
+<tr style="color:black">
+    <td> 27th Jan (Monday):</td>
+    <td> Combinatorics: The Four Fold Formula </td> 
+    <td> </td>
+	<td> Sec 9.4</td>
+</tr>
+
+ 
+<tr style="color:black">
+    <td> 29th Jan (Wed):</td>
+    <td> Combinatorics: Binomial Coefficients, Combinatorial Identities </td> 
+    <td>  </a> </td>
+	<td> Sec 9.4 </td>
+</tr>
+
+
+
+<tr style="color:red">
+    <td> 30th Jan (Thu):</td>
+    <td> Midterm 1  </td> 
+    <td> Venue: TBD </td>
+	<td> Time: TBD  </td>
+</tr>
+
+<tr style="color:black">
+    <td> 31st Jan (Fri):</td>
+    <td> Probability: Basics </td> 
+    <td> </td>
+	<td>  Sec 10.1, 10.2 </td>
+</tr>
+
+
+
+<tr style="color:black">
+    <td> 3rd Feb (Mon):</td>
+    <td> Probability: Conditional Probability, Independence </td> 
+    <td>  </td>
+	<td> Section 10.3 </td>
+</tr>
+
+<tr style="color:black">
+    <td> 5th Feb (Wed):</td>
+    <td> Probability: Bayes Rule </td> 
+    <td>   </td>
+	<td> Section 10.3 </td>
+</tr>
+
+<tr style="color:black">
+    <td> <b> 6th Feb (X): </b> </td>
+    <td> Probability: Random Variables </td> 
+    <td>   </td>
+	<td> Section 10.3 </td>
+</tr>
+
+<tr style="color:black">
+    <td> 7th Feb (Fri):</td>
+    <td> Probability: Expectation and Variance </td> 
+    <td>  </td>
+	<td> Section 10.4</td>
+</tr>
+
+
+<tr style="color:black">
+    <td> 10th Feb (Mon):</td>
+    <td> Graphs: Basics, Induction on Graphs</td> 
+    <td>  </td>
+	<td> Sec 11... </td>
+</tr>
+
+<tr style="color:black">
+    <td> 12th Feb (Wed):</td>
+    <td> Graphs: Trees, Connectivity </td> 
+    <td>  </td>
+	<td> Section 11.... </td>
+</tr>
+
+<tr style="color:black">
+    <td> 14th Feb (Fri):</td>
+    <td> Graphs: Bipartite Graphs </td> 
+    <td> </td>
+	<td> Section 11... </td>
+</tr>
+
+<tr style="color:black">
+    <td> 17th Feb (Mon):</td>
+    <td> Graphs : Matchings, Hall's Theorem </td> 
+    <td>  </td>
+	<td>  Section 11... </td>
+</tr>
+
+<tr style="color:black">
+    <td> 19th Feb (Wed):</td>
+    <td> Graphs: Proof of Hall's Theorem </td> 
+    <td> </td>
+	<td> Section 11....  </td>
+</tr>
+
+<tr style="color:red">
+    <td> 20th Feb (Thu):</td>
+    <td> Midterm 2  </td> 
+    <td> Venue: TBD </td>
+	<td> Time: TBD  </td>
+</tr>
+
+<tr style="color:black">
+    <td> 21st Feb (Fri):</td>
+    <td> Number Theory: Modular Arithmetic </td> 
+    <td>  </td>
+	<td> Section 7.1 </td>
+</tr>
+
+
+
+<tr style="color:black">
+    <td> 24th Feb (Mon):</td>
+    <td> Numbers: GCD and Euclid's Algorithm </td> 
+    <td>  </td>
+	<td> Sec 7.2, 7.3 </td>
+</tr>
+
+<tr style="color:black">
+    <td> 26th Feb (Wed):</td>
+    <td> Numbers: Multiplicative Inverses </td> 
+    <td>  </td>
+	<td> Section 7.4 </td>
+</tr>
+
+<tr style="color:black">
+    <td> <b> 27th Feb (X): </b> </td>
+    <td> Numbers: Fermat's Little Theorem, Linear Equations </td> 
+    <td>  </td>
+	<td> Section  </td>
+</tr>
+
+
+<tr style="color:black">
+    <td> 28th Feb (Fri):</td>
+    <td> Numbers: RSA </td> 
+    <td>  </td>
+	<td>  </td>
+</tr>
+
+
+
+
+<tr style="color:black">
+    <td> 2nd Mar (Mon):</td>
+    <td> Infinity: Countability </td> 
+    <td>  </td>
+	<td> </td>
+</tr>
+
+<tr style="color:black">
+    <td> 4th Mar (Wed):</td>
+    <td>  Infinity: Uncountability </td> 
+    <td> </td>
+	<td> </td>
+</tr>
+
+<tr style="color:black">
+    <td> <b> 5th Mar (Wed) </b> :</td>
+    <td>  Infinity: The Halting Problem </td> 
+    <td> </td>
+	<td> </td>
+</tr>
+
+<tr style="color:black">
+    <td> 6th Mar (Fri):</td>
+    <td> COSC 30: Review, AMA  </td> 
+    <td>  </td>
+	<td>  </td>
+</tr>
+</tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+</table>
+</font>
+
+<hr><hr>
+
+
+<a name="policies"></a>
+<h2> Policies  </h2>
+
+<p>
+<b> Lectures, X-hours, Attendence Policy, and Notes</b><br>
+Attend <b> all </b> classes including X-hours, of which I may use all of.
+I will post some notes which may contain more than what is covered. 
+
+
+
+<p>
+<b> Regrading Policy</b><br>
+If there is a totalling error, please see any of the TAs and they will fix it rightaway. <br>
+On the other hand, if you feel that the grader has not graded accurately then you should clearly write down which problem <u> and </u> your reason 
+why you think the grading is 
+incorrect, staple it with your answer-sheet and hand it to the Head TA during his or her office hour <br>
+If even after this you feel unsatisfied, then you can email the instructor for a <u> full regrade </u>.
+I will look at the entire problem set and re-grade it completely.
+
+
+
+<p>
+<b> Late Exercises and Problem Sets</b><br>
+Problem Sets are submitted via Canvas. Each student has a <u> total of two late days </u> available. 
+Note that even a minute late in canvas is a day late. 
+I will be <b> extremely strict </b> on this: any late submissions after the two late days will be straight given a zero.
+No excuses shall be entertained. <b> Drill Problem Sets</b> have no late days available; but there will be some slack on how many drills you need to do.
+
+
+<p>
+<b> Laptops and Phone Policy </b><br>
+We encourage students not to use devices in class. If they have to, then they need to seat themselves on the fringes of the classroom 
+so as to not distract other students. <br>
+
+
+
+<p>
+<b> Academic Integrity / Honor Code </b><br>
+<u> All work submitted for credit must be your own.</u> 
+This means what you put down on paper for submission cannot be in any way copied from a black/white board, a computer screen, or even your notes from class.
+<br>
+
+You <b> cannot </b> discuss the drill problem sets with anyone. 
+You may discuss the problem sets with your classmates (taking the course with you), the TAs, and the instructor. No one else. 
+You are also not allowed to give away solutions to your classmates.
+Clarification questions about problems should be asked on Piazza. <br>
+&nbsp &nbsp &nbsp &nbsp 
+At the beginning of each problem you must write who you discussed with, and what way did the person help you or you help them. This is important.
+If you did not talk with anyone about any of the problems, mention this at the beginning of the homework.
+Any written sources used (apart from the text, your lecture notes and any homework solutions that I distribute) must also be acknowledged; 
+however, you may not consult any solutions on the Internet or from previous years' assignments, whether they are student- or faculty-generated. <br>
+&nbsp &nbsp &nbsp &nbsp 
+Dartmouth's Academic Honor Principle applies to this course. Please be sure to read the principle, which you can find <a href="http://www.dartmouth.edu/judicialaffairs/honor/"> here </a>.
+Please ask me if you have any questions about the honor code as it applies to CS 30. Better safe than sorry!
+<hr>
+</div>
+
+
+<hr>
+
+
