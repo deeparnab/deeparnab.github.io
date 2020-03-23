@@ -38,14 +38,66 @@ target.style.display="none";
 
 <br>
 <!-- <br><br>
+<b> 2020 </b>
+<br>
+ -->
+<ul>
+<li> 
+<b> Domain Reduction for Monotonicity Testing: A o(d) Tester for Boolean Functions in d-Dimensions</b>
+	<a href="https://arxiv.org/abs/1811.01427">[pdf] </a>
+	<a href="javascript:toggle('domred')">[abs]</a><br>
+	with Hadley Black and  C. Seshadhri.<br>
+	In <i> Proc. SODA 2020. </i>
+	<div id="domred" class="abs" style="display:none"> 
+	<p> 
+	In SODA 2018, we gave a o(d)polylog n tester for Boolean monotonicity testing over the d-dimensional hypergrid [n]^d. In this work, we show how to remove the
+	dependence on n. Using this, we get the first o(d) tester for Boolean functions over R^d.
+	
+	The main idea is domain reduction. Sample k = poly(d) coordinates iid from each of the d-dimensions and look at the function restricted 
+	to this sub-hypergrid. We show that if the original function is eps-far, then whp the restricted function is O(eps) far. Then we apply the SODA 2018 result.
+	</div>
+</li>
+
+<li>
+<b> On a Decentralized (Δ+1)-Graph Coloring Algorithm </b>
+	<a href = "">[pdf]</a>
+	<a href="javascript:toggle('coloring')"> [abs] </a> <br>
+	with Paul de Supinski. <br>
+	In <i> Proc. SOSA 2020. </i>
+	<div id="coloring" class="abs" style="display:none"> 
+	<p> 
+	In MOBIHOC 2016, we studied a
+decentralized randomized algorithm for graph coloring with D+1 colors, where D is the maximum degree, in a model where
+	nodes can't talk to each other and the only information they know at any time is whether or not some neighbor has the 
+	same color as itself. In this paper, we show how a modification of the same algorithm (under the same model) can return a 
+	 valid coloring in O(nlog D) expected time.	This is a generalization of the coupon collector problem (when D =n-1) and indeed uses the same.</div>
+</li>
+<br>
+
+</ul>
+<!-- <br><br>
 <b> 2019 </b>
 <br>
  -->
 <ul>
 
 <li>
+<b> Fair Algorithms for Clustering  </b>
+	<a href="https://arxiv.org/abs/1901.02393">[pdf] </a>
+	<a href="javascript:toggle('fairclus')">[abs]</a><br>
+	with S. K. Bera, N. J. FLores, and M. Negahbani.<br>
+	In <i> Proc. NeurIPS 2019</a>. </i>
+	<div id="fairclus" class="abs" style="display:none"> 
+	<p> 
+	We give a black-box algorithm which converts any vanilla clustering algorithm to a fair one (based on the disparate impact notion) whose approximation factor
+	is only "slightly" worse, with an "additive hit" in the fairness. This works for k-center, k-median, and k-means objectives.
+	</div>
+</li>
+
+
+<li>
 <b> Faster Matroid Intersection  </b>
-	<a href=" ">[pdf] </a>
+	<a href="https://arxiv.org/abs/1911.10765">[pdf] </a>
 	<a href="javascript:toggle('matroid')">[abs]</a><br>
 	with Y. T. Lee, A. Sidford, S. Singla, and S. Wong.<br>
 	In <i> Proc. FOCS 2019</a>. </i>
