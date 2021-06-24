@@ -37,11 +37,99 @@ target.style.display="none";
 </center>	
 
 <br>
+
+<!-- <br><br>
+<b> 2021 </b>
+<br>
+ -->
+<ul> 
+<li> 
+<b>  Graph Connectivity and Single Element Recovery via Linear and OR Queries</b>
+	<a href="https://arxiv.org/pdf/2007.06098">[pdf] </a>
+	<a href="javascript:toggle('graphquery')">[abs]</a><br>
+	with Sepehr Assadi and Sanjeev Khanna.<br>
+	In <i> Proc. ESA 2021. </i>
+	<div id="graphquery" class="abs" style="display:none"> 
+	<p> 
+		Given an unknown non-negative N-dimensional vector x, suppose you could "measure" it using a linear measurement, that is, obtain a*x for any N-dimensional query vector a.
+		How many queries do you need to <b>deterministically</b> return one element from x's support? The answer is log N, using binary search. However, binary search is an adaptive algorithm which takes log N
+		rounds of queries. What is the answer if you had only 2 rounds allowed? A moment's thought will show you how to do this in sqrt(N) queries per round. In this paper we prove this is tight. 
+		We also look at the related and more general question of finding a spanning tree in a graph using "cut-queries" or "independent set" queries, and obtain rounds-versus-query trade-offs.
+	</div>
+</li>
+
+<li>
+<b> Revisiting Priority k-Center: Fairness and Outliers </b>
+	<a href = "https://arxiv.org/abs/2103.03337">[pdf]</a>
+	<a href="javascript:toggle('robpriokcen')"> [abs] </a> <br>
+	with Tanvi Bajpai, Chandra Chekuri, and Maryam Negahbani. <br>
+	In <i> Proc. ICALP 2021. </i>
+	<div id="robpriokcen" class="abs" style="display:none"> 
+	<p> 
+	In the usual k-center problem, one wants to open k-centers so that the maximum distance of a point to an open center is minimized. However, not all points may be equal, and 
+	one could ask the "priority" version where the distance of a point is multiplied by their priority, and the maximum of this prioritized distance is to be minimized. Indeed, this 
+	also has a 2-approximation algorithm which is tight even for the vanilla k-center problem, and was known since 1987.
+
+	In this paper we look at the problem in the presence of outliers, that is, when the maximum can be taken over a fraction of the clients. The vanilla k-center with outliers has a 2-approximation.
+	We give a 9-approximation for the priority k-center with outliers. Our framework also is able to handle more general constraints (knapsack and matroid) on the opened centers (though we take a hit
+	in the approximation factor in the knapsack case). We show that better than 3-approximation is not possible, but bridging the gap between 3 and 9 may need another idea.
+	
+	</div>
+</li>
+
+
+<li>
+<b> Robust k-Center with Two Types of Radii </b>
+	<a href = "https://arxiv.org/abs/2102.11435">[pdf]</a>
+	<a href="javascript:toggle('2nukco')"> [abs] </a> <br>
+	with Maryam Negahbani. <br>
+	In <i> Proc. IPCO 2021. </i>
+	<div id="2nukco" class="abs" style="display:none"> 
+	<p> 
+	In an older paper with Prachi Goyal and Ravishankar Krishnaswamy [ICALP 2016, TALG 2020], we had introduced the non-uniform k-center problem which generalizes the k-center with outliers problem.
+	We are given k possibly different radii balls, and we have to figure out how to place them on a metric space such that the unions of dilated versions of these cover the whole metric space. 
+	We want to make the dilation as small as possible. We proved that if the number of types is part of input, no constant factor approximation is possible. However, I have felt (and still feel)
+	for constantly many types, there should be a O(1) approximation. And indeed, that paper we could give for 2-types of radii.
+	
+	We make "epsilon progress" in this paper. We show that the 2-types of radii *with outliers* has a 10-approximation. The problem of constantly many types is still open.
+	
+	</div>
+</li>
+<br>
+
+
+
+</ul>
+
+
 <!-- <br><br>
 <b> 2020 </b>
 <br>
  -->
 <ul>
+
+
+
+
+<li> 
+<b> Domain Reduction for Monotonicity Testing: A o(d) Tester for Boolean Functions in d-Dimensions</b>
+	<a href="https://arxiv.org/abs/1811.01427">[pdf] </a>
+	<a href="javascript:toggle('domred')">[abs]</a><br>
+	with Hadley Black and  C. Seshadhri.<br>
+	In <i> Proc. SODA 2020. </i>
+	<div id="domred" class="abs" style="display:none"> 
+	<p> 
+	In SODA 2018, we gave a o(d)polylog n tester for Boolean monotonicity testing over the d-dimensional hypergrid [n]^d. In this work, we show how to remove the
+	dependence on n. Using this, we get the first o(d) tester for Boolean functions over R^d.
+	
+	The main idea is domain reduction. Sample k = poly(d) coordinates iid from each of the d-dimensions and look at the function restricted 
+	to this sub-hypergrid. We show that if the original function is eps-far, then whp the restricted function is O(eps) far. Then we apply the SODA 2018 result.
+	</div>
+</li>
+
+
+
+
 <li> 
 <b> Domain Reduction for Monotonicity Testing: A o(d) Tester for Boolean Functions in d-Dimensions</b>
 	<a href="https://arxiv.org/abs/1811.01427">[pdf] </a>
