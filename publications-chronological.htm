@@ -95,6 +95,23 @@ target.style.display="none";
 	
 	</div>
 </li>
+
+<li> 
+<b> Better and Simpler Error Analysis of the Sinkhorn-Knopp Algorithm for Matrix Scaling</b>
+	<a href="https://link.springer.com/article/10.1007%2Fs10107-020-01503-3">[pdf] </a>
+	<a href="javascript:toggle('sinkhorn')">[abs]</a><br>
+	with Sanjeev Khanna.<br>
+	In <i> Math. Programming. 188(1): 395-407</i>. Previous version in <i> <a style="color:black" href="https://simplicityalgorithms.wixsite.com/sosa">Proc. SOSA 2018</a>. </i>
+	<div id="sinkhorn" class="abs" style="display:none"> 
+	<p> 
+	Given a non-negative matrix, can we multiply the rows and columns by scalars so that the scaled matrix has prescribed row and columns sums?
+    The Sinkhorn-Knopp algorithm is a simple iterative procedure which first scales all the rows and then scales all the columns, and repeats this getting closer 
+	to the desired matrix. Although simple and known for around 80 years, the analysis of the procedure is still incomplete. 
+	In this paper, we give a better and simpler error analysis of this algorithm. 
+	A key tool is a new inequality connecting KL-divergence between two distributions and their ell_2 norms.
+	</div>
+</li>
+
 <br>
 
 
@@ -142,6 +159,48 @@ decentralized randomized algorithm for graph coloring with D+1 colors, where D i
 	same color as itself. In this paper, we show how a modification of the same algorithm (under the same model) can return a 
 	 valid coloring in O(nlog D) expected time.	This is a generalization of the coupon collector problem (when D =n-1) and indeed uses the same.</div>
 </li>
+
+<li>
+<b> The Non-Uniform k-Center Problem.</b>
+	<a href="http://arxiv.org/pdf/1605.03692v2.pdf"> [pdf] </a>
+	<a href = "javascript:toggle('nukc')"> [abs] </a><br>
+	with Prachi Goyal, Ravishankar Krishnawamy.<br>
+	In <i> ACM Trans. on Algorithms (TALG), 2020.</i> . Previous version in <i>Proc. ICALP 2016.</i>
+	<div id="nukc" class="abs" style="display:none"><p>
+	We look at a generalization of the k-center problem and the k-center with outliers problem. We are given k possibly different radii balls,
+	and we have to figure out how to place them on a metric space such that the unions of dilated versions of these cover
+	the whole metric space. We want to make the dilation as small as possible. 
+	</div>
+
+</li>
+
+
+<li>
+<b> Optimal Unateness Testers for Real-Valued Functions: Adaptivity Helps.</b>
+	<a href="http://www.theoryofcomputing.org/articles/v016a003/">[pdf] </a>
+	<a href="javascript:toggle('unate')">[abs]</a><br>
+	with Roksana Baleshzar, Ramesh Pallavoor, Sofya Raskhodnikova, C. Seshadhri.<br>
+	In <i> Theory of Computing. 16 : 1-36 (2020)<i>. Previous version in <i> Proc. ICALP 2017.</i>
+	<div id="unate" class="abs" style="display:none">
+	<p> A real-valued function defined over the d-dimensional hypercube is unate if across every coordinate it is consistently either non-increasing or non-decreasing. 
+	We investigate the question of testing unateness. We provide optimal testers and prove that adaptivity helps (although by a modest logarithmic factor).
+	This differentiates it from monotonicity testing where adaptivity doesn't help in general.
+ 	</div>
+</li>
+
+<li>
+<b> Deterministic Fully Dynamic Approximate Vertex Cover and Fractional Matching in O(1) Amortized Update Time.</b>
+	<a href="https://link.springer.com/article/10.1007/s00453-019-00630-4">[pdf] </a>
+	<a href="javascript:toggle('dyn')">[abs]</a><br>
+	with Sayan Bhattacharya, Monika Henzinger.<br>
+	In <i> Algorithmica 82(4) : 1057--1080 (2020) </i>. Previous version in <i> Proc. IPCO 2017.</i>
+	<div id="dyn" class="abs" style="display:none">
+	<p> We give fully dynamic <i> deterministic</i> algorithms for the minimum vertex cover and the maximum fractional matching problem which have O(1)-amortized update time and O(1)-approximation.
+	Previously, <a href="https://docs.google.com/viewer?a=v&pid=sites&srcid=ZGVmYXVsdGRvbWFpbnxzb2xvc2hheXxneDoyNmQwMzM2MjkzNzAyYWY5">Solomon</a> gave a randomized O(1)-amortized update time algorithms for maintaining a maximal matching. Our results also generalize to the hypergraph setting. 
+	Similar results were obtained concurrently by <a href="https://arxiv.org/abs/1611.05646">Gupta et al.</a>
+ 	</div>
+</li>
+
 <br>
 
 </ul>
@@ -238,6 +297,7 @@ decentralized randomized algorithm for graph coloring with D+1 colors, where D i
 	</div>
 </li>
 
+
 </ul>
 <br>
  <!-- <br><br>
@@ -265,21 +325,7 @@ decentralized randomized algorithm for graph coloring with D+1 colors, where D i
 	</div>
 </li>
 
-<li> 
-<b> Better and Simpler Error Analysis of the Sinkhorn-Knopp Algorithm for Matrix Scaling</b>
-	<a href="http://drops.dagstuhl.de/opus/volltexte/2018/8304/pdf/OASIcs-SOSA-2018-4.pdf">[pdf] </a>
-	<a href="javascript:toggle('sinkhorn')">[abs]</a><br>
-	with Sanjeev Khanna.<br>
-	In <i> <a style="color:black" href="https://simplicityalgorithms.wixsite.com/sosa">Proc. SOSA 2018</a>. </i>
-	<div id="sinkhorn" class="abs" style="display:none"> 
-	<p> 
-	Given a non-negative matrix, can we multiply the rows and columns by scalars so that the scaled matrix has prescribed row and columns sums?
-    The Sinkhorn-Knopp algorithm is a simple iterative procedure which first scales all the rows and then scales all the columns, and repeats this getting closer 
-	to the desired matrix. Although simple and known for around 80 years, the analysis of the procedure is still incomplete. 
-	In this paper, we give a better and simpler error analysis of this algorithm. 
-	A key tool is a new inequality connecting KL-divergence between two distributions and their ell_2 norms.
-	</div>
-</li>
+
 
 <li> 
 <b> Dynamic Algorithms for Graph Coloring</b>
@@ -358,31 +404,9 @@ decentralized randomized algorithm for graph coloring with D+1 colors, where D i
 	</div>
 </li>
 
-<li>
-<b> Deterministic Fully Dynamic Approximate Vertex Cover and Fractional Matching in O(1) Amortized Update Time.</b>
-	<a href="https://arxiv.org/abs/1611.00198">[pdf] </a>
-	<a href="javascript:toggle('dyn')">[abs]</a><br>
-	with Sayan Bhattacharya, Monika Henzinger.<br>
-	In <i> Proc. IPCO 2017.</i>
-	<div id="dyn" class="abs" style="display:none">
-	<p> We give fully dynamic <i> deterministic</i> algorithms for the minimum vertex cover and the maximum fractional matching problem which have O(1)-amortized update time and O(1)-approximation.
-	Previously, <a href="https://docs.google.com/viewer?a=v&pid=sites&srcid=ZGVmYXVsdGRvbWFpbnxzb2xvc2hheXxneDoyNmQwMzM2MjkzNzAyYWY5">Solomon</a> gave a randomized O(1)-amortized update time algorithms for maintaining a maximal matching. Our results also generalize to the hypergraph setting. 
-	Similar results were obtained concurrently by <a href="https://arxiv.org/abs/1611.05646">Gupta et al.</a>
- 	</div>
-</li>
 
-<li>
-<b> Optimal Unateness Testers for Real-Valued Functions: Adaptivity Helps.</b>
-	<a href="https://arxiv.org/abs/1703.05199">[pdf] </a>
-	<a href="javascript:toggle('unate')">[abs]</a><br>
-	with Roksana Baleshzar, Ramesh Pallavoor, Sofya Raskhodnikova, C. Seshadhri.<br>
-	In <i> Proc. ICALP 2017.</i>
-	<div id="unate" class="abs" style="display:none">
-	<p> A real-valued function defined over the d-dimensional hypercube is unate if across every coordinate it is consistently either non-increasing or non-decreasing. 
-	We investigate the question of testing unateness. We provide optimal testers and prove that adaptivity helps (although by a modest logarithmic factor).
-	This differentiates it from monotonicity testing where adaptivity doesn't help in general.
- 	</div>
-</li>
+
+
 
 <li>
 <b> Property Testing on Product Distributions: Optimal Testers for Bounded Derivative Properties. </b>
@@ -406,19 +430,7 @@ Our results hold for a general class of properties which we call bouned derivati
 <br> -->
 
 <ul>
-<li>
-<b> The Non-Uniform k-Center Problem.</b>
-	<a href="http://arxiv.org/pdf/1605.03692v2.pdf"> [pdf] </a>
-	<a href = "javascript:toggle('nukc')"> [abs] </a><br>
-	with Prachi Goyal, Ravishankar Krishnawamy.<br>
-	In <i>Proc. ICALP 2016.</i>
-	<div id="nukc" class="abs" style="display:none"><p>
-	We look at a generalization of the k-center problem and the k-center with outliers problem. We are given k possibly different radii balls,
-	and we have to figure out how to place them on a metric space such that the unions of dilated versions of these cover
-	the whole metric space. We want to make the dilation as small as possible. 
-	</div>
 
-</li>
 
 <li>
 <b> IQ-Hopping: Distributed Oblivious Channel Selection for Wireless Networks </b>
