@@ -19,14 +19,13 @@ target.style.display="none";
 </script>
 
 <body>
-	<div id="header">
+<div id="header">
 		<div id="headername">
 			<a href="./index.htm"> Deeparnab Chakrabarty</a>
 		</div>
 		<div id="position">
 			Department of Computer Science, Dartmouth College <br>
-			<b> Mail:</b> 6211 Sudikoff Lab, Hanover, NH 03755-3510 <br>
-			<b>Tel:</b> 603-646-8728, <b>Fax:</b> -1672<br>
+			<b> Mail:</b> ECSC 15 Thayer Drive, Hanover, NH 03755-3510 <br>
 			<b>Email:</b> deeparnab@dartmouth.edu, deeparnab@gmail.com </small>
 		</div> 
 	</div>
@@ -43,6 +42,37 @@ target.style.display="none";
 <br>
  -->
 <ul> 
+
+<li> 
+<b> A Polynomial Lower Bound on the Number of Rounds for Parallel Submodular Function Minimization and Matroid Intersection</b>
+	<a href="https://arxiv.org/abs/2111.07474">[pdf] </a>
+	<a href="javascript:toggle('parallelsfm')">[abs]</a><br>
+	with Yu Chen and Sanjeev Khanna.<br>
+	In <i> Proc. FOCS 2021. </i>
+	<div id="parallelsfm" class="abs" style="display:none"> 
+	<p> 
+		We show that any polynomial query algorithm for submodular function minimization (SFM) and matroid intersection (with rank oracle), must proceed in roughly cuberoot(N) rounds of queries
+		where N is the size of the universe. Thus, although SFM and matroid intersection can be solved efficiently, they are not highly parallelizable. 
+	</div>
+</li>
+
+<li> 
+<b>  Better Algorithms for Individually Fair k-Clustering</b>
+	<a href="https://arxiv.org/abs/2106.12150">[pdf] </a>
+	<a href="javascript:toggle('betterind')">[abs]</a><br>
+	with Maryam Negahbani.<br>
+	In <i> Proc. NeurIPS 2021. </i>
+	<div id="betterind" class="abs" style="display:none"> 
+	<p> 
+		Motivated by individually fair clustering, we look at the question of "opening" k-centers in a metric space (a) minimize the k-median objective of sum of every client to the nearest open center, 
+		(b) with the constraint that every client j has an open center within distance some specified amount r(j). It is not hard to see that just checking if there is any solution satisfying (b) is as hard 
+		as the k-center problem. One thus looks for bi-criteria algorithms. We show that a modification of the old Charikar-Guha-Shmoys-Tardos rounding can give an (8,8)-approximation : we violate the "fairness" 
+		constraint by factor 8, and our cost is within 8 times OPT. 
+	</div>
+</li>
+
+
+
 <li> 
 <b>  Graph Connectivity and Single Element Recovery via Linear and OR Queries</b>
 	<a href="https://arxiv.org/pdf/2007.06098">[pdf] </a>
@@ -98,7 +128,7 @@ target.style.display="none";
 
 <li> 
 <b> Better and Simpler Error Analysis of the Sinkhorn-Knopp Algorithm for Matrix Scaling</b>
-	<a href="https://link.springer.com/article/10.1007%2Fs10107-020-01503-3">[pdf] </a>
+	<a href="./PUBS/CK21.pdf">[pdf] </a>
 	<a href="javascript:toggle('sinkhorn')">[abs]</a><br>
 	with Sanjeev Khanna.<br>
 	In <i> Math. Programming. 188(1): 395-407, (2021) </i>. Previous version in <i> <a style="color:black" href="https://simplicityalgorithms.wixsite.com/sosa">Proc. SOSA 2018</a>. </i>
@@ -147,7 +177,7 @@ target.style.display="none";
 
 <li>
 <b> On a Decentralized (Δ+1)-Graph Coloring Algorithm </b>
-	<a href = "">[pdf]</a>
+	<a href = "https://arxiv.org/abs/1910.13900">[pdf]</a>
 	<a href="javascript:toggle('coloring')"> [abs] </a> <br>
 	with Paul de Supinski. <br>
 	In <i> Proc. SOSA 2020. </i>
@@ -162,7 +192,7 @@ decentralized randomized algorithm for graph coloring with D+1 colors, where D i
 
 <li>
 <b> The Non-Uniform k-Center Problem.</b>
-	<a href="http://arxiv.org/pdf/1605.03692v2.pdf"> [pdf] </a>
+	<a href="./PUBS/CGK20.pdf"> [pdf] </a>
 	<a href = "javascript:toggle('nukc')"> [abs] </a><br>
 	with Prachi Goyal, Ravishankar Krishnawamy.<br>
 	In <i> ACM Trans. on Algorithms (TALG), 2020.</i> . Previous version in <i>Proc. ICALP 2016.</i>
@@ -190,7 +220,7 @@ decentralized randomized algorithm for graph coloring with D+1 colors, where D i
 
 <li>
 <b> Deterministic Fully Dynamic Approximate Vertex Cover and Fractional Matching in O(1) Amortized Update Time.</b>
-	<a href="https://link.springer.com/article/10.1007/s00453-019-00630-4">[pdf] </a>
+	<a href="./PUBS/BCH19.pdf">[pdf] </a>
 	<a href="javascript:toggle('dyn')">[abs]</a><br>
 	with Sayan Bhattacharya, Monika Henzinger.<br>
 	In <i> Algorithmica 82(4) : 1057--1080 (2020) </i>. Previous version in <i> Proc. IPCO 2017.</i>
@@ -362,7 +392,7 @@ decentralized randomized algorithm for graph coloring with D+1 colors, where D i
 
 <li>
 	<b> Online Buy-at-Bulk Network Design. </b>
-	<a href="./PUBS/CEKP15.pdf"> [pdf] </a>
+	<a href="https://arxiv.org/abs/1509.03212"> [pdf] </a>
 	<a href = "javascript:toggle('onlinebab')"> [abs] </a><br>
 	with Alina Ene, Ravishankar Krishnawamy, and Debmalya Panigrahi <br>
 	In <i> SIAM Journal on Computing, 2018.</i> Previous version in <i>Proc. FOCS 2015.</i>
@@ -447,7 +477,7 @@ Our results hold for a general class of properties which we call bouned derivati
 
 <li>
   <b> Facility Location with Client Latencies: Linear-Programming based Techniques for Minimum-Latency Problems. </b>
-		<a href="./PUBS/CS-lat.pdf"> [pdf] </a>
+		<a href="https://arxiv.org/abs/1009.2452"> [pdf] </a>
 		<a href="javascript:toggle('mlufl')"> [abs]</a><br>
   with Chaitanya Swamy. <br> 
   In <i> Math. Oper. Res. 41(3): 865-883, 2016 </i>. Previous version in <i> Proc. IPCO 2011.</i>
