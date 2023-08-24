@@ -44,6 +44,46 @@ target.style.display="none";
 <ul> 
 
 <li> 
+<b> Improved Lower Bounds for Submodular Function Minimization </b>
+	<a href="https://arxiv.org/abs/2207.04342">[pdf] </a>
+	<a href="javascript:toggle('sfmlowerbound')">[abs]</a><br>
+	with Andrei Graur, Haotian Jiang, and Aaron Sidford.<br>
+	In <i> Proc. FOCS 2022. </i>
+	<div id="sfmlowerbound" class="abs" style="display:none"> 
+	<p> 
+		We provide a generic technique for constructing families of submodular functions to obtain lower bounds for submodular function minimization (SFM). 
+		Applying this technique, we prove that any deterministic SFM algorithm on a ground set of n elements requires at least Omega(nlog n) queries to an evaluation oracle. 
+		This is the first super-linear query complexity lower bound for SFM and improves upon the previous best lower bound of 2n given by [Graur et al., ITCS 2020]. 
+		Using our construction, we also prove that any (possibly randomized) parallel SFM algorithm, which can make up to poly(n) queries per round, requires at least Omega(n/logn) rounds to minimize a submodular function. 
+		This improves upon the result two bullet points below, and settles the parallel complexity of query-efficient SFM up to logarithmic factors. 
+	</div>
+</li>
+
+
+<li> 
+<b> Approximation Algorithms for Continuous Clustering and Facility Location Problems </b>
+	<a href="https://arxiv.org/abs/2206.15105">[pdf] </a>
+	<a href="javascript:toggle('contcul')">[abs]</a><br>
+	with Maryam Negahbani and Ankita Sarkar.<br>
+	In <i> Proc. ESA 2022. </i>
+	<div id="contcul" class="abs" style="display:none"> 
+	<p> 
+		We consider classic clustering problems in continuous spaces where centers can be picked from a potentially infinite set.
+		Triangle inequality lets us reduce to the "discrete" case where the centers are picked from among the points to be clustered itself, at a loss
+		of beta in the approximation factor, where beta depends on the objective function. For instance, for k-median, beta is 2 while for k-means, beta is 4. 
+		This paper asks: can one design algorithms without incurring this beta overhead. We show a technique based on round-and-cut which allows us to bypass
+		this beta factor loss for certain problems.
+	</div>
+</li>
+
+<br>
+
+
+
+</ul>
+
+<ul>
+<li> 
 <b> A Polynomial Lower Bound on the Number of Rounds for Parallel Submodular Function Minimization and Matroid Intersection</b>
 	<a href="https://arxiv.org/abs/2111.07474">[pdf] </a>
 	<a href="javascript:toggle('parallelsfm')">[abs]</a><br>
