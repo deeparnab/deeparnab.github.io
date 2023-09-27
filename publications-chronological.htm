@@ -4,6 +4,10 @@
 <head>
 <link rel="stylesheet" type="text/css" href="test.css" id="styleId" />
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora">
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
 </head>
 
 <script language="javascript">
@@ -38,7 +42,108 @@ target.style.display="none";
 <br>
 
 <!-- <br><br>
-<b> 2021 </b>
+<b> 2023 </b>
+<br>
+ -->
+
+<ul>
+
+<li>
+<b> Parallel Submodular Function Minimization</b>
+	<a href="https://arxiv.org/pdf/2309.04643">[pdf] </a>
+	<a href="javascript:toggle('parapxsfm')">[abs]</a><br>
+		with Andrei Graur, Haotian Jiang, and Aaron Sidford.<br>
+	In <i> Proc. NeurIPS 2023. </i> <font color="brown">Spotlight.</font>
+	<div id="parapxsfm" class="abs" style="display:none"> 
+	<p> 
+		We consider the parallel complexity of <i>approximate</i> submodular function minimization (SFM).  
+		We provide a pair of methods which obtain two new query versus depth trade-offs a submodular function defined on subsets of n elements that has integer values between −M and M. 
+		The first method is a simple depth 2 algorithm with query complexity n<sup>O(M)</sup> and the second method has depth O(n<sup>1/3</sup>M<sup>2/3</sup>) and query complexity O(poly(n,M)). 
+	</div>
+</li>
+
+<li> 
+<b> A d<sup>1/2+o(1)</sup> Monotonicity Tester for Boolean Functions on d-Dimensional Hypergrids</b>
+	<a href="https://arxiv.org/pdf/2304.01416">[pdf] </a>
+	<a href="javascript:toggle('hypmonopt')">[abs]</a><br>
+	with Hadley Black and C. Seshadhri.<br>
+	In <i> Proc. FOCS 2023. </i>
+	<div id="hypmonopt" class="abs" style="display:none"> 
+	<p> 
+		We give a slightly different tester than the usual one, and use the isometry theorem mentioned below to obtain a near optimal non-adaptive tester for Boolean functions on the d-dimensional hypergrid.
+		This (sort of) ends a journey which began with Sesh and my STOC 2013 paper giving the first o(d)-tester for Boolean functions on d-dimensional hypercubes. Lesson learnt: the hypergrid is a 
+		more intersting beast than the hypercube.
+	</div>
+</li>
+
+<li> 
+<b> Directed Isoperimetric Theorems for Boolean Functions on the Hypergrid and an Õ(n√d) Monotonicity Tester</b>
+	<a href="https://arxiv.org/abs/2211.05281">[pdf] </a>
+	<a href="javascript:toggle('hypmoniso')">[abs]</a><br>
+	with Hadley Black and C. Seshadhri.<br>
+	In <i> Proc. STOC 2023. </i>
+	<div id="hypmoniso" class="abs" style="display:none"> 
+	<p> 
+		In this paper we generalize Khot-Minzer-Safra's directed Talagrand isoperimetry theorem for hypergrids. This leads to a tester with optimal dependence on the dimension, but has 
+		a suboptimal dependence on the granularity. We fix this issue in the FOCS paper (mentioned above), but we lose a d^o(1) factor on the way. Not sure if that can be removed (perhaps, but it may need another idea).
+	</div>
+</li>
+
+
+<li> 
+<b> Learning Spanning Forests Optimally using CUT Queries in Weighted Undirected Graphs </b>
+	<a href="https://arxiv.org/abs/2306.10182">[pdf] </a>
+	<a href="javascript:toggle('qspan')">[abs]</a><br>
+	with Hang Liao.<br>
+	Prelim version in <i> Proc. ALT 2023. </i>
+	<div id="qspan" class="abs" style="display:none"> 
+	<p> 
+		Suppose you have an unknown undirected graph with positive weights on its edges, and the only access is via cut queries: you can query a subset S of vertices and obtain the total weight of edges crossing it.
+		How many queries would you need to detect if the graph is connected? This is a very special case of submodular function minimization. It's not too hard to obtain a O(nlog n) query deterministic algorithm (it's a nice undergraduate 
+		algorithms exercise), but can one do better or is there a lower bound? In this paper, we describe a randomized algorithm which succeeds with probability 1
+		and makes O(n) queries in expectation. In the ALT version, we had a weaker result of a Monte-Carlo algorithm making O(nloglog n) queries with constant error probability. Another new result in this version 
+		is a deterministic O(n log n/loglog n) query algorithm showing that one can improve upon the simple case mentioned above. Can one obtain a linear query deterministic algorithm, or is there a lower bound? As of now, it's open!
+	</div>
+</li>
+
+<li> 
+<b> A Polynomial Lower Bound on the Number of Rounds for Parallel Submodular Function Minimization and Matroid Intersection</b>
+	<a href="https://arxiv.org/abs/2111.07474">[pdf] </a>
+	<a href="javascript:toggle('parallelsfm')">[abs]</a><br>
+	with Yu Chen and Sanjeev Khanna.<br>
+		In <i> SIAM Journal on Computing (SICOMP) </i>. <font color="brown">Special Issue</font> for <i> Proc. FOCS 2021</i>.
+	<div id="parallelsfm" class="abs" style="display:none"> 
+	<p> 
+		We show that any polynomial query algorithm for submodular function minimization (SFM) and matroid intersection (with rank oracle), must proceed in roughly cuberoot(N) rounds of queries
+		where N is the size of the universe. Thus, although SFM and matroid intersection can be solved efficiently, they are not highly parallelizable. 
+	</div>
+</li>
+
+
+<li>
+<b> Robust k-Center with Two Types of Radii </b>
+	<a href = "https://arxiv.org/abs/2102.11435">[pdf]</a>
+	<a href="javascript:toggle('2nukco')"> [abs] </a> <br>
+	with Maryam Negahbani. <br>
+In <i> Math. Programming. 197(2):991-1007 </i>. <font color="brown">Special Issue</font> for <i> Proc. IPCO 2021. </i>
+	<div id="2nukco" class="abs" style="display:none"> 
+	<p> 
+	In an older paper with Prachi Goyal and Ravishankar Krishnaswamy [ICALP 2016, TALG 2020], we had introduced the non-uniform k-center problem which generalizes the k-center with outliers problem.
+	We are given k possibly different radii balls, and we have to figure out how to place them on a metric space such that the unions of dilated versions of these cover the whole metric space. 
+	We want to make the dilation as small as possible. We proved that if the number of types is part of input, no constant factor approximation is possible. However, I have felt (and still feel)
+	for constantly many types, there should be a O(1) approximation. And indeed, that paper we could give for 2-types of radii.
+	
+	We make "epsilon progress" in this paper. We show that the 2-types of radii *with outliers* has a 10-approximation. The problem of constantly many types is still open.
+	
+	</div>
+</li>
+
+<br>
+
+</ul>
+
+<!-- <br><br>
+<b> 2022 </b>
 <br>
  -->
 <ul> 
@@ -82,19 +187,12 @@ target.style.display="none";
 
 </ul>
 
+<!-- <br><br>
+<b> 2022 </b>
+<br>
+ -->
+
 <ul>
-<li> 
-<b> A Polynomial Lower Bound on the Number of Rounds for Parallel Submodular Function Minimization and Matroid Intersection</b>
-	<a href="https://arxiv.org/abs/2111.07474">[pdf] </a>
-	<a href="javascript:toggle('parallelsfm')">[abs]</a><br>
-	with Yu Chen and Sanjeev Khanna.<br>
-	In <i> Proc. FOCS 2021. </i>
-	<div id="parallelsfm" class="abs" style="display:none"> 
-	<p> 
-		We show that any polynomial query algorithm for submodular function minimization (SFM) and matroid intersection (with rank oracle), must proceed in roughly cuberoot(N) rounds of queries
-		where N is the size of the universe. Thus, although SFM and matroid intersection can be solved efficiently, they are not highly parallelizable. 
-	</div>
-</li>
 
 <li> 
 <b>  Better Algorithms for Individually Fair k-Clustering</b>
@@ -148,23 +246,6 @@ target.style.display="none";
 </li>
 
 
-<li>
-<b> Robust k-Center with Two Types of Radii </b>
-	<a href = "https://arxiv.org/abs/2102.11435">[pdf]</a>
-	<a href="javascript:toggle('2nukco')"> [abs] </a> <br>
-	with Maryam Negahbani. <br>
-	In <i> Proc. IPCO 2021. </i>
-	<div id="2nukco" class="abs" style="display:none"> 
-	<p> 
-	In an older paper with Prachi Goyal and Ravishankar Krishnaswamy [ICALP 2016, TALG 2020], we had introduced the non-uniform k-center problem which generalizes the k-center with outliers problem.
-	We are given k possibly different radii balls, and we have to figure out how to place them on a metric space such that the unions of dilated versions of these cover the whole metric space. 
-	We want to make the dilation as small as possible. We proved that if the number of types is part of input, no constant factor approximation is possible. However, I have felt (and still feel)
-	for constantly many types, there should be a O(1) approximation. And indeed, that paper we could give for 2-types of radii.
-	
-	We make "epsilon progress" in this paper. We show that the 2-types of radii *with outliers* has a 10-approximation. The problem of constantly many types is still open.
-	
-	</div>
-</li>
 
 <li> 
 <b> Better and Simpler Error Analysis of the Sinkhorn-Knopp Algorithm for Matrix Scaling</b>
@@ -483,7 +564,7 @@ decentralized randomized algorithm for graph coloring with D+1 colors, where D i
 <a href="http://eccc.hpi-web.de/report/2014/042/download"> [pdf]</a>
 <a href =" javascript:toggle('product')"> [abs] </a><br>
 with Kashyap Dixit, Madhav Jha, and C. Seshadhri.<br> 
-In <i> ACM Trans. on Algorithms (TALG), 2017</i>. Previous version in <i>Proc. SODA 2015.</i> <font color="brown"> Invited to Special Issue.</font>
+In <i> ACM Trans. on Algorithms (TALG), 2017</i>. <font color="brown"> Special Issue</font> for <i>Proc. SODA 2015.</i> 
 <div id="product" class="abs" style="display:none"> <p>
 In property testing, the concept of distance is crucial and is often defined using the Hamming distance between objects. For instance, a function's distance to monotonicity 
 is often defined to be the fraction of domain points at which it needs to be modified to make it monotone. How does the situation change when the underlying distribution used to measure
@@ -534,7 +615,7 @@ Our results hold for a general class of properties which we call bouned derivati
 		<a href="http://eccc.hpi-web.de/report/2013/029/revision/1/download"> [pdf]</a>
 		<a href="javascript:toggle('boolmon')">[abs]</a>  <br>
 	with C. Seshadhri. <br>
-	In <i> SIAM Journal on Computing (SICOMP), 461-472, 2016 </i>. Previous version in <i> Proc. STOC 2013. </i> <font color="brown">Invited to Special Issue.</font>
+	In <i> SIAM Journal on Computing (SICOMP), 461-472, 2016 </i>. <font color="brown">Special Issue</font> for <i> Proc. STOC 2013. </i> 
 	 <div id="boolmon"; class="abs"  style="display:none"> 
   <p>We make progress on Boolean monotonicity testing giving the first sublinear (in dimension) algorithms. On the way we prove a new directed isoperimetry result, and 
 use it to analyze random walks on the <i> directed </i> hypercube. <b>Note</b>: The proceedings version has a bug and the claimed n^{5/6} 

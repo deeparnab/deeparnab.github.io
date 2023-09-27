@@ -1,0 +1,206 @@
+
+
+	body{
+		transform: scale(1.2);
+		transform-origin: 0% 0%;
+		background-color:#effefef;
+		font-family:  Lora, Palatino, Arial, Helvetica, Times New Roman;
+		width:1000px;
+		margin-top:auto;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	
+	div#semiperm{
+		margin:0px;
+		padding:0px;
+		margin-top:20px;
+		margin-bottom:auto;
+		width:550px;
+		font-family: Lora, Palatino, Helvetica, Times;
+		font-weight:lighter;
+		float:left;
+		font-size:1em;	
+	}
+	
+	
+	div#news{
+		margin:0px;
+		padding:0px;
+		margin-top:20px;
+		margin-bottom:auto;
+		width:400px;
+		font-family:  Lora, Palatino, Helvetica, Times;
+		font-weight:lighter;
+		float:right;
+		font-size:1em;
+	}
+
+
+
+
+
+
+hr {
+    margin:0px;
+    border:0px;
+    height:1px;
+    background-color:green;
+}
+
+
+
+div#image{
+    margin:0px;
+    padding:0px;
+    border:0px;
+    width:150px;
+    margin-top:30px;
+    float:left;
+}
+
+div#image img{
+    margin:0px;
+    padding-left:0px;
+	padding-right:0px;
+	height:10em;
+	}
+
+	
+
+
+div #news ul li{
+	
+}
+
+div#news ul li a{
+    color:green;
+    text-decoration:none;
+}
+
+div#news ol li a{
+    color:teal;
+    text-decoration:none;
+}
+
+div#blurb p{
+    text-indent:0px;
+    font-size:0.95em;
+    line-height:130%;
+}
+
+div#semiperm a{
+    color:green;
+    text-decoration:none;
+}
+
+div#news a{
+    color:inherit;
+    text-decoration:none;
+}
+
+div#footer{
+    margin-top:10px;
+    width:800px;
+    float:left;
+}
+
+div#publist{
+    padding:2px;
+    width:800px;
+    height:800px; 
+	font-size:0.9em;
+   }
+
+div#publist h2{
+    color:black;
+     margin-bottom:0em;
+    margin-top:0.7em;
+    font-family:inherit;
+}
+
+div#publist h3{
+    color:navy;
+    margin-bottom:0;
+    margin-top:0;
+    padding-bottom:0px;
+    padding-top:0px;
+}
+
+div#publist hr{
+    margin:0px;
+    border:0px;
+    height:1px;
+    background-color:black;
+    
+    
+}
+
+div#publist .name{
+    font-style:normal;
+    font-size:1em;
+    font-weight:500;
+    font-family:inherit;
+    color:black;
+}
+
+div#publist .auth{
+    font-style:normal;
+    font-size:em;
+    color:black
+    link-color:black
+}
+
+div#publist .venue{
+    font-style:normal;
+    font-size:0.8em;
+    font-weight:400;
+}
+
+div#publist .abs{
+    width:inherit;
+    margin-left:inherit;
+    border:inherit;
+    outline:none;
+    outline-width:thin;
+    font-style:normal;
+    font-family:inherit;
+    font-size:0.9em;
+    text-indent:10px;
+    background-color:rgb(255,255,253);
+}
+
+div#publist ul{
+    color:black;
+    margin-top:0px;
+    margin-bottom:0px;
+}
+
+
+div#publist ul li{
+    color:black;
+    margin-top:0.2em;
+}
+
+div#publist ul li a{
+    color:green;
+    text-decoration:none;
+}
+
+
+div#publist ol{
+    color:black;
+    margin-top:0px;
+    margin-bottom:0px;
+}
+
+
+Div#publist ol li{
+    color:black;
+    margin-top:0.2em;
+}
+
+div#publist ol li a{
+    color:teal;
+    text-decoration:none;
+}
